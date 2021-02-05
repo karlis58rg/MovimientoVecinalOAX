@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "648192344617",
+    "project_id": "movimientovecinal",
+    "storage_bucket": "movimientovecinal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648192344617:android:e64b7d0148793880f11238",
+        "android_client_info": {
+          "package_name": "mx.gob.sspo.movimientovecinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648192344617-2i7f6vdl19gmfgfr3r5i3l4g0cmrkhg4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.gob.sspo.movimientovecinal",
+            "certificate_hash": "09a975db5393517222d8591817a478b6225897c2"
+          }
+        },
+        {
+          "client_id": "648192344617-nmr1dcmq9cri68h8vueiqej8bskqclak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaHYzqytTLUzrR83WuFXnCNx5RiI2C8d8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648192344617-nmr1dcmq9cri68h8vueiqej8bskqclak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

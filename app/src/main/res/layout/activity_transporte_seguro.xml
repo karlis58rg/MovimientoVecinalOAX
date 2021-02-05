@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TransporteSeguro">
+    <ImageView
+        android:id="@+id/imgHeaderBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/ic_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+        app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
+        app:srcCompat="@drawable/ic_logo_header" />
+
+    <ImageView
+        android:id="@+id/imgHomeTransporte"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_menu_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround" />
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgHeaderBackGround">
+
+        <ScrollView
+            android:id="@+id/scrollTransporte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/lyTransporte"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_height="100dp">
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="30dp"
+                        android:scaleX="0.75"
+                        android:background="@drawable/ic_destino"/>
+
+                    <TextView
+                        android:id="@+id/lblTransporte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Transporte Seguro"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyIntroduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@id/lyTransporte"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:text="Placas del vehículo en el que viajas sin espacios ni guiones (-)"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyPlaca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/lyIntroduce"
+                    android:gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/txtPlaca"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:hint="Ejemplo: H1212B"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="8"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyEnviarPlaca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_below="@id/lyPlaca"
+                    android:gravity="center_horizontal">
+                    <Button
+                        android:id="@+id/btnIniciar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/btn_redondo"
+                        android:text="Enviar" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyPlacaEnviada"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:scaleX="0.75"
+                        android:background="@drawable/ic_enviado"/>
+
+                    <TextView
+                        android:id="@+id/lblNoPlaca"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Transporte Seguro"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyEncasoDe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@id/lyPlacaEnviada"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:text="En caso de emergencia."/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTxtPlaca"
+                        android:text="Agita tu celular para enviar una alerta silenciosa"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyDetenerServicio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="300dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:text="Al finalizar tu viaje, oprime el botón."/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyDetenerServicioEjecución"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_below="@id/lyDetenerServicio"
+                    android:gravity="center_horizontal">
+                    <Button
+                        android:id="@+id/btnDetenerServicio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/btn_redondo"
+                        android:text="Detener ubicación" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyEmergenciaEnviada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="75dp"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="110dp"
+                        android:layout_gravity="center"
+                        android:scaleX="0.75"
+                        android:background="@drawable/ic_enviado"/>
+
+                    <TextView
+                        android:id="@+id/lblEmergenciaEnviada"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textAlignment="center"
+                        android:text="Su alerta se envio exitosamente.\n Un momento por favor."
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/lblCoordenadasSensorPlaca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coordenadas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

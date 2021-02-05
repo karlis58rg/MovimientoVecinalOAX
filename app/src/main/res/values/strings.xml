@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Oaxaca Digital</string>
+    <string name="title_activity_menu_eventos">MenuEventos</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="msg_subscribed">INSCRITO</string>
+    <string name="msg_subscribe_failed">ERROR AL INSCRIBIRSE</string>
+
+    <string name="menu_home">Menú principal</string>
+    <string name="menu_gallery">¿Qué es?</string>
+    <string name="menu_funciones">Funciones</string>
+    <string name="menu_slideshow">Conf. Mujer oaxaqueña</string>
+    <string name="menu_transporte">Conf. Movilidad segura</string>
+    <string name="menu_nino_perdido">Niños Perdidos</string>
+    <string name="menu_tools">Aviso de privacidad</string>
+    <string name="menu_share">Terminos y condiciones</string>
+    <string name="menu_send">Salir</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">ABRIR APP</string>
+    <string name="add_widget">Add widget</string>
+
+</resources>

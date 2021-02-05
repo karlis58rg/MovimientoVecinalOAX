@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MensajeEnviadoVigilanciaVecinal">
+
+    <ImageView
+        android:id="@+id/imgHeaderBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/ic_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+        app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
+        app:srcCompat="@drawable/ic_logo_header" />
+
+    <ImageView
+        android:id="@+id/imgHomeVigilanciaMensaje"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_menu_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround" />
+
+    <TextView
+        android:id="@+id/lblAlerta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡SU ALERTA FUE ENVIADA!"
+        android:layout_marginTop="50dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAltoViolencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgHeaderBackGround" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifSirenaVigilancia"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_torreta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblAlerta" />
+
+    <TextView
+        android:id="@+id/lblVamosEnTuApoyoVigilancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mantenga la calma, las unidades han sido notificadas."
+        android:textAlignment="center"
+        android:layout_marginTop="50dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAltoViolencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gifSirenaVigilancia" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

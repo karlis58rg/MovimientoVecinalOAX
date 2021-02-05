@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <LinearLayout
+                android:id="@+id/ly911"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@drawable/drawable_pressed">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/ic_911"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="911 Oaxaca"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lyDestinoSeguro"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/ly911"
+                android:background="@drawable/drawable_pressed">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:scaleX="0.8"
+                    android:background="@drawable/ic_destino"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Movilidad Segura"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lyAltoViolencia"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/lyDestinoSeguro"
+                android:background="@drawable/drawable_pressed">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/ic_altoviolencia"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Mujer Oaxaqueña"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lyVigilanciaVecinal"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/lyAltoViolencia"
+                android:background="@drawable/drawable_pressed">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:background="@drawable/ic_vigilancia_vecinal"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Alerta Vecinal"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lyAlertaAmber"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/lyVigilanciaVecinal"
+                android:background="@drawable/drawable_pressed"
+                android:layout_marginBottom="40dp">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:scaleY="0.8"
+                    android:background="@drawable/ic_alerta_amber"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Niño perdido"/>
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

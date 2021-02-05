@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormRegistroUsuario">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgHeaderBackGround"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/ic_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgHeader"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+            app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
+            app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
+            app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+            app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
+            app:srcCompat="@drawable/ic_logo_header" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ScrollView
+        android:id="@+id/scroolFotoUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="70dp">
+
+        <RelativeLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblRegistro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:text="REGISTRO"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="105dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_below="@+id/lblRegistro"/>
+
+            <ImageView
+                android:id="@+id/pickFoto"
+                android:layout_width="105dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_perfil"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/lblRegistro"/>
+
+            <EditText
+                android:id="@+id/txtNombre"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="Nombre:"
+                android:ems="10"
+                android:inputType="textCapCharacters"
+                android:maxLength="35"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/profile_image"/>
+
+            <EditText
+                android:id="@+id/txtApaterno"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textCapCharacters"
+                android:maxLength="20"
+                android:hint="A. paterno:"
+                android:layout_below="@id/txtNombre"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/txtAmaterno"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textCapCharacters"
+                android:maxLength="20"
+                android:hint="A. materno:"
+                android:layout_below="@id/txtApaterno"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/txtDireccion"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textCapCharacters"
+                android:hint="Dirección:"
+                android:layout_below="@id/txtAmaterno"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:id="@+id/txtNoConfianza"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:maxLength="10"
+                android:inputType="number"
+                android:hint="No. de confianza:"
+                android:layout_below="@id/txtDireccion"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"/>
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Registrar"
+                android:layout_marginTop="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/btn_redondo"
+                android:layout_below="@id/txtNoConfianza"
+                android:layout_marginBottom="20dp"/>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
