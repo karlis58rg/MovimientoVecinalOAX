@@ -28,7 +28,10 @@
         <activity android:name=".AlertaAmber" />
         <activity android:name=".MensajeEnviadoVigilanciaVecinal" />
         <activity android:name=".MensajeSalidaVigilanciaVecinal" />
-        <activity android:name=".VigilanciaVecinal" />
+
+        <activity android:name=".VigilanciaVecinal">
+        </activity>
+
         <activity android:name=".MensajeEnviadoAltoViolencia" />
         <activity android:name=".MensajeSalidaAltoViolencia" />
         <activity android:name=".AltoALaViolencia" />
