@@ -175,7 +175,7 @@
                         android:layout_gravity="center"
                         android:textAlignment="center"
                         android:textColor="@color/colorTxtPlaca"
-                        android:text="Agita tu celular para enviar una alerta silenciosa"/>
+                        android:text="Presiona el acceso directo para mandar una alerta"/>
                 </LinearLayout>
 
                 <LinearLayout

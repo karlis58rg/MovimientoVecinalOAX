@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
@@ -75,6 +76,7 @@ public class Service911TS extends Service implements SensorEventListener {
     public int cargarInfoValorShake = 0;
     public String serbar = "sincrear";
     int bandera = 0;
+    int banderaInsert = 0;
     String version;
     int comparar;
     private static final int NOTIFICATION_ID = 200;
@@ -163,37 +165,32 @@ public class Service911TS extends Service implements SensorEventListener {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            Log.i("HERE","Localización cada 15 segundos");
             serbar = "creado";
-            Log.i("HERE",serbar);
             guardarServicio();
-            if(bandera == 2){
-                Log.i("HEY", "BANDERA 2!");
+            //Toast.makeText(getApplicationContext(), "EJECUTANDO SERVICIO CADA 15 SEGUNDOS", Toast.LENGTH_SHORT).show();
+            Log.i("HERE","Localización cada 15 segundos");
+            locationStart();
+            if(banderaInsert == 1){
+                getDatosMapaRobos();
+            }else if(bandera == 1){
                 locationStart();
                 getDatosMapaRobos();
             }else if(bandera == 3){
-                Log.i("HEY", "BANDERA 3!");
-                locationStart();
-                getDatosMapaRobos();
-            }else if (bandera == 4) {
                 bandera = 0;
                 Log.i("HEY", "BANDERA 4!");
                 eliminarServicio();
-                //FormSensorIngresaPlaca.gifRojo.setVisibility( View.GONE);
                 stopSelf();
                 stopForeground(true);
                 miTareaSuperTS.cancel(true);
                 stopService(new Intent(Service911TS.this, Service911TS.class));
                 onDestroy();
-                /*Intent i = new Intent( getApplicationContext(), MensajeSalida.class );
-                i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                i.putExtra("valorRandom",valorRandom);
-                startActivity( i );
-                System.exit(0);*/
-
+            }else{
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(1500);
+                Random();
+                insertBdEventoTransportePublicoIOS();
+                Toast.makeText(getApplicationContext(), "EMERGENCIA ENVIADA", Toast.LENGTH_SHORT).show();
             }
-            //Toast.makeText(getApplicationContext(), "EJECUTANDO SERVICIO CADA 15 SEGUNDOS", Toast.LENGTH_SHORT).show();
-            Log.i("HERE","Localización cada 15 segundos");
         }
 
         @Override
@@ -219,45 +216,6 @@ public class Service911TS extends Service implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        cargar();
-/*        version = cargarInfoSDK;
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-        mAccelLast = mAccelCurrent;
-        mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-        float delta = mAccelCurrent - mAccelLast;
-        mAccel = mAccel * 0.9f + delta; // perform low-cut filter
-        Log.i("HERE", version);
-
-        if (mAccel > cargarInfoValorShake) {
-            tiempoAnterior = tiempoActual;
-            tiempoActual = System.currentTimeMillis();
-            diferencia = tiempoActual - tiempoAnterior;
-            if (diferencia < 700) {
-                sacudidas++;
-            } else {
-                sacudidas = 0;
-            }
-            if (sacudidas == 2) {
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(1500);
-                sacudidas=0;
-                *//*FormSensorIngresaPlaca.gifRojo.setVisibility(View.VISIBLE);
-                FormSensorIngresaPlaca.bandaroja.setVisibility( View.VISIBLE );
-                FormSensorIngresaPlaca.lblagita.setVisibility(View.INVISIBLE);
-                FormSensorIngresaPlaca.emergencia.setVisibility(View.INVISIBLE);
-                FormSensorIngresaPlaca.paloma.setVisibility(View.INVISIBLE);*//*
-                this.locationStart();
-                if(bandera == 2){
-                    insertBdEventoTransportePublicoRobosIOS();
-                }else{
-                    Random();
-                    insertBdEventoTransportePublicoIOS();
-                    Toast.makeText(getApplicationContext(), "EMERGENCIA ENVIADA", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }*/
     }
 
     /*********************Apartir de aqui empezamos a obtener la direciones y coordenadas************************/
@@ -373,7 +331,7 @@ public class Service911TS extends Service implements SensorEventListener {
 
     //*********************** METODO QUE INSERTA A LA BASE DE DATOS DESPUES DE INSERTAR AL CAD ***********************//
     public void insertBdEventoTransportePublicoIOS(){
-        bandera = 1;
+        banderaInsert = 1;
         cargar();
         valorRandom = "OAX2021"+ randomCodigoVerifi;
         //*************** FECHA **********************//
@@ -474,7 +432,7 @@ public class Service911TS extends Service implements SensorEventListener {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     final String myResponse = response.body().toString();
-                    bandera = 2;/********** ME REGRESA LA RESPUESTA DEL WS ****************/
+                    bandera = 1;/********** ME REGRESA LA RESPUESTA DEL WS ****************/
                     //startTimer();
                 }
             }
@@ -484,7 +442,6 @@ public class Service911TS extends Service implements SensorEventListener {
     //************************ STSTUS DEL INCIDENTE ***************************************//
 
     public void getDatosMapaRobos(){
-
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
                 .url("http://187.174.102.142/AppMovimientoVecinal/api/EventosTransportePublicoRobosApp?folioRobo=OAX2021"+randomCodigoVerifi+"&statusRobo=1")
@@ -501,20 +458,14 @@ public class Service911TS extends Service implements SensorEventListener {
                     String myResponse = response.body().string();
                     final String resp = myResponse;
                     final String valor = "true";
-
                     if(resp.equals(valor)){
-                        bandera = 3;
-                        Log.i("HERE", "BANDERA 3!");
+                        Log.i("HERE", "BANDERA 1 CON CICLO");
                         Log.i("HERE", resp);
                         insertBdEventoTransportePublicoRobosIOS();
                     }else{
-                        bandera = 4;
+                        bandera = 3;
                         Log.i("HERE", resp);
                         Log.i("HERE", "PROCESO TERMINADO");
-                        //stopSelf();
-                        //onDestroy();
-                        //stopForeground(true);
-                        //miTarea.cancel(true);
                     }
                     Log.i("HERE", resp);
 

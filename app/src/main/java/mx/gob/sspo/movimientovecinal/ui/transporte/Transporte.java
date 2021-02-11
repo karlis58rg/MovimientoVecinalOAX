@@ -18,8 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import mx.gob.sspo.movimientovecinal.MiWidget;
+import mx.gob.sspo.movimientovecinal.MiWidgetT;
 import mx.gob.sspo.movimientovecinal.R;
 
 public class Transporte extends Fragment {
@@ -29,7 +31,7 @@ public class Transporte extends Fragment {
     public static int num_imag_transporte = 0;
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    int widgetTransporte = 0;
+    int widgetTransporte = 0,cargarInfoWtransporteSeguro;
 
     public static Transporte newInstance() {
         return new Transporte();
@@ -41,18 +43,23 @@ public class Transporte extends Fragment {
         View root = inflater.inflate(R.layout.transporte_fragment, container, false);
         /*************************************************************/
         //*****************************************************************//
+        cargarServicio();
         btnCrear = root.findViewById(R.id.boton_crear_widget_transporte);
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                widgetTransporte = 1;
-                guardarActividad();
-                AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
-                ComponentName myProvider = new ComponentName(v.getContext(), MiWidget.class);
-                if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
-                    mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                if(cargarInfoWtransporteSeguro == 1){
+                    Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
+                }else{
+                    widgetTransporte = 1;
+                    guardarActividad();
+                    AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
+                    ComponentName myProvider = new ComponentName(v.getContext(), MiWidgetT.class);
+                    if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
+                        mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                    }
                 }
             }
         });
@@ -72,6 +79,12 @@ public class Transporte extends Fragment {
         editor.putInt("TRANSPORTE", widgetTransporte );
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
+    }
+
+    private void cargarServicio(){
+        share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
+        cargarInfoWtransporteSeguro = share.getInt("TRANSPORTE", 0);
+        //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
     }
 
 }

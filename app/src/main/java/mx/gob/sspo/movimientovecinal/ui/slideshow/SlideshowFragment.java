@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class SlideshowFragment extends Fragment {
     public static int num_imag_violencia = 0;
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    int widgetViolencia = 0;
+    int widgetViolencia = 0,cargarInfoWViolencia;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class SlideshowFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
         /*************************************************************/
         //*****************************************************************//
+        cargarServicio();
         btnCrear = root.findViewById(R.id.boton_crear_widget);
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
@@ -44,12 +46,16 @@ public class SlideshowFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                widgetViolencia = 2;
-                guardarActividad();
-                AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
-                ComponentName myProvider = new ComponentName(v.getContext(), MiWidget.class);
-                if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
-                    mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                if(cargarInfoWViolencia == 1){
+                    Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
+                }else{
+                    widgetViolencia = 1;
+                    guardarActividad();
+                    AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
+                    ComponentName myProvider = new ComponentName(v.getContext(), MiWidget.class);
+                    if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
+                        mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                    }
                 }
             }
         });
@@ -63,5 +69,10 @@ public class SlideshowFragment extends Fragment {
         editor.putInt("VIOLENCIA", widgetViolencia );
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
+    }
+    private void cargarServicio(){
+        share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
+        cargarInfoWViolencia = share.getInt("VIOLENCIA", 0);
+        //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
     }
 }

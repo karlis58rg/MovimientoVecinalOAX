@@ -87,7 +87,7 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:text="Mujer Oaxaqueña"/>
+                    android:text="Código Mujer"/>
             </LinearLayout>
 
             <LinearLayout

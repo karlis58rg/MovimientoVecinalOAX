@@ -17,8 +17,7 @@ import mx.gob.sspo.movimientovecinal.ui.transporte.Transporte;
 public class MiWidget extends AppWidgetProvider {
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    int cargarInfoViolenciaWidget,cargarInfoTransporteWidget,wTransporte,wViolencia,cargarInfoWtransporte,cargarInfoWviolencia,valorWidget;
-    String cargarInfoPlacaTransporte;
+    int cargarInfoViolenciaWidget,wViolencia,cargarInfoWviolencia;
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -31,51 +30,41 @@ public class MiWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         System.out.println("SE CREA EL HILO POR PRIMERA VEZ");
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-        cargarInfoTransporteWidget = share.getInt("TRANSPORTE", 0);
         cargarInfoViolenciaWidget= share.getInt("VIOLENCIA", 0);
-        cargarInfoPlacaTransporte = share.getString("PLACA", "SIN INFORMACION");
 
-        if(cargarInfoTransporteWidget == 1) {
-            final int N = appWidgetIds.length;
-            for (int i = 0; i < N; i++) {
-                int appWidgetId = appWidgetIds[i];
-                System.out.println(cargarInfoTransporteWidget);
-                Intent intent = new Intent(context, TransporteSeguro.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                //PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget);
-                views.setOnClickPendingIntent(R.id.imagen_widget, pendingIntent);
-                if (Transporte.num_imag_transporte == 0) {
-                   views.setImageViewResource(R.id.imagen_widget, R.drawable.ic_destino);
-                }
-                System.out.println(appWidgetId);
-                wTransporte = 1;
-                share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-                editor = share.edit();
-                editor.putInt("WTRANSPORTE", wTransporte ).commit();
-                editor.remove("TRANSPORTE").commit();
-                appWidgetManager.updateAppWidget(appWidgetId, views);
-            }
-        }
-        if(cargarInfoViolenciaWidget == 2) {
+        if(cargarInfoViolenciaWidget == 1) {
             final int N = appWidgetIds.length;
             for (int i = 0; i < N; i++) {
                 int appWidgetId = appWidgetIds[i];
                 System.out.println(cargarInfoViolenciaWidget);
                 Intent intent = new Intent(context, AltoALaViolencia.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                //PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget);
                 views.setOnClickPendingIntent(R.id.imagen_widget, pendingIntent);
                 if (SlideshowFragment.num_imag_violencia == 0) {
                     views.setImageViewResource(R.id.imagen_widget, R.drawable.ic_altoviolencia);
                 }
                 System.out.println(appWidgetId);
+                appWidgetManager.updateAppWidget(appWidgetId, views);
+            }
+        }else if(cargarInfoViolenciaWidget != 1) {
+            final int N = appWidgetIds.length;
+            for (int i = 0; i < N; i++) {
+                int appWidgetId = appWidgetIds[i];
                 wViolencia = 1;
                 share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
                 editor = share.edit();
-                editor.putInt("WVIOLENCIA", wViolencia ).commit();
-                editor.remove("VIOLENCIA").commit();
+                editor.putInt("VIOLENCIA", wViolencia);
+                editor.commit();
+                System.out.println(cargarInfoViolenciaWidget);
+                Intent intent = new Intent(context, AltoALaViolencia.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget);
+                views.setOnClickPendingIntent(R.id.imagen_widget, pendingIntent);
+                if (SlideshowFragment.num_imag_violencia == 0) {
+                    views.setImageViewResource(R.id.imagen_widget, R.drawable.ic_altoviolencia);
+                }
+                System.out.println(appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
         }
@@ -84,7 +73,7 @@ public class MiWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        System.out.println("SE EJECUTA AL HACER CLICK");
+        System.out.println("SE EJECUTA AL HACER CLICK VIOLENCIA");
     }
 
     @Override
@@ -95,23 +84,17 @@ public class MiWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
-        System.out.println("SE QUITA LA INSTANCIA DEL WIDGET");
+        System.out.println("SE QUITA LA INSTANCIA DEL WIDGET VIOLENCIA");
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-        cargarInfoWtransporte = share.getInt("WTRANSPORTE", 0);
-        cargarInfoWviolencia = share.getInt("WVIOLENCIA", 0);
-        if(cargarInfoWtransporte == 1){
+        cargarInfoWviolencia = share.getInt("VIOLENCIA", 0);
+        if (cargarInfoWviolencia == 1) {
             share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
             editor = share.edit();
-            editor.remove("WTRANSPORTE").commit();
-            System.out.println("SE ELIMINA WIDGET TRANSPORTE");
-        }else if (cargarInfoWviolencia == 1) {
-            share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-            editor = share.edit();
-            editor.remove("WVIOLENCIA").commit();
+            editor.remove("VIOLENCIA").commit();
             System.out.println("SE ELIMINA WIDGET VIOLENCIA");
         }
         super.onDeleted(context, appWidgetIds);

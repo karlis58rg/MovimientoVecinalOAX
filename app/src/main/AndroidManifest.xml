@@ -24,14 +24,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MensajeEnviadoAlertaAmber"></activity>
+        <receiver android:name=".MiWidgetT">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/mi_widget_t_info" />
+        </receiver>
+
+        <activity android:name=".MensajeEnviadoAlertaAmber" />
         <activity android:name=".AlertaAmber" />
         <activity android:name=".MensajeEnviadoVigilanciaVecinal" />
         <activity android:name=".MensajeSalidaVigilanciaVecinal" />
-
-        <activity android:name=".VigilanciaVecinal">
-        </activity>
-
+        <activity android:name=".VigilanciaVecinal"></activity>
         <activity android:name=".MensajeEnviadoAltoViolencia" />
         <activity android:name=".MensajeSalidaAltoViolencia" />
         <activity android:name=".AltoALaViolencia" />

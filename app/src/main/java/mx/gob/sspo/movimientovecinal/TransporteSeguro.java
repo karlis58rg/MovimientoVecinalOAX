@@ -26,6 +26,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
@@ -38,10 +39,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import mx.gob.sspo.movimientovecinal.ServiceShake.Service911TS;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class TransporteSeguro extends AppCompatActivity {
     LinearLayout lyTransporte,lyIntroduce,lyPlaca,lyEnviarPlaca,lyPlacaEnviada,lyEncasoDe,lyDetenerServicio,lyDetenerServicioEjecución,lyEmergenciaEnviada;
@@ -58,7 +69,7 @@ public class TransporteSeguro extends AppCompatActivity {
     private Context context;
     int acceso = 0;
     AlertDialog alert = null;
-    String cargarInfoServicio,cargarInfoPlaca,cargarInfoPlacaGuardada = "SIN INFORMACION";
+    String cargarInfoServicio,cargarInfoPlaca,cargarInfoTelefono,cargarInfoPlacaGuardada = "SIN INFORMACION";
     String cargarInfoServicioShake = "creado";
     String mensaje1,mensaje2;
     String direc;
@@ -84,6 +95,11 @@ public class TransporteSeguro extends AppCompatActivity {
         setContentView(R.layout.activity_transporte_seguro);
         cargarServicio();
         cargarPlaca();
+        if(cargarInfoServicio.equals(cargarInfoServicioShake)){
+            Log.i("HEY", "CON SERVICIO INICIADO");
+        }else{
+            getDatosPlaca();
+        }
 
         home = findViewById(R.id.imgHomeTransporte);
 
@@ -128,12 +144,11 @@ public class TransporteSeguro extends AppCompatActivity {
                             wTransporteSeguro = 1;
                             guardarActividad();
                             AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
-                            ComponentName myProvider = new ComponentName(getApplication(), MiWidget.class);
+                            ComponentName myProvider = new ComponentName(getApplication(), MiWidgetT.class);
                             if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
                                 mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
                             }
                             finish();
-
                         }
                     })
                     .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
@@ -153,14 +168,10 @@ public class TransporteSeguro extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
         //************************* SERVICIO ********************************//
-        ctx = this;
-
         mSensorService = new Service911TS(getCtx());
+        ctx = this;
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
-
-
         //************************* SERIVCIO ********************************//
         context = getApplicationContext();
         activity = this;
@@ -170,9 +181,7 @@ public class TransporteSeguro extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext()," **GPS** ES OBLIGATORIO PARA EL CORRECTO FUNCIONAMIENTO DEL APLICATIVO",Toast.LENGTH_LONG).show();
         }
-
         if(cargarInfoPlaca.equals(cargarInfoPlacaGuardada)){
-
         }else{
             lblNoPlaca.setText(cargarInfoPlaca);
             lyTransporte.setVisibility(View.INVISIBLE);
@@ -187,17 +196,16 @@ public class TransporteSeguro extends AppCompatActivity {
             lblNoPlaca.setVisibility(View.VISIBLE);
         }
 
-
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(txtPlaca.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"EL CAMPO **PLACA** ES OBLIGATORIO",Toast.LENGTH_LONG).show();
                 }else{
-                    startService( new Intent( TransporteSeguro.this, Service911TS.class ) );
                     placa = txtPlaca.getText().toString();
                     lblNoPlaca.setText(placa);
                     guardar();
+                    insertPlacaTransporte();
                     lyTransporte.setVisibility(View.INVISIBLE);
                     lyIntroduce.setVisibility(View.INVISIBLE);
                     lyPlaca.setVisibility(View.INVISIBLE);
@@ -221,6 +229,126 @@ public class TransporteSeguro extends AppCompatActivity {
         });
     }
 
+    //********************************** INSERT AL SERVIDOR ***********************************//
+    public void insertPlacaTransporte(){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("Telefono",cargarInfoTelefono)
+                .add("Placa",placa)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppMovimientoVecinal/api/StatusPlacas")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare(); // to be able to make toast
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    TransporteSeguro.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String resp = myResponse;
+                            String valor = "true";
+                            if(resp.equals(valor)){
+                                Toast.makeText(getApplicationContext(),"PLACA REGISTRADA",Toast.LENGTH_LONG).show();
+                                Log.i("HERE", "PLACA REGISTRADA EN LA BD CON STATUS 1");
+                            }else{
+                                alertaReiniciarPlaca();
+                            }
+                            Log.i("HERE", resp);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //**********************************  UPDATE AL SERVIDOR ***********************************//
+    public void updatePlacaStatus(){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("Telefono",cargarInfoTelefono)
+                .add("Placa",cargarInfoPlaca)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppMovimientoVecinal/api/StatusPlacas?placaTel="+cargarInfoTelefono+"&reiniciarPlaca="+cargarInfoPlaca)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare(); // to be able to make toast
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    TransporteSeguro.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String resp = myResponse;
+                            String valor = "true";
+                            if(resp.equals(valor)){
+                                Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                            }
+                            Log.i("HERE", resp);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //**********************************  GET AL SERVIDOR ***********************************//
+    public void getDatosPlaca(){
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppMovimientoVecinal/api/StatusPlacas?placaExistenteTelefono="+cargarInfoTelefono+"&placaStatusUno="+cargarInfoPlaca)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    TransporteSeguro.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String resp = myResponse;
+                            String valor = "true";
+                            if(resp.equals(valor)){
+                                Toast.makeText(getApplicationContext(), "ALERTA EN PROCESO", Toast.LENGTH_LONG).show();
+                                startService( new Intent( TransporteSeguro.this, Service911TS.class ) );
+                            }else{
+                                Log.i("HERE", "SIN PLACA EN STATUS 1");
+                            }
+                            Log.i("HERE", resp);
+
+                        }
+                    });
+                }
+            }
+        });
+    }
     //**********************************************************************//
     private void guardar(){
         share = getSharedPreferences("main",MODE_PRIVATE);
@@ -228,7 +356,6 @@ public class TransporteSeguro extends AppCompatActivity {
         editor.putString("PLACA",placa);
         editor.apply();
     }
-
     //******************************** METODOS DEL SERVICIO ****************************************//
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService( Context.ACTIVITY_SERVICE);
@@ -241,7 +368,6 @@ public class TransporteSeguro extends AppCompatActivity {
         Log.i ("isMyServiceRunning?", false+"");
         return false;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -262,9 +388,7 @@ public class TransporteSeguro extends AppCompatActivity {
         //stopService(new Intent(FormSensorIngresaPlaca.this, ServiceShake.class));
         Log.i("MAINACT", "onDestroy!");
     }
-
     //************************************ PERMISOS GPS ***********************************************//
-
     public void solicitarPermisoLocalizacion(){
         if(ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)){
             Toast.makeText(TransporteSeguro.this, "Permisos Activados", Toast.LENGTH_SHORT).show();
@@ -274,7 +398,6 @@ public class TransporteSeguro extends AppCompatActivity {
             }, CODIGO_SOLICITUD_PERMISO);
         }
     }
-
     private void alertaGPS(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("El sistema de GPS esta desactivado, ¿Desea Activarlo?")
@@ -296,7 +419,6 @@ public class TransporteSeguro extends AppCompatActivity {
         alert = builder.create();
         alert.show();
     }
-
     private void alertaDetenerServicio(){
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("¿ESTÁ USTED SEGURO EN DETENER LA ALERTA?")
@@ -304,10 +426,10 @@ public class TransporteSeguro extends AppCompatActivity {
                 .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        limpiarPlaca();
                         if(isMyServiceRunning( mSensorService.getClass())) {
                             //updateServicio();
-                            limpiarValorWidget();
+                            updatePlacaStatus();
+                            limpiarPlaca();
                             stopService( mServiceIntent );
                             stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
                             onDestroy();
@@ -315,11 +437,13 @@ public class TransporteSeguro extends AppCompatActivity {
                             Log.i("HEY", "CON SERVICIO INICIADO");
                         }else{
                             //updateServicio();
-                            limpiarValorWidget();
-                            Intent intent = new Intent( TransporteSeguro.this, MenuEventos.class );
-                            startActivity( intent );
-                            finish();
+                            updatePlacaStatus();
+                            limpiarPlaca();
                             Log.i("HEY", "SIN SERVICIO");
+                            //Intent intent = new Intent( TransporteSeguro.this, MenuEventos.class );
+                            //startActivity( intent );
+                            finish();
+
                         }
                     }
                 })
@@ -332,7 +456,25 @@ public class TransporteSeguro extends AppCompatActivity {
         alert = builder.create();
         alert.show();
     }
-
+    private void alertaReiniciarPlaca(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("USTED YA TIENE UNA PLACA REGISTRADA. ¿DESEA CONCLUIR SU VIAJE?")
+                .setCancelable(false)
+                .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        updatePlacaStatus();
+                    }
+                })
+                .setNegativeButton("NO, CONTINUAR CON EL VIAJE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
     public boolean checarStatusPermiso(int resultado){
         if(resultado == PackageManager.PERMISSION_GRANTED){
             return true;
@@ -340,7 +482,6 @@ public class TransporteSeguro extends AppCompatActivity {
             return false;
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -357,7 +498,6 @@ public class TransporteSeguro extends AppCompatActivity {
                 }
         }
     }
-
     @Override
     public void onBackPressed() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -366,10 +506,10 @@ public class TransporteSeguro extends AppCompatActivity {
                 .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        limpiarPlaca();
                         if(isMyServiceRunning( mSensorService.getClass())) {
                             //updateServicio();
-                            limpiarValorWidget();
+                            updatePlacaStatus();
+                            limpiarPlaca();
                             stopService( mServiceIntent );
                             stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
                             onDestroy();
@@ -377,7 +517,8 @@ public class TransporteSeguro extends AppCompatActivity {
                             Log.i("HEY", "CON SERVICIO INICIADO");
                         }else{
                             //updateServicio();
-                            limpiarValorWidget();
+                            updatePlacaStatus();
+                            limpiarPlaca();
                             //Intent intent = new Intent( TransporteSeguro.this, MenuEventos.class );
                             //startActivity( intent );
                             //onBackPressed();
@@ -396,137 +537,29 @@ public class TransporteSeguro extends AppCompatActivity {
         alert = builder.create();
         alert.show();
     }
-
     private void cargarServicio(){
         share = getSharedPreferences("main",MODE_PRIVATE);
-        cargarInfoServicio = share.getString("servicio","");
-        cargarInfoWtransporteSeguro = share.getInt("WTRANSPORTE", 0);
+        cargarInfoServicio = share.getString("servicio","sincrear");
+        cargarInfoWtransporteSeguro = share.getInt("TRANSPORTE", 0);
+        cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
     }
     private void guardarActividad() {
         share = getSharedPreferences("main",MODE_PRIVATE);
         editor = share.edit();
-        editor.putInt("WTRANSPORTE", wTransporteSeguro );
-        editor.putInt("TRANSPORTE", 1 );
+        editor.putInt("TRANSPORTE", wTransporteSeguro );
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
-
     private void cargarPlaca() {
         share = getSharedPreferences("main", MODE_PRIVATE);
         cargarInfoPlaca = share.getString("PLACA", "SIN INFORMACION");
         //Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
     }
-
-    private void updateServicio(){
-        share = getSharedPreferences("main",MODE_PRIVATE);
-        cargarInfoServicio = share.getString("servicio",null);
-        //Toast.makeText(getApplicationContext(),"Dato Eliminado",Toast.LENGTH_LONG).show();
-    }
     private void limpiarPlaca(){
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
         editor = share.edit();
         editor.remove("PLACA").commit();
-    }
-
-    private void limpiarValorWidget(){
-        share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-        editor = share.edit();
-        editor.remove("OPRIMIR").commit();
-    }
-
-    /***********************************************************************************************************************/
-    //Apartir de aqui empezamos a obtener la direciones y coordenadas
-    public void locationStart() {
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        TransporteSeguro.Localizacion Local = new TransporteSeguro.Localizacion();
-        Local.setFormTransporteSeguro(this);
-        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            Intent settingsIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(settingsIntent);
-        }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            return;
-        }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-        mensaje1 = "Localizacion agregada";
-        mensaje2 = "";
-        Log.i("HERE", mensaje1);
-    }
-
-    public void setLocation(Location loc) {
-        //Obtener la direccion de la calle a partir de la latitud y la longitud
-        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
-            try {
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> list = geocoder.getFromLocation(
-                        loc.getLatitude(), loc.getLongitude(), 1);
-                if (!list.isEmpty()) {
-                    Address DirCalle = list.get(0);
-                    direc = DirCalle.getAddressLine(0);
-                    /*municipio = DirCalle.getLocality();
-                    estado = DirCalle.getAdminArea();
-                    if(municipio != null) {
-                        municipio = DirCalle.getLocality();
-                    }else{
-                        municipio = "SIN INFORMACION";
-                    }*/
-                    Log.i("HERE", "dir" + direc);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    /* Aqui empieza la Clase Localizacion */
-    public class Localizacion implements LocationListener {
-        TransporteSeguro formTransporteSeguro;
-        public TransporteSeguro getFormTransporteSeguro() {
-            return formTransporteSeguro;
-        }
-        public void setFormTransporteSeguro(TransporteSeguro formTransporteSeguro) {
-            this.formTransporteSeguro = formTransporteSeguro;
-        }
-        @Override
-        public void onLocationChanged(Location loc) {
-            // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
-            // debido a la deteccion de un cambio de ubicacion
-            loc.getLatitude();
-            loc.getLongitude();
-            lat = loc.getLatitude();
-            lon = loc.getLongitude();
-            String Text = "Lat = "+ loc.getLatitude() + "\n Long = " + loc.getLongitude();
-            mensaje1 = Text;
-            coordenadas.setText(direc+" "+mensaje1);
-            Log.i("HERE", mensaje1);
-            this.formTransporteSeguro.setLocation(loc);
-        }
-        @Override
-        public void onProviderDisabled(String provider) {
-            // Este metodo se ejecuta cuando el GPS es desactivado
-            mensaje1 = "GPS Desactivado";
-        }
-        @Override
-        public void onProviderEnabled(String provider) {
-            // Este metodo se ejecuta cuando el GPS es activado
-            mensaje1 = "GPS Activado";
-        }
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            switch (status) {
-                case LocationProvider.AVAILABLE:
-                    Log.d("debug", "LocationProvider.AVAILABLE");
-                    break;
-                case LocationProvider.OUT_OF_SERVICE:
-                    Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
-                    break;
-                case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                    Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
-                    break;
-            }
-        }
+        editor.remove("servicio").commit();
     }
 }

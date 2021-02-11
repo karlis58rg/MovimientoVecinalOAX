@@ -13,7 +13,7 @@
     <string name="menu_home">Menú principal</string>
     <string name="menu_gallery">¿Qué es?</string>
     <string name="menu_funciones">Funciones</string>
-    <string name="menu_slideshow">Conf. Mujer oaxaqueña</string>
+    <string name="menu_slideshow">Conf. Código Mujer</string>
     <string name="menu_transporte">Conf. Movilidad segura</string>
     <string name="menu_nino_perdido">Niños Perdidos</string>
     <string name="menu_tools">Aviso de privacidad</string>
@@ -22,7 +22,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="appwidget_text">ABRIR APP</string>
-    <string name="add_widget">Add widget</string>
+    <string name="appwidget_text_v">CÓDIGO  MUJER</string>
+    <string name="add_widget_v">Agregar acceso mujer oaxaqueña</string>
+
+    <string name="appwidget_text">MOVILIDAD SEGURA</string>
+    <string name="add_widget">Agregar acceso movilidad segura</string>
+
 
 </resources>

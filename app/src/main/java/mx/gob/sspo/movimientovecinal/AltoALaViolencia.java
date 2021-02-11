@@ -204,7 +204,7 @@ public class AltoALaViolencia extends AppCompatActivity {
         cargarInfoNombre = share.getString("NOMBRE", "SIN INFORMACION");
         cargarInfoApaterno = share.getString("APATERNO", "SIN INFORMACION");
         cargarInfoAmaterno = share.getString("AMATERNO", "SIN INFORMACION");
-        cargarInfoWaltoViolencia = share.getInt("WVIOLENCIA", 0);
+        cargarInfoWaltoViolencia = share.getInt("VIOLENCIA", 0);
         cargarInfoMunicipio = share.getString("MUNICIPIO", "SIN INFORMACION");
         cargarInfoLat = share.getString("LATITUDE", "SIN INFORMACION");
         cargarInfoLong = share.getString("LONGITUDE", "SIN INFORMACION");
@@ -358,8 +358,7 @@ public class AltoALaViolencia extends AppCompatActivity {
     private void guardarActividad() {
         share = getSharedPreferences("main",MODE_PRIVATE);
         editor = share.edit();
-        editor.putInt("WVIOLENCIA", wAltoViolencia );
-        editor.putInt("VIOLENCIA", 2 );
+        editor.putInt("VIOLENCIA", wAltoViolencia );
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
