@@ -44,4 +44,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.4.0') //***COMPLEMENTOS DE FIREBASE
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0'//***************** LIBRERIA QR
+    implementation 'com.google.zxing:core:3.3.0'
 }

@@ -118,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:layout_below="@id/lyPlaca"
+                    android:layout_below="@id/lyQR3"
                     android:gravity="center_horizontal">
                     <Button
                         android:id="@+id/btnIniciar"
@@ -127,6 +127,197 @@
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/btn_redondo"
                         android:text="Enviar" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyQR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/lyPlaca"
+                    android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:id="@+id/contentConsultaIV"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <!--DATOS DENTRO DEL CUADRO -->
+                        <LinearLayout
+                            android:id="@+id/lblForma"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|right"
+                            android:weightSum="1"
+                            android:layout_weight="0.08">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="Forma" />
+                        </LinearLayout>
+                        <!--TITULO IMAGEN1 TITLE-->
+                        <LinearLayout
+                            android:id="@+id/lblConsultaIV"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.15">
+                            <EditText
+                                android:id="@+id/txtForma"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
+                                android:inputType="textCapCharacters"
+                                android:maxLength="25"/>
+                        </LinearLayout>
+                        <!--IMAGEN3 TITLE-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|left"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.05">
+                            <ImageView
+                                android:id="@+id/imgBuscarDatosQR"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_qr" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyQR2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/lyQR"
+                    android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:id="@+id/contentConsultaIV1"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <!--DATOS DENTRO DEL CUADRO -->
+                        <LinearLayout
+                            android:id="@+id/lblNuc"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|right"
+                            android:weightSum="1"
+                            android:layout_weight="0.08">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="Nuc" />
+                        </LinearLayout>
+                        <!--TITULO IMAGEN1 TITLE-->
+                        <LinearLayout
+                            android:id="@+id/lblConsultaIV2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.15">
+                            <EditText
+                                android:id="@+id/txtNuc"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
+                                android:inputType="textCapCharacters"
+                                android:maxLength="25"/>
+                        </LinearLayout>
+                        <!--IMAGEN3 TITLE-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|left"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.05">
+                            <ImageView
+                                android:id="@+id/imgBuscarDatosQR1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyQR3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/lyQR2"
+                    android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:id="@+id/contentConsultaIV3"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <!--DATOS DENTRO DEL CUADRO -->
+                        <LinearLayout
+                            android:id="@+id/lblNoSerie"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|right"
+                            android:weightSum="1"
+                            android:layout_weight="0.08">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="No. Serie" />
+                        </LinearLayout>
+                        <!--TITULO IMAGEN1 TITLE-->
+                        <LinearLayout
+                            android:id="@+id/lblConsultaIV3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.15">
+                            <EditText
+                                android:id="@+id/txtNoSerie"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
+                                android:inputType="textCapCharacters"
+                                android:maxLength="25"/>
+                        </LinearLayout>
+                        <!--IMAGEN3 TITLE-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|left"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.05">
+                            <ImageView
+                                android:id="@+id/imgBuscarDatosQR3"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -201,12 +392,12 @@
                     android:layout_below="@id/lyDetenerServicio"
                     android:gravity="center_horizontal">
                     <Button
-                        android:id="@+id/btnDetenerServicio"
+                        android:id="@+id/btnDetenerServicioMS"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/btn_redondo"
-                        android:text="Detener ubicación" />
+                        android:text="Detener ubicación"  />
                 </LinearLayout>
 
                 <LinearLayout
