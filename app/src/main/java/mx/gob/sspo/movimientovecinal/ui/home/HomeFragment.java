@@ -1,5 +1,6 @@
 package mx.gob.sspo.movimientovecinal.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import mx.gob.sspo.movimientovecinal.AlertaAmber;
 import mx.gob.sspo.movimientovecinal.AltoALaViolencia;
 import mx.gob.sspo.movimientovecinal.FormReporte911;
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.ServiceShake.MyFirebaseMessagingService;
 import mx.gob.sspo.movimientovecinal.TransporteSeguro;
 import mx.gob.sspo.movimientovecinal.VigilanciaVecinal;
 
@@ -36,6 +38,8 @@ public class HomeFragment extends Fragment {
         lyAltoViolencia = root.findViewById(R.id.lyAltoViolencia);
         lyVigilanciaVecinal = root.findViewById(R.id.lyVigilanciaVecinal);
         lyAlertaAmber = root.findViewById(R.id.lyAlertaAmber);
+
+        checkIntent(getActivity().getIntent());
 
         /*************************** EVENTO DE LOS BOTONES *******************************/
 
@@ -78,4 +82,14 @@ public class HomeFragment extends Fragment {
         /*********************************************************************************/
         return root;
     }
+
+    public void checkIntent(Intent intent) {
+        if (intent.hasExtra("click_action")) {
+            MyFirebaseMessagingService.ClickActionHelper.startActivity(intent.getStringExtra("click_action"), intent.getExtras(), getContext());
+        }
+    }
+
+
+
+
 }

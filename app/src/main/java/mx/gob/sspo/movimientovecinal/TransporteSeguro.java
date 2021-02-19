@@ -224,7 +224,25 @@ public class TransporteSeguro extends AppCompatActivity {
         btnDetenerServicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertaDetenerServicio();
+                if(isMyServiceRunning( mSensorService.getClass())) {
+                    updatePlacaStatus();
+                    stopService( mServiceIntent );
+                    stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
+                    onDestroy();
+                    int p = android.os.Process.myPid();
+                    android.os.Process.killProcess(p);
+                    finishAffinity();
+                    System.exit( 0 );
+                    Log.i("HEY", "CON SERVICIO INICIADO");
+                }else{
+                    updatePlacaStatus();
+                    Log.i("HEY", "SIN SERVICIO");
+                    int p = android.os.Process.myPid();
+                    android.os.Process.killProcess(p);
+                    finishAffinity();
+                    System.exit(0);
+                }
+                //alertaDetenerServicio();
             }
         });
     }
@@ -275,6 +293,8 @@ public class TransporteSeguro extends AppCompatActivity {
     }
     //**********************************  UPDATE AL SERVIDOR ***********************************//
     public void updatePlacaStatus(){
+        cargarServicio();
+        cargarPlaca();
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("Telefono",cargarInfoTelefono)
@@ -293,7 +313,6 @@ public class TransporteSeguro extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
@@ -305,6 +324,7 @@ public class TransporteSeguro extends AppCompatActivity {
                             String valor = "true";
                             if(resp.equals(valor)){
                                 Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
+                                limpiarPlaca();
                             }else{
                                 Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
                             }
@@ -348,13 +368,6 @@ public class TransporteSeguro extends AppCompatActivity {
                 }
             }
         });
-    }
-    //**********************************************************************//
-    private void guardar(){
-        share = getSharedPreferences("main",MODE_PRIVATE);
-        editor = share.edit();
-        editor.putString("PLACA",placa);
-        editor.apply();
     }
     //******************************** METODOS DEL SERVICIO ****************************************//
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -427,23 +440,22 @@ public class TransporteSeguro extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(isMyServiceRunning( mSensorService.getClass())) {
-                            //updateServicio();
                             updatePlacaStatus();
-                            limpiarPlaca();
                             stopService( mServiceIntent );
                             stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
                             onDestroy();
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
                             System.exit( 0 );
                             Log.i("HEY", "CON SERVICIO INICIADO");
                         }else{
-                            //updateServicio();
                             updatePlacaStatus();
-                            limpiarPlaca();
                             Log.i("HEY", "SIN SERVICIO");
-                            //Intent intent = new Intent( TransporteSeguro.this, MenuEventos.class );
-                            //startActivity( intent );
-                            finish();
-
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
+                            System.exit(0);
                         }
                     }
                 })
@@ -464,6 +476,10 @@ public class TransporteSeguro extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         updatePlacaStatus();
+                        int p = android.os.Process.myPid();
+                        android.os.Process.killProcess(p);
+                        finishAffinity();
+                        System.exit( 0 );
                     }
                 })
                 .setNegativeButton("NO, CONTINUAR CON EL VIAJE", new DialogInterface.OnClickListener() {
@@ -500,30 +516,51 @@ public class TransporteSeguro extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(isMyServiceRunning( mSensorService.getClass())) {
+            updatePlacaStatus();
+            stopService( mServiceIntent );
+            stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
+            onDestroy();
+            int p = android.os.Process.myPid();
+            android.os.Process.killProcess(p);
+            finishAffinity();
+            System.exit( 0 );
+            Log.i("HEY", "CON SERVICIO INICIADO");
+        }else{
+            updatePlacaStatus();
+            Log.i("HEY", "SIN SERVICIO");
+            int p = android.os.Process.myPid();
+            android.os.Process.killProcess(p);
+            finishAffinity();
+            System.exit(0);
+        }
+
+
+
+
+       /* final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("SI SALE DE ESTÁ PANTALLA, DA POR TERMINADA LA ALERTA")
                 .setCancelable(false)
                 .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(isMyServiceRunning( mSensorService.getClass())) {
-                            //updateServicio();
                             updatePlacaStatus();
-                            limpiarPlaca();
                             stopService( mServiceIntent );
                             stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
                             onDestroy();
-                            System.exit( 0 );
                             Log.i("HEY", "CON SERVICIO INICIADO");
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
+                            System.exit( 0 );
                         }else{
-                            //updateServicio();
                             updatePlacaStatus();
-                            limpiarPlaca();
-                            //Intent intent = new Intent( TransporteSeguro.this, MenuEventos.class );
-                            //startActivity( intent );
-                            //onBackPressed();
                             Log.i("HEY", "SIN SERVICIO");
-                            finish();
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
+                            System.exit(0);
 
                         }
                     }
@@ -535,7 +572,7 @@ public class TransporteSeguro extends AppCompatActivity {
                     }
                 });
         alert = builder.create();
-        alert.show();
+        alert.show();*/
     }
     private void cargarServicio(){
         share = getSharedPreferences("main",MODE_PRIVATE);
@@ -544,6 +581,11 @@ public class TransporteSeguro extends AppCompatActivity {
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
     }
+    private void cargarPlaca() {
+        share = getSharedPreferences("main", MODE_PRIVATE);
+        cargarInfoPlaca = share.getString("PLACA", "SIN INFORMACION");
+        //Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
+    }
     private void guardarActividad() {
         share = getSharedPreferences("main",MODE_PRIVATE);
         editor = share.edit();
@@ -551,10 +593,12 @@ public class TransporteSeguro extends AppCompatActivity {
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
-    private void cargarPlaca() {
-        share = getSharedPreferences("main", MODE_PRIVATE);
-        cargarInfoPlaca = share.getString("PLACA", "SIN INFORMACION");
-        //Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
+    //**********************************************************************//
+    private void guardar(){
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("PLACA",placa);
+        editor.apply();
     }
     private void limpiarPlaca(){
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);

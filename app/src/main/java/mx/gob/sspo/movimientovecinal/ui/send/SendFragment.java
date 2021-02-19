@@ -23,12 +23,13 @@ public class SendFragment extends Fragment {
         sendViewModel =
                 ViewModelProviders.of(this).get(SendViewModel.class);
         View root = inflater.inflate(R.layout.fragment_send, container, false);
-        final TextView textView = root.findViewById(R.id.text_send);
         sendViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                getActivity().moveTaskToBack(true);
-                getActivity().finish();
+                //getActivity().moveTaskToBack(true);
+                int p = android.os.Process.myPid();
+                android.os.Process.killProcess(p);
+                getActivity().finishAffinity();
                 System.exit(0);
             }
         });

@@ -38,6 +38,7 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorBold"
                     android:text="911 Oaxaca"/>
             </LinearLayout>
 
@@ -54,7 +55,7 @@
                     android:layout_gravity="left"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
-                    android:scaleX="0.8"
+                    android:scaleX="0.9"
                     android:background="@drawable/ic_destino"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -63,6 +64,7 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorBold"
                     android:text="Movilidad Segura"/>
             </LinearLayout>
 
@@ -87,7 +89,17 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:text="Código Mujer"/>
+                    android:textColor="@color/colorBold"
+                    android:text="Código"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/codigoMujer"
+                    android:text="Mujer"/>
             </LinearLayout>
 
             <LinearLayout
@@ -111,6 +123,7 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorBold"
                     android:text="Alerta Vecinal"/>
             </LinearLayout>
 
@@ -128,7 +141,8 @@
                     android:layout_gravity="left"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
-                    android:scaleY="0.8"
+                    android:scaleY="0.9"
+                    android:scaleX="0.6"
                     android:background="@drawable/ic_alerta_amber"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,12 +151,9 @@
                     android:layout_marginLeft="10dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:text="Niño perdido"/>
+                    android:textColor="@color/colorBold"
+                    android:text="Menor Ausente"/>
             </LinearLayout>
-
-
-
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

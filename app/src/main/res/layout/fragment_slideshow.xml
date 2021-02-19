@@ -9,28 +9,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="ALTO A LA VIOLENCIA"
+        android:text="CÓDIGO MUJER"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imgCM"
+        android:layout_width="110dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_altoviolencia"
+        android:scaleX="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblPrincipal" />
+
+
     <TextView
         android:id="@+id/lblSegundo"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Alto a la violencia” como se muestra a continuación. "
+        android:layout_marginTop="30dp"
+        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Código Mujer” como se muestra a continuación. "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblPrincipal" />
+        app:layout_constraintTop_toBottomOf="@+id/imgCM" />
 
     <Button
         android:id="@+id/boton_crear_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Crear Widget Alto a la Violencia"
+        android:layout_marginTop="50dp"
+        android:text="Crear Widget Código Mujer"
         android:background="@drawable/btn_redondo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -62,7 +62,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="10dp"
-            android:text="Enviar alertamiento vigilancia vecinal."
+            android:text="Presione el botón para enviar una Alerta Vecinal."
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />

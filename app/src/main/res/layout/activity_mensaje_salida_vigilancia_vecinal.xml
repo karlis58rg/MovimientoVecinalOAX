@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Para el uso de esta función, es necesario que tu negocio se encuentre registrado en la plataforma “Vigilancia Vecinal, si no te enceuntras registrado, debes comunicarte con el servicio 911 para seguir los pasos y poder pertenecer a la plataforma, lo siguiente se especifica en los términos y condiciones de esta App, en caso de tener una emergencia, le sugerimos marcar al 911."
+        android:text="Para el uso de esta función, es necesario que tu Negocio, Fraccionamiento, Casa Habitación se encuentre registrado en la plataforma *Alerta Vecinal*, si no te encuentras registrado, debes comunicarte al Servicio de Emergencias 9-1-1 para seguir los pasos y poder pertenecer a la plataforma, lo anterior se especifica en los términos y condiciones de esta App, en caso de tener una emergencia, marca al Servicio de Emergencias 9-1-1 presionando el botón."
         android:textColor="@color/colorAltoViolencia"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

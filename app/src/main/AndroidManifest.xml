@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <receiver android:name=".MiWidgetT">
+        <receiver android:name=".MiWidgetT"
+            android:label="@string/appwidget_text">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -43,7 +44,8 @@
         <activity android:name=".MensajeSalidaAltoViolencia" />
         <activity android:name=".AltoALaViolencia" />
 
-        <receiver android:name=".MiWidget">
+        <receiver android:name=".MiWidget"
+            android:label="@string/appwidget_text_v">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

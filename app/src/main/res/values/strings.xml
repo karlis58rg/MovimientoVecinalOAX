@@ -14,10 +14,10 @@
     <string name="menu_gallery">¿Qué es?</string>
     <string name="menu_funciones">Funciones</string>
     <string name="menu_slideshow">Conf. Código Mujer</string>
-    <string name="menu_transporte">Conf. Movilidad segura</string>
-    <string name="menu_nino_perdido">Niños Perdidos</string>
-    <string name="menu_tools">Aviso de privacidad</string>
-    <string name="menu_share">Terminos y condiciones</string>
+    <string name="menu_transporte">Conf. Movilidad Segura</string>
+    <string name="menu_nino_perdido">Menores Ausentes</string>
+    <string name="menu_tools">Aviso de Privacidad</string>
+    <string name="menu_share">Terminos y Condiciones</string>
     <string name="menu_send">Salir</string>
 
     <!-- TODO: Remove or change this placeholder text -->

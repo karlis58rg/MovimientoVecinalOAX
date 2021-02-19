@@ -64,7 +64,7 @@
                         android:layout_gravity="left"
                         android:layout_marginTop="25dp"
                         android:layout_marginLeft="30dp"
-                        android:scaleX="0.75"
+                        android:scaleX="0.9"
                         android:background="@drawable/ic_destino"/>
 
                     <TextView
@@ -74,7 +74,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="Transporte Seguro"
+                        android:text="Movilidad Segura"
                         android:textStyle="bold"
                         android:textSize="20sp"/>
                 </LinearLayout>
@@ -139,7 +139,7 @@
                         android:layout_width="110dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:scaleX="0.75"
+                        android:scaleX="0.9"
                         android:background="@drawable/ic_enviado"/>
 
                     <TextView
@@ -149,7 +149,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="Transporte Seguro"
+                        android:text="Movilidad Segura"
                         android:textStyle="bold"
                         android:textSize="20sp"/>
                 </LinearLayout>
@@ -219,7 +219,7 @@
                         android:layout_width="120dp"
                         android:layout_height="110dp"
                         android:layout_gravity="center"
-                        android:scaleX="0.75"
+                        android:scaleX="0.9"
                         android:background="@drawable/ic_enviado"/>
 
                     <TextView

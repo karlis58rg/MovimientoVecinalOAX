@@ -131,9 +131,9 @@ public class Service911TS extends Service implements SensorEventListener {
 
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Servicio de Botón de Pánico")
-                .setContentText("Sacudir para verificar el servicio de sacudida")
-                .setSmallIcon(R.drawable.ic_home_black_24dp)
+                .setContentTitle("Movilidad Segura")
+                .setContentText("Su alerta ha sido enviada al Servicio de Emergencias 9-1-1")
+                .setSmallIcon(R.drawable.ic_logo_app)
                 .setContentIntent(pendingIntent)
                 .build();
         NotificationManager notificationManager = (NotificationManager) getApplication().getSystemService(Context.NOTIFICATION_SERVICE);

@@ -25,7 +25,10 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,7 +90,7 @@ public class AlertaAmber extends AppCompatActivity {
 
         txtFechaNacimiento.addTextChangedListener(new TextWatcher() {
             private String current = "";
-            private String mmddyyyy = "MMDDYYYY";
+            private String ddmmyyyy = "DDMMYYYY";
             private Calendar cal = Calendar.getInstance();
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -104,7 +107,7 @@ public class AlertaAmber extends AppCompatActivity {
                     if (clean.equals(cleanC)) sel--;
 
                     if (clean.length() < 8){
-                        clean = clean + mmddyyyy.substring(clean.length());
+                        clean = clean + ddmmyyyy.substring(clean.length());
                     }else{
                         //This part makes sure that when we finish entering numbers
                         //the date is correct, fixing it otherwise
@@ -120,7 +123,7 @@ public class AlertaAmber extends AppCompatActivity {
 
 
                         day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
-                        clean = String.format("%02d%02d%02d",day, mon, year);
+                        clean = String.format("%02d%02d%02d", day,mon, year);
                     }
 
                     clean = String.format("%s/%s/%s", clean.substring(0, 2),
@@ -142,7 +145,7 @@ public class AlertaAmber extends AppCompatActivity {
 
         txtFechaHechos.addTextChangedListener(new TextWatcher() {
             private String current = "";
-            private String mmddyyyy = "MMDDYYYY";
+            private String ddmmyyyy = "DDMMYYYY";
             private Calendar cal = Calendar.getInstance();
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -159,7 +162,7 @@ public class AlertaAmber extends AppCompatActivity {
                     if (clean.equals(cleanC)) sel--;
 
                     if (clean.length() < 8){
-                        clean = clean + mmddyyyy.substring(clean.length());
+                        clean = clean + ddmmyyyy.substring(clean.length());
                     }else{
                         //This part makes sure that when we finish entering numbers
                         //the date is correct, fixing it otherwise
@@ -175,7 +178,7 @@ public class AlertaAmber extends AppCompatActivity {
 
 
                         day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
-                        clean = String.format("%02d%02d%02d",day, mon, year);
+                        clean = String.format("%02d%02d%02d",day,mon,year);
                     }
 
                     clean = String.format("%s/%s/%s", clean.substring(0, 2),
@@ -233,7 +236,7 @@ public class AlertaAmber extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
                 }else if(txtEdad.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "LA EDAD ES NECESARIA", Toast.LENGTH_LONG).show();
-                }else if(txtNacionalidad.getText().length() < 3 || txtNacionalidad.getText().toString().isEmpty()) {
+                }/*else if(txtNacionalidad.getText().length() < 3 || txtNacionalidad.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA NACIONALIDAD NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
                 }else if(txtColorOjos.getText().length() < 3 || txtColorOjos.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL COLOR DE OJOS NO PUEDE SER MENOR A 3 LETRAS NI CONTENER ESPACIOS EN BLANCO", Toast.LENGTH_LONG).show();
@@ -249,7 +252,8 @@ public class AlertaAmber extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL LUGAR DE LOS HECHOS NO PUEDE SER MENOR A 3 LETRA NI CONTENER ESPACIOS EN BLANCO", Toast.LENGTH_LONG).show();
                 }else if(txtDescripcionHechos.getText().length() < 3 || txtDescripcionHechos.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA DESCRIPCIÓN DE LOS HECHOS NO PUEDE SER MENOR A 3 LETRA NI CONTENER ESPACIOS EN BLANCO", Toast.LENGTH_LONG).show();
-                }else if(banderaFoto == 0){
+                }*/
+                else if(banderaFoto == 0){
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA FOTOGRAFIA ES NECESARIA PARA LA BUSQUEDA DE LA PERSONA DESAPARECIDA", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
@@ -340,18 +344,31 @@ public class AlertaAmber extends AppCompatActivity {
     }
     //********************************** INSERTA REGISTROP AL SERVIDOR ***********************************//
     public void insertUserDesaparecido(){
+        //*************** FECHA **********************//
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        fechaHechos = dateFormat.format(date);
+
         nombreAlerta = txtNombreAlerta.getText().toString();
         aPaternoAlerta = txtApaternoAlerta.getText().toString();
         aMaternoAlerta = txtAmaternoAlerta.getText().toString();
         edad = txtEdad.getText().toString();
-        nacionalidad = txtNacionalidad.getText().toString();
+        /*nacionalidad = txtNacionalidad.getText().toString();
         colorOjos = txtColorOjos.getText().toString();
         estatura = txtEstatura.getText().toString();
         complexion = txtComplexion.getText().toString();
         fechaNacimiento = txtFechaNacimiento.getText().toString();
         fechaHechos = txtFechaHechos.getText().toString();
         lugarHechos = txtLugarHechos.getText().toString();
-        descripcionHechos = txtDescripcionHechos.getText().toString();
+        descripcionHechos = txtDescripcionHechos.getText().toString();*/
+        nacionalidad = "MEXICANA";
+        colorOjos = "CAFÉ";
+        estatura = "1.50";
+        complexion = "DELGADO";
+        fechaNacimiento = "01/01/2000";
+        lugarHechos = "OAXACA";
+        descripcionHechos = "DESAPARECIDO";
+
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()

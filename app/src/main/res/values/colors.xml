@@ -8,4 +8,6 @@
     <color name="colorAddress">#791B7A</color>
     <color name="colorTxtPlaca">#FF000B</color>
     <color name="colorAltoViolencia">#791B7A</color>
+    <color name="codigoMujer">#F13D09</color>
+    <color name="colorBold">#000000</color>
 </resources>
