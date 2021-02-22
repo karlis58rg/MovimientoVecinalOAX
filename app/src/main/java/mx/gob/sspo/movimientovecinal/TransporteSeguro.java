@@ -267,8 +267,9 @@ public class TransporteSeguro extends AppCompatActivity {
         if(result != null)
             if(result.getContents() != null){
                 resultadoQr = result.getContents();
+                resultadoQr = resultadoQr.replace('|',',');
                 Log.i(Tag, resultadoQr);
-                String[] textElements = resultadoQr.split("|");
+                String[] textElements = resultadoQr.split(",");
                 List<String> qrlList = Arrays.asList(textElements);
                 countResultado = qrlList.size();
                 if(countResultado == 3){
