@@ -53,6 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!--BLOQUE 1 ENCABEZADO-->
+
                 <LinearLayout
                     android:id="@+id/lyTransporte"
                     android:layout_width="match_parent"
@@ -79,6 +81,8 @@
                         android:textSize="20sp"/>
                 </LinearLayout>
 
+                <!--BLOQUE 2 SELECCION PLACA Ó QR-->
+
                 <LinearLayout
                     android:id="@+id/lyIntroduce"
                     android:layout_width="match_parent"
@@ -92,15 +96,43 @@
                         android:textSize="18dp"
                         android:textAlignment="center"
                         android:layout_gravity="center"
-                        android:text="Placas del vehículo en el que viajas sin espacios ni guiones (-)"/>
+                        android:text="Selecciona busqueda por Placas ó Qr"/>
                 </LinearLayout>
+
+                <!--BLOQUE 3 IMG PLACA Y QR-->
+
+
+                <LinearLayout
+                    android:id="@+id/lyPlacaQr"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/lyIntroduce"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/imgPlacaMS"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:background="@drawable/ic_placas"/>
+                    <ImageView
+                        android:id="@+id/imgQrMS"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="30dp"
+                        android:background="@drawable/ic_qr"
+                        android:scaleY="0.8"
+                        android:scaleX="0.9"/>
+                </LinearLayout>
+
+                <!--BLOQUE 4 TXT PLACA-->
 
                 <LinearLayout
                     android:id="@+id/lyPlaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_below="@id/lyIntroduce"
+                    android:layout_below="@id/lyPlacaQr"
                     android:gravity="center_horizontal">
 
                     <EditText
@@ -113,12 +145,14 @@
                         android:maxLength="8"/>
                 </LinearLayout>
 
+                <!--BLOQUE 5 BTN ENVIO DE PLACA-->
+
                 <LinearLayout
                     android:id="@+id/lyEnviarPlaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:layout_below="@id/lyQR3"
+                    android:layout_below="@id/lyPlaca"
                     android:gravity="center_horizontal">
                     <Button
                         android:id="@+id/btnIniciar"
@@ -129,12 +163,14 @@
                         android:text="Enviar" />
                 </LinearLayout>
 
+                <!--BLOQUE 6 DATOS DEL QR -->
+
                 <LinearLayout
                     android:id="@+id/lyQR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/lyPlaca"
+                    android:layout_below="@id/lyPlacaQr"
                     android:gravity="center_horizontal">
                     <LinearLayout
                         android:id="@+id/contentConsultaIV"
@@ -185,11 +221,6 @@
                             android:weightSum="1"
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.05">
-                            <ImageView
-                                android:id="@+id/imgBuscarDatosQR"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_qr" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -319,6 +350,8 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <!--BLOQUE 7 ENVIO EN CASO DE EMERGECNIA -->
 
                 <LinearLayout
                     android:id="@+id/lyPlacaEnviada"

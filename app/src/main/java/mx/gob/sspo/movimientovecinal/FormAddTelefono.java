@@ -28,7 +28,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class FormAddTelefono extends AppCompatActivity {
-    Button btnEnviar;
+    Button btnEnviar,btnAvisoPrivacidad;
     EditText txtNumeroUsuario;
     String numero,respuestaJson,m_Item1,nombreV,aPaternoV,aMaternoV,direccionV,nuc,idVictima;
     SharedPreferences share;
@@ -42,6 +42,7 @@ public class FormAddTelefono extends AppCompatActivity {
 
         txtNumeroUsuario = findViewById(R.id.txtTelefono);
         btnEnviar = findViewById(R.id.btnEnviar);
+        btnAvisoPrivacidad = findViewById(R.id.btnAvisoPrivacidad);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +56,14 @@ public class FormAddTelefono extends AppCompatActivity {
                     getUser();
                 }
 
+            }
+        });
+
+        btnAvisoPrivacidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(FormAddTelefono.this,FormAvisoPrivacidad.class);
+                startActivity(i);
             }
         });
     }

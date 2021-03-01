@@ -24,7 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <receiver android:name=".MiWidgetT"
+        <activity android:name=".FormAvisoPrivacidad"
+            android:screenOrientation="portrait"></activity>
+
+        <receiver
+            android:name=".MiWidgetT"
             android:label="@string/appwidget_text">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -35,16 +39,25 @@
                 android:resource="@xml/mi_widget_t_info" />
         </receiver>
 
-        <activity android:name=".MensajeEnviadoAlertaAmber" />
-        <activity android:name=".AlertaAmber" />
-        <activity android:name=".MensajeEnviadoVigilanciaVecinal" />
-        <activity android:name=".MensajeSalidaVigilanciaVecinal" />
-        <activity android:name=".VigilanciaVecinal"></activity>
-        <activity android:name=".MensajeEnviadoAltoViolencia" />
-        <activity android:name=".MensajeSalidaAltoViolencia" />
-        <activity android:name=".AltoALaViolencia" />
+        <activity android:name=".MensajeEnviadoAlertaAmber"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AlertaAmber"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MensajeEnviadoVigilanciaVecinal"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MensajeSalidaVigilanciaVecinal"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".VigilanciaVecinal"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MensajeEnviadoAltoViolencia"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MensajeSalidaAltoViolencia"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AltoALaViolencia"
+            android:screenOrientation="portrait"/>
 
-        <receiver android:name=".MiWidget"
+        <receiver
+            android:name=".MiWidget"
             android:label="@string/appwidget_text_v">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -60,11 +73,16 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TransporteSeguro" />
-        <activity android:name=".MensajeEnviadoReporte911" />
-        <activity android:name=".FormReporte911" />
-        <activity android:name=".FormAddTelefono" />
-        <activity android:name=".FormRegistroUsuario" />
+        <activity android:name=".TransporteSeguro"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MensajeEnviadoReporte911"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FormReporte911"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FormAddTelefono"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FormRegistroUsuario"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".ServiceShake.MyFirebaseMessagingService"

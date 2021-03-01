@@ -61,12 +61,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TransporteSeguro extends AppCompatActivity {
-    LinearLayout lyTransporte,lyIntroduce,lyPlaca,lyEnviarPlaca,lyPlacaEnviada,lyEncasoDe,lyDetenerServicio,lyDetenerServicioEjecución,lyEmergenciaEnviada,lyQr1,lyQr2,lyQr3;
+    LinearLayout lyTransporte,lyIntroduce,lyPlaca,lyEnviarPlaca,lyPlacaEnviada,lyEncasoDe,lyDetenerServicio,lyDetenerServicioEjecución,lyEmergenciaEnviada,lyQr1,lyQr2,lyQr3,lyPlacaQR ;
     EditText txtPlaca,txtForma,txtNuc,txtSerie;
     TextView lblNoPlaca,coordenadas;
     Button btnIniciar,btnDetenerServicioMS;
     String resultadoQr,placa,forma,nuc,serie;
-    ImageView home,imgQr;
+    ImageView home,imgPlaca,imgQr;
     SharedPreferences share;
     SharedPreferences.Editor editor;
     Activity activity;
@@ -106,10 +106,12 @@ public class TransporteSeguro extends AppCompatActivity {
         if(cargarInfoServicio.equals(cargarInfoServicioShake)){
             Log.i("HEY", "CON SERVICIO INICIADO");
         }else{
-            getDatosPlaca();
+            //getDatosPlaca();
         }
-        Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
+        Log.i("HEY", cargarInfoServicio);
+        Log.i("HEY", cargarInfoPlaca);
 
         home = findViewById(R.id.imgHomeTransporte);
 
@@ -122,22 +124,26 @@ public class TransporteSeguro extends AppCompatActivity {
         btnIniciar = findViewById(R.id.btnIniciar);
         btnDetenerServicioMS = findViewById(R.id.btnDetenerServicioMS);
         coordenadas = (TextView)findViewById(R.id.lblCoordenadasSensorPlaca);
-        lyQr1 = findViewById(R.id.lyQR);
-        lyQr2 = findViewById(R.id.lyQR2);
-        lyQr3 = findViewById(R.id.lyQR3);
-        imgQr = findViewById(R.id.imgBuscarDatosQR);
-        txtForma = findViewById(R.id.txtForma);
-        txtNuc = findViewById(R.id.txtNuc);
-        txtSerie = findViewById(R.id.txtNoSerie);
-
 
         /*************FASE 2********************/
+        lyPlacaQR = findViewById(R.id.lyPlacaQr);
         lyPlacaEnviada = findViewById(R.id.lyPlacaEnviada);
         lyEncasoDe = findViewById(R.id.lyEncasoDe);
         lyDetenerServicio = findViewById(R.id.lyDetenerServicio);
         lyDetenerServicioEjecución = findViewById(R.id.lyDetenerServicioEjecución);
         lblNoPlaca = findViewById(R.id.lblNoPlaca);
         lyEmergenciaEnviada = findViewById(R.id.lyEmergenciaEnviada);
+
+        /*************FASE 3********************/
+        lyQr1 = findViewById(R.id.lyQR);
+        lyQr2 = findViewById(R.id.lyQR2);
+        lyQr3 = findViewById(R.id.lyQR3);
+        imgPlaca = findViewById(R.id.imgPlacaMS);
+        imgQr = findViewById(R.id.imgQrMS);
+        txtForma = findViewById(R.id.txtForma);
+        txtNuc = findViewById(R.id.txtNuc);
+        txtSerie = findViewById(R.id.txtNoSerie);
+
 
 
         lyPlacaEnviada.setVisibility(View.INVISIBLE);
@@ -147,6 +153,11 @@ public class TransporteSeguro extends AppCompatActivity {
         lblNoPlaca.setVisibility(View.INVISIBLE);
         lyEmergenciaEnviada.setVisibility(View.INVISIBLE);
         txtPlaca.setEnabled(false);
+        lyQr1.setVisibility(View.INVISIBLE);
+        lyQr2.setVisibility(View.INVISIBLE);
+        lyQr3.setVisibility(View.INVISIBLE);
+        lyPlaca.setVisibility(View.INVISIBLE);
+        lyEnviarPlaca.setVisibility(View.INVISIBLE);
 
         if(cargarInfoWtransporteSeguro == 1){
             txtPlaca.setEnabled(true);
@@ -211,6 +222,7 @@ public class TransporteSeguro extends AppCompatActivity {
             lyQr1.setVisibility(View.INVISIBLE);
             lyQr2.setVisibility(View.INVISIBLE);
             lyQr3.setVisibility(View.INVISIBLE);
+            lyPlacaQR.setVisibility(View.INVISIBLE);
 
             lyPlacaEnviada.setVisibility(View.VISIBLE);
             lyEncasoDe.setVisibility(View.VISIBLE);
@@ -228,11 +240,12 @@ public class TransporteSeguro extends AppCompatActivity {
                     placa = txtPlaca.getText().toString();
                     lblNoPlaca.setText(placa);
                     guardar();
-                    insertPlacaTransporte();
+                    //insertPlacaTransporte();
                     lyTransporte.setVisibility(View.INVISIBLE);
                     lyIntroduce.setVisibility(View.INVISIBLE);
                     lyPlaca.setVisibility(View.INVISIBLE);
                     lyEnviarPlaca.setVisibility(View.INVISIBLE);
+                    lyPlacaQR.setVisibility(View.INVISIBLE);
 
                     lyPlacaEnviada.setVisibility(View.VISIBLE);
                     lyEncasoDe.setVisibility(View.VISIBLE);
@@ -252,10 +265,27 @@ public class TransporteSeguro extends AppCompatActivity {
             }
         });
 
+        imgPlaca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lyPlaca.setVisibility(View.VISIBLE);
+                lyEnviarPlaca.setVisibility(View.VISIBLE);
+                lyQr1.setVisibility(View.INVISIBLE);
+                lyQr2.setVisibility(View.INVISIBLE);
+                lyQr3.setVisibility(View.INVISIBLE);
+            }
+        });
+
         imgQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new IntentIntegrator(TransporteSeguro.this).initiateScan();
+                lyQr1.setVisibility(View.VISIBLE);
+                lyQr2.setVisibility(View.VISIBLE);
+                lyQr3.setVisibility(View.VISIBLE);
+                lyPlaca.setVisibility(View.INVISIBLE);
+                lyEnviarPlaca.setVisibility(View.INVISIBLE);
+
             }
         });
     }
@@ -488,13 +518,34 @@ public class TransporteSeguro extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(isMyServiceRunning( mSensorService.getClass())) {
-                            updatePlacaStatus();
-                            stopService( mServiceIntent );
-                            stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
-                            onDestroy();
+                            /******QUITAR ESTA PARTE, YA SE LIMPIA Y CIERRA EN EL UpdatePlacaStatus************/
+
+                            limpiarPlaca();
+                            Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
+                            System.exit( 0 );
+
+                            /**********DESCOMENTAR ESTA PARTE DE ABAJO Y QUITAR LA DE ARRIBA QUE NO ESTA COMENTADA ****************/
+
+                            //updatePlacaStatus();
+                            //stopService( mServiceIntent );
+                            //stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
+                            //onDestroy();
                             Log.i("HEY", "CON SERVICIO INICIADO");
                         }else{
-                            updatePlacaStatus();
+                            /******QUITAR ESTA PARTE, YA SE LIMPIA Y CIERRA EN EL UpdatePlacaStatus************/
+
+                            limpiarPlaca();
+                            Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
+                            int p = android.os.Process.myPid();
+                            android.os.Process.killProcess(p);
+                            finishAffinity();
+                            System.exit( 0 );
+
+                            /**********DESCOMENTAR ESTA PARTE DE ABAJO Y QUITAR LA DE ARRIBA QUE NO ESTA COMENTADA ****************/
+                            //updatePlacaStatus();
                             Log.i("HEY", "SIN SERVICIO");
                         }
                     }
@@ -515,7 +566,7 @@ public class TransporteSeguro extends AppCompatActivity {
                 .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        updatePlacaStatus();
+                        //updatePlacaStatus();
                     }
                 })
                 .setNegativeButton("NO, CONTINUAR CON EL VIAJE", new DialogInterface.OnClickListener() {
@@ -559,19 +610,31 @@ public class TransporteSeguro extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(isMyServiceRunning( mSensorService.getClass())) {
-                            stopService( mServiceIntent );
-                            stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
-                            onDestroy();
+                            //stopService( mServiceIntent );
+                            //stopService( new Intent( TransporteSeguro.this, Service911TS.class ) );
+                            //onDestroy();
+                            /******QUITAR ESTA PARTE, YA SE LIMPIA Y CIERRA EN EL UpdatePlacaStatus************/
+
+                            limpiarPlaca();
+                            Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
                             int p = android.os.Process.myPid();
                             android.os.Process.killProcess(p);
                             finishAffinity();
                             System.exit( 0 );
+
+                            /**********DESCOMENTAR ESTA PARTE DE ABAJO Y QUITAR LA DE ARRIBA QUE NO ESTA COMENTADA ****************/
                             Log.i("HEY", "CON SERVICIO INICIADO");
                         }else{
+                            /******QUITAR ESTA PARTE, YA SE LIMPIA Y CIERRA EN EL UpdatePlacaStatus************/
+
+                            limpiarPlaca();
+                            Toast.makeText(getApplicationContext(),"VIAJE CONCLUIDO",Toast.LENGTH_LONG).show();
                             int p = android.os.Process.myPid();
                             android.os.Process.killProcess(p);
                             finishAffinity();
                             System.exit( 0 );
+
+                            /**********DESCOMENTAR ESTA PARTE DE ABAJO Y QUITAR LA DE ARRIBA QUE NO ESTA COMENTADA ****************/
                         }
                     }
                 })

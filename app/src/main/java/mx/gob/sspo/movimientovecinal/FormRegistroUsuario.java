@@ -242,6 +242,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
                     FormRegistroUsuario.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            guardarTelConfianzaUser();
                             Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
                             txtNombre.setText("");
                             txtApaterno.setText("");
@@ -328,13 +329,13 @@ public class FormRegistroUsuario extends AppCompatActivity {
     //*********************************************************************//
     public void cargarDatos() {
         share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
-        cargarInfoTelefono = share.getString("TELEFONO", "");
+        cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         cargarInfoNombre = share.getString("NOMBRE", "SIN INFORMACION");
-        cargarInfoApaterno = share.getString("APATERNO", "");
-        cargarInfoAmaterno = share.getString("AMATERNO", "");
-        cargarInfoDireccion = share.getString("DIRECCION", "");
-        cargarInfoNuc = share.getString("NUC", "");
-        cargarInfoIdVictima = share.getString("IDVICTIMA", "");
+        cargarInfoApaterno = share.getString("APATERNO", "SIN INFORMACION");
+        cargarInfoAmaterno = share.getString("AMATERNO", "SIN INFORMACION");
+        cargarInfoDireccion = share.getString("DIRECCION", "SIN INFORMACION");
+        cargarInfoNuc = share.getString("NUC", "SIN INFORMACION");
+        cargarInfoIdVictima = share.getString("IDVICTIMA", "SIN INFORMACION");
     }
     //***************************** SE OPTIENEN TODOS LOS PERMISOS AL INICIAR LA APLICACIÓN *********************************//
     public void solicitarPermisosCamera() {
@@ -351,6 +352,15 @@ public class FormRegistroUsuario extends AppCompatActivity {
         editor.putString("NOMBRE",nombre);
         editor.putString("APATERNO",aPaterno);
         editor.putString("AMATERNO",aMaterno);
+        editor.putString("TELCONFIANZA",noConfianza);
+        editor.commit();
+    }
+
+    //***************************** SE GUARDAN LOS DATOS DE LA PERSONA REGISTRADA *********************************//
+    private void guardarTelConfianzaUser(){
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("TELCONFIANZA",noConfianza);
         editor.commit();
     }
 

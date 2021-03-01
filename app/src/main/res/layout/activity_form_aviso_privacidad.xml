@@ -3,24 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".FormAvisoPrivacidad">
+
+    <ImageView
+        android:id="@+id/imgHeaderBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/ic_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+        app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
+        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
+        app:srcCompat="@drawable/ic_logo_header" />
 
     <TextView
         android:id="@+id/lblAvisoPrivacidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="AVISO DE PRIVACIDAD"
+        android:layout_marginTop="30dp"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/imgHeader"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imgHeaderBackGround" />
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="120dp">
         <LinearLayout
             android:id="@+id/bodyFormEmergenciasMenu"
             android:layout_width="match_parent"
@@ -54,5 +76,6 @@
 
         </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
