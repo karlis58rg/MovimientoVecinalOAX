@@ -42,6 +42,9 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -447,6 +450,109 @@ public class TransporteSeguro extends AppCompatActivity {
             }
         });
     }
+
+    /********************************************************************************************************************/
+    /******************GET A LA BD***********************************/
+    public void getUsuaioLicencia() {
+        cargarFolio();
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppTransito/api/LicenciaConducir?infraccionId="+cargarFolioInfra+"&user="+cargarInfoUser+"&noLicencia="+serie)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare();
+                Toast.makeText(getApplicationContext(),"ERROR AL OBTENER LA INFORMACIÓN, POR FAVOR VERIFIQUE SU CONEXIÓN A INTERNET",Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    TarjetasConductor.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                respuestaJson = "null";
+                                if(myResponse.equals(respuestaJson)){
+                                    Toast.makeText(getApplicationContext(),"NO SE CUENTA CON INFORMACIÓN",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    JSONObject jObj = null;
+                                    String resObj = myResponse;
+                                    resObj = resObj.replace("["," ");
+                                    resObj = resObj.replace("]"," ");
+                                    System.out.println(resObj);
+                                    String valor = "  ";
+                                    if(resObj.equals(valor)){
+                                        Toast.makeText(getApplicationContext(),"NO SE CUENTA CON INFORMACIÓN",Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(TarjetasConductor.this,LicenciaConducir.class);
+                                        startActivity(i);
+                                        finish();
+                                    }else{
+                                        jObj = new JSONObject(""+resObj+"");
+                                        apaterno = jObj.getString("paterno");
+                                        amaterno = jObj.getString("materno");
+                                        nombre = jObj.getString("nombre");
+                                        Tipocalle = jObj.getString("tipoCalle");
+                                        CalleLC = jObj.getString("calle");
+                                        NumeroCalle = jObj.getString("numero");
+                                        ColoniaLC = jObj.getString("colonia");
+                                        CP = jObj.getString("cp");
+                                        MunicipioLC = jObj.getString("municipio");
+                                        EstadoLC = jObj.getString("estado");
+                                        FechaExLC = jObj.getString("fechaExp");
+                                        FechaVenLC = jObj.getString("fechaVenc");
+                                        TipoVigLC = jObj.getString("tipoVigencia");
+                                        TipoLic = jObj.getString("tipoLic");
+                                        RFCLC = jObj.getString("rfc");
+                                        HomoLC = jObj.getString("homo");
+                                        GrupoSanguiLC = jObj.getString("grupoSanguineo");
+                                        RequeriemientosEspLC = jObj.getString("requerimientosEspeciales");
+
+                                        Intent i = new Intent(TarjetasConductor.this,LicenciaConducir.class);
+                                        i.putExtra("serie",serie);
+                                        i.putExtra("apaterno",apaterno);
+                                        i.putExtra("amaterno",amaterno);
+                                        i.putExtra("nombre",nombre);
+                                        i.putExtra("Tipocalle",Tipocalle);
+                                        i.putExtra("CalleLC",CalleLC);
+                                        i.putExtra("NumeroCalle",NumeroCalle);
+                                        i.putExtra("ColoniaLC",ColoniaLC);
+                                        i.putExtra("CP",CP);
+                                        i.putExtra("MunicipioLC",MunicipioLC);
+                                        i.putExtra("EstadoLC",EstadoLC);
+                                        i.putExtra("FechaExLC",FechaExLC);
+                                        i.putExtra("FechaVenLC",FechaVenLC);
+                                        i.putExtra("TipoVigLC",TipoVigLC);
+                                        i.putExtra("TipoLic",TipoLic);
+                                        i.putExtra("RFCLC",RFCLC);
+                                        i.putExtra("HomoLC",HomoLC);
+                                        i.putExtra("GrupoSanguiLC",GrupoSanguiLC);
+                                        i.putExtra("RequeriemientosEspLC",RequeriemientosEspLC);
+                                        startActivity(i);
+                                        finish();
+                                    }
+
+                                    Log.i("HERE", ""+jObj);
+                                }
+
+                            }catch(JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+
+
+
+
     //******************************** METODOS DEL SERVICIO ****************************************//
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService( Context.ACTIVITY_SERVICE);

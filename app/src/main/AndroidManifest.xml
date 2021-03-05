@@ -74,7 +74,8 @@
             android:exported="true" />
 
         <activity android:name=".TransporteSeguro"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity android:name=".MensajeEnviadoReporte911"
             android:screenOrientation="portrait"/>
         <activity android:name=".FormReporte911"
