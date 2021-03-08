@@ -66,10 +66,10 @@ import okhttp3.Response;
 public class TransporteSeguro extends AppCompatActivity {
     LinearLayout lyTransporte,lyIntroduce,lyPlaca,lyEnviarPlaca,lyPlacaEnviada,lyEncasoDe,lyDetenerServicio,lyDetenerServicioEjecución,lyEmergenciaEnviada,lyQr1,lyQr2,lyQr3,lyPlacaQR ;
     EditText txtPlaca,txtForma,txtNuc,txtSerie;
-    TextView lblNoPlaca,coordenadas;
+    TextView lblNoPlaca,coordenadas,txtAlerta,txtVehiculo;
     Button btnIniciar,btnDetenerServicioMS;
     String resultadoQr,placa,forma,nuc,serie;
-    ImageView home,imgPlaca,imgQr;
+    ImageView home,imgPlaca,imgQr,imgEnviado;
     SharedPreferences share;
     SharedPreferences.Editor editor;
     Activity activity;
@@ -79,14 +79,17 @@ public class TransporteSeguro extends AppCompatActivity {
     int acceso = 0;
     AlertDialog alert = null;
     String cargarInfoServicio,cargarInfoPlaca,cargarInfoTelefono,cargarInfoPlacaGuardada = "SIN INFORMACION";
+    String cargarInfoNuc,cargarInfoNucGuardada = "SIN INFORMACION";
     String cargarInfoServicioShake = "creado";
     String mensaje1,mensaje2;
     String direc;
+    String respuestaJson;
     Double lat,lon;
     int cargarInfoWtransporteSeguro = 0;
     int wTransporteSeguro = 0;
-    int countResultado;
+    int countResultado,banderaPlacaNuc;
     String Tag = "TransporteSeguro";
+    int cargarInfoBanderaPlacaNuc,cargarInfoBanderaNucPlaca;
 
     //********************** SENSOR *******************************//
     Intent mServiceIntent;
@@ -94,6 +97,7 @@ public class TransporteSeguro extends AppCompatActivity {
     Context ctx;
     AppWidgetManager manager;
     View view;
+
 
     public Context getCtx() {
         return ctx;
@@ -146,6 +150,11 @@ public class TransporteSeguro extends AppCompatActivity {
         txtForma = findViewById(R.id.txtForma);
         txtNuc = findViewById(R.id.txtNuc);
         txtSerie = findViewById(R.id.txtNoSerie);
+
+        /*************FASE 4********************/
+        imgEnviado = findViewById(R.id.imgEnviado);
+        txtAlerta = findViewById(R.id.txtAlerta);
+        txtVehiculo = findViewById(R.id.txtVehiculo);
 
 
 
@@ -226,6 +235,45 @@ public class TransporteSeguro extends AppCompatActivity {
             lyQr2.setVisibility(View.INVISIBLE);
             lyQr3.setVisibility(View.INVISIBLE);
             lyPlacaQR.setVisibility(View.INVISIBLE);
+            if(cargarInfoBanderaPlacaNuc == 1){
+                lblNoPlaca.setText(cargarInfoPlaca);
+                txtAlerta.setText("¡AVISO!");
+                txtVehiculo.setText("TU TRANSPORTE ES SEGURO\n CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+            }else{
+                lblNoPlaca.setText(cargarInfoPlaca);
+                imgEnviado.setBackgroundResource(R.drawable.ic_semovi_advertencia);
+                txtAlerta.setText("¡PRECAUCIÓN!");
+                txtVehiculo.setText("TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+            }
+
+            lyPlacaEnviada.setVisibility(View.VISIBLE);
+            lyEncasoDe.setVisibility(View.VISIBLE);
+            lyDetenerServicio.setVisibility(View.VISIBLE);
+            lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
+            lblNoPlaca.setVisibility(View.VISIBLE);
+        }
+
+        if(cargarInfoNuc.equals(cargarInfoNucGuardada)){
+        }else{
+            lblNoPlaca.setText(cargarInfoPlaca);
+            lyTransporte.setVisibility(View.INVISIBLE);
+            lyIntroduce.setVisibility(View.INVISIBLE);
+            lyPlaca.setVisibility(View.INVISIBLE);
+            lyEnviarPlaca.setVisibility(View.INVISIBLE);
+            lyQr1.setVisibility(View.INVISIBLE);
+            lyQr2.setVisibility(View.INVISIBLE);
+            lyQr3.setVisibility(View.INVISIBLE);
+            lyPlacaQR.setVisibility(View.INVISIBLE);
+            if(cargarInfoBanderaPlacaNuc == 1){
+                lblNoPlaca.setText(cargarInfoNuc);
+                txtAlerta.setText("¡AVISO!");
+                txtVehiculo.setText("TU TRANSPORTE ES SEGURO\n CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+            }else{
+                lblNoPlaca.setText(cargarInfoNuc);
+                imgEnviado.setBackgroundResource(R.drawable.ic_semovi_advertencia);
+                txtAlerta.setText("¡PRECAUCIÓN!");
+                txtVehiculo.setText("TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+            }
 
             lyPlacaEnviada.setVisibility(View.VISIBLE);
             lyEncasoDe.setVisibility(View.VISIBLE);
@@ -243,8 +291,9 @@ public class TransporteSeguro extends AppCompatActivity {
                     placa = txtPlaca.getText().toString();
                     lblNoPlaca.setText(placa);
                     guardar();
+                    getPlaca();
                     //insertPlacaTransporte();
-                    lyTransporte.setVisibility(View.INVISIBLE);
+                   /* lyTransporte.setVisibility(View.INVISIBLE);
                     lyIntroduce.setVisibility(View.INVISIBLE);
                     lyPlaca.setVisibility(View.INVISIBLE);
                     lyEnviarPlaca.setVisibility(View.INVISIBLE);
@@ -254,7 +303,7 @@ public class TransporteSeguro extends AppCompatActivity {
                     lyEncasoDe.setVisibility(View.VISIBLE);
                     lyDetenerServicio.setVisibility(View.VISIBLE);
                     lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
-                    lblNoPlaca.setVisibility(View.VISIBLE);
+                    lblNoPlaca.setVisibility(View.VISIBLE);*/
                 }
 
             }
@@ -313,8 +362,9 @@ public class TransporteSeguro extends AppCompatActivity {
                     txtForma.setText(forma);
                     txtNuc.setText(nuc);
                     txtSerie.setText(serie);
+                    getNuc();
                 }else{
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA INFORMACIÓN SOBREPASA LOS CAMPOS ESTABLECIDOS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL QR NO PERTENECE A SEMOVI OAXACA", Toast.LENGTH_LONG).show();
                 }
             }
     }
@@ -453,13 +503,15 @@ public class TransporteSeguro extends AppCompatActivity {
 
     /********************************************************************************************************************/
     /******************GET A LA BD***********************************/
-    public void getUsuaioLicencia() {
-        cargarFolio();
-        final OkHttpClient client = new OkHttpClient();
-        final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppTransito/api/LicenciaConducir?infraccionId="+cargarFolioInfra+"&user="+cargarInfoUser+"&noLicencia="+serie)
+    public void getNuc() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("nucSemovi", nuc)
                 .build();
-
+        Request request = new Request.Builder()
+                .url("https://oaxacadigital.sspo.gob.mx/AppMovimientoVecinal/api/SemoviWS")
+                .post(body)
+                .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -472,7 +524,8 @@ public class TransporteSeguro extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     final String myResponse = response.body().string();
-                    TarjetasConductor.this.runOnUiThread(new Runnable() {
+                    Log.i("JSOn", myResponse);
+                    TransporteSeguro.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
@@ -484,57 +537,56 @@ public class TransporteSeguro extends AppCompatActivity {
                                     String resObj = myResponse;
                                     resObj = resObj.replace("["," ");
                                     resObj = resObj.replace("]"," ");
-                                    System.out.println(resObj);
-                                    String valor = "  ";
-                                    if(resObj.equals(valor)){
-                                        Toast.makeText(getApplicationContext(),"NO SE CUENTA CON INFORMACIÓN",Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(TarjetasConductor.this,LicenciaConducir.class);
-                                        startActivity(i);
-                                        finish();
-                                    }else{
                                         jObj = new JSONObject(""+resObj+"");
-                                        apaterno = jObj.getString("paterno");
-                                        amaterno = jObj.getString("materno");
-                                        nombre = jObj.getString("nombre");
-                                        Tipocalle = jObj.getString("tipoCalle");
-                                        CalleLC = jObj.getString("calle");
-                                        NumeroCalle = jObj.getString("numero");
-                                        ColoniaLC = jObj.getString("colonia");
-                                        CP = jObj.getString("cp");
-                                        MunicipioLC = jObj.getString("municipio");
-                                        EstadoLC = jObj.getString("estado");
-                                        FechaExLC = jObj.getString("fechaExp");
-                                        FechaVenLC = jObj.getString("fechaVenc");
-                                        TipoVigLC = jObj.getString("tipoVigencia");
-                                        TipoLic = jObj.getString("tipoLic");
-                                        RFCLC = jObj.getString("rfc");
-                                        HomoLC = jObj.getString("homo");
-                                        GrupoSanguiLC = jObj.getString("grupoSanguineo");
-                                        RequeriemientosEspLC = jObj.getString("requerimientosEspeciales");
+                                        mensaje1 = jObj.getString("mensaje");
+                                        mensaje2 = "ENCONTRADO";
+                                        if(mensaje1.equals(mensaje2)){
+                                            banderaPlacaNuc = 1;
+                                            guardarBandera();
+                                            guardarNuc();
+                                            //Toast.makeText(getApplicationContext(),"TU TRANSPORTE ES SEGURO, CUENTA CON REGISTRO EN SEMOVI OAXACA.",Toast.LENGTH_SHORT).show();
+                                            lblNoPlaca.setText(nuc);
+                                            txtAlerta.setText("¡AVISO!");
+                                            txtVehiculo.setText("TU TRANSPORTE ES SEGURO\n CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+                                            lyTransporte.setVisibility(View.INVISIBLE);
+                                            lyIntroduce.setVisibility(View.INVISIBLE);
+                                            lyPlaca.setVisibility(View.INVISIBLE);
+                                            lyEnviarPlaca.setVisibility(View.INVISIBLE);
+                                            lyQr1.setVisibility(View.INVISIBLE);
+                                            lyQr2.setVisibility(View.INVISIBLE);
+                                            lyQr3.setVisibility(View.INVISIBLE);
+                                            lyPlacaQR.setVisibility(View.INVISIBLE);
 
-                                        Intent i = new Intent(TarjetasConductor.this,LicenciaConducir.class);
-                                        i.putExtra("serie",serie);
-                                        i.putExtra("apaterno",apaterno);
-                                        i.putExtra("amaterno",amaterno);
-                                        i.putExtra("nombre",nombre);
-                                        i.putExtra("Tipocalle",Tipocalle);
-                                        i.putExtra("CalleLC",CalleLC);
-                                        i.putExtra("NumeroCalle",NumeroCalle);
-                                        i.putExtra("ColoniaLC",ColoniaLC);
-                                        i.putExtra("CP",CP);
-                                        i.putExtra("MunicipioLC",MunicipioLC);
-                                        i.putExtra("EstadoLC",EstadoLC);
-                                        i.putExtra("FechaExLC",FechaExLC);
-                                        i.putExtra("FechaVenLC",FechaVenLC);
-                                        i.putExtra("TipoVigLC",TipoVigLC);
-                                        i.putExtra("TipoLic",TipoLic);
-                                        i.putExtra("RFCLC",RFCLC);
-                                        i.putExtra("HomoLC",HomoLC);
-                                        i.putExtra("GrupoSanguiLC",GrupoSanguiLC);
-                                        i.putExtra("RequeriemientosEspLC",RequeriemientosEspLC);
-                                        startActivity(i);
-                                        finish();
-                                    }
+                                            lyPlacaEnviada.setVisibility(View.VISIBLE);
+                                            lyEncasoDe.setVisibility(View.VISIBLE);
+                                            lyDetenerServicio.setVisibility(View.VISIBLE);
+                                            lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
+                                            lblNoPlaca.setVisibility(View.VISIBLE);
+                                        }else
+                                        {
+                                            banderaPlacaNuc = 2;
+                                            guardarBandera();
+                                            guardarNuc();
+                                            lblNoPlaca.setText(nuc);
+                                            imgEnviado.setBackgroundResource(R.drawable.ic_semovi_advertencia);
+                                            txtAlerta.setText("¡PRECAUCIÓN!");
+                                            txtVehiculo.setText("TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+                                            lyTransporte.setVisibility(View.INVISIBLE);
+                                            lyIntroduce.setVisibility(View.INVISIBLE);
+                                            lyPlaca.setVisibility(View.INVISIBLE);
+                                            lyEnviarPlaca.setVisibility(View.INVISIBLE);
+                                            lyQr1.setVisibility(View.INVISIBLE);
+                                            lyQr2.setVisibility(View.INVISIBLE);
+                                            lyQr3.setVisibility(View.INVISIBLE);
+                                            lyPlacaQR.setVisibility(View.INVISIBLE);
+
+                                            lyPlacaEnviada.setVisibility(View.VISIBLE);
+                                            lyEncasoDe.setVisibility(View.VISIBLE);
+                                            lyDetenerServicio.setVisibility(View.VISIBLE);
+                                            lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
+                                            lblNoPlaca.setVisibility(View.VISIBLE);
+                                            //Toast.makeText(getApplicationContext(),"¡PRECAUCIÓN! TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.",Toast.LENGTH_SHORT).show();
+                                        }
 
                                     Log.i("HERE", ""+jObj);
                                 }
@@ -550,6 +602,102 @@ public class TransporteSeguro extends AppCompatActivity {
         });
     }
 
+    public void getPlaca() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("placaSemovi", placa)
+                .build();
+        Request request = new Request.Builder()
+                .url("https://oaxacadigital.sspo.gob.mx/AppMovimientoVecinal/api/SemoviPlacaWS")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare();
+                Toast.makeText(getApplicationContext(),"ERROR AL OBTENER LA INFORMACIÓN, POR FAVOR VERIFIQUE SU CONEXIÓN A INTERNET",Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    Log.i("JSOn", myResponse);
+                    TransporteSeguro.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                respuestaJson = "null";
+                                if(myResponse.equals(respuestaJson)){
+                                    Toast.makeText(getApplicationContext(),"NO SE CUENTA CON INFORMACIÓN",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    JSONObject jObj = null;
+                                    String resObj = myResponse;
+                                    resObj = resObj.replace("["," ");
+                                    resObj = resObj.replace("]"," ");
+                                    jObj = new JSONObject(""+resObj+"");
+                                    mensaje1 = jObj.getString("mensaje");
+                                    mensaje2 = "ENCONTRADO";
+                                    if(mensaje1.equals(mensaje2)){
+                                        banderaPlacaNuc = 1;
+                                        guardarBandera();
+                                        //Toast.makeText(getApplicationContext(),"TU TRANSPORTE ES SEGURO, CUENTA CON REGISTRO EN SEMOVI OAXACA.",Toast.LENGTH_SHORT).show();
+                                        lblNoPlaca.setText(placa);
+                                        txtAlerta.setText("¡AVISO!");
+                                        txtVehiculo.setText("TU TRANSPORTE ES SEGURO\n CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+                                        lyTransporte.setVisibility(View.INVISIBLE);
+                                        lyIntroduce.setVisibility(View.INVISIBLE);
+                                        lyPlaca.setVisibility(View.INVISIBLE);
+                                        lyEnviarPlaca.setVisibility(View.INVISIBLE);
+                                        lyQr1.setVisibility(View.INVISIBLE);
+                                        lyQr2.setVisibility(View.INVISIBLE);
+                                        lyQr3.setVisibility(View.INVISIBLE);
+                                        lyPlacaQR.setVisibility(View.INVISIBLE);
+
+                                        lyPlacaEnviada.setVisibility(View.VISIBLE);
+                                        lyEncasoDe.setVisibility(View.VISIBLE);
+                                        lyDetenerServicio.setVisibility(View.VISIBLE);
+                                        lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
+                                        lblNoPlaca.setVisibility(View.VISIBLE);
+                                    }else
+                                    {
+                                        banderaPlacaNuc = 2;
+                                        guardarBandera();
+                                        lblNoPlaca.setText(placa);
+                                        imgEnviado.setBackgroundResource(R.drawable.ic_semovi_advertencia);
+                                        txtAlerta.setText("¡PRECAUCIÓN!");
+                                        txtVehiculo.setText("TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.");
+                                        lyTransporte.setVisibility(View.INVISIBLE);
+                                        lyIntroduce.setVisibility(View.INVISIBLE);
+                                        lyPlaca.setVisibility(View.INVISIBLE);
+                                        lyEnviarPlaca.setVisibility(View.INVISIBLE);
+                                        lyQr1.setVisibility(View.INVISIBLE);
+                                        lyQr2.setVisibility(View.INVISIBLE);
+                                        lyQr3.setVisibility(View.INVISIBLE);
+                                        lyPlacaQR.setVisibility(View.INVISIBLE);
+
+                                        lyPlacaEnviada.setVisibility(View.VISIBLE);
+                                        lyEncasoDe.setVisibility(View.VISIBLE);
+                                        lyDetenerServicio.setVisibility(View.VISIBLE);
+                                        lyDetenerServicioEjecución.setVisibility(View.VISIBLE);
+                                        lblNoPlaca.setVisibility(View.VISIBLE);
+                                        //Toast.makeText(getApplicationContext(),"¡PRECAUCIÓN! TU TRANSPORTE NO CUENTA CON REGISTRO EN SEMOVI OAXACA.",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    Log.i("HERE", ""+jObj);
+                                }
+
+                            }catch(JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+    }
 
 
 
@@ -763,6 +911,8 @@ public class TransporteSeguro extends AppCompatActivity {
     private void cargarPlaca() {
         share = getSharedPreferences("main", MODE_PRIVATE);
         cargarInfoPlaca = share.getString("PLACA", "SIN INFORMACION");
+        cargarInfoNuc = share.getString("NUC", "SIN INFORMACION");
+        cargarInfoBanderaPlacaNuc = share.getInt("BANDERAPLACANUC", 0);
         //Toast.makeText(getApplicationContext(),cargarInfoPlaca,Toast.LENGTH_LONG).show();
     }
     private void guardarActividad() {
@@ -779,10 +929,25 @@ public class TransporteSeguro extends AppCompatActivity {
         editor.putString("PLACA",placa);
         editor.apply();
     }
+    private void guardarNuc(){
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("NUC",nuc);
+        editor.apply();
+    }
+    //**********************************************************************//
+    private void guardarBandera(){
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putInt("BANDERAPLACANUC",banderaPlacaNuc);
+        editor.apply();
+    }
     private void limpiarPlaca(){
         share = getSharedPreferences("main", Context.MODE_PRIVATE);
         editor = share.edit();
         editor.remove("PLACA").commit();
+        editor.remove("NUC").commit();
+        editor.remove("BANDERAPLACANUC").commit();
         editor.remove("servicio").commit();
     }
 }

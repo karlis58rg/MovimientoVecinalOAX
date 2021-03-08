@@ -360,6 +360,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <ImageView
+                        android:id="@+id/imgEnviado"
                         android:layout_width="110dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
@@ -386,6 +387,7 @@
                     android:layout_below="@id/lyPlacaEnviada"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/txtAlerta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18dp"
@@ -393,6 +395,7 @@
                         android:textAlignment="center"
                         android:text="En caso de emergencia."/>
                     <TextView
+                        android:id="@+id/txtVehiculo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18dp"
@@ -459,6 +462,7 @@
                         android:textStyle="bold"
                         android:textSize="20sp"/>
                 </LinearLayout>
+
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

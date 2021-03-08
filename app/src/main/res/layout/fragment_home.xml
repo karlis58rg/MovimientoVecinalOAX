@@ -22,15 +22,15 @@
             <LinearLayout
                 android:id="@+id/ly911"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="80dp"
                 android:background="@drawable/drawable_pressed">
                 <ImageView
                     android:layout_width="100dp"
-                    android:layout_height="90dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="left"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
-                    android:background="@drawable/ic_911"/>
+                    android:background="@drawable/ic_911nacional"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

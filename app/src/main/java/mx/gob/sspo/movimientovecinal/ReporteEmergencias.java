@@ -268,6 +268,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 if (txtDescEmergencia.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
+                }else if(tv_add.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
                 } else if (bandera == 1) {
                     Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                     insertBdEventoIOS();
