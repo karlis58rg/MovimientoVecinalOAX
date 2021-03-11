@@ -39,7 +39,6 @@ public class HomeFragment extends Fragment {
         lyVigilanciaVecinal = root.findViewById(R.id.lyVigilanciaVecinal);
         lyAlertaAmber = root.findViewById(R.id.lyAlertaAmber);
 
-        checkIntent(getActivity().getIntent());
 
         /*************************** EVENTO DE LOS BOTONES *******************************/
 
@@ -82,14 +81,4 @@ public class HomeFragment extends Fragment {
         /*********************************************************************************/
         return root;
     }
-
-    public void checkIntent(Intent intent) {
-        if (intent.hasExtra("click_action")) {
-            MyFirebaseMessagingService.ClickActionHelper.startActivity(intent.getStringExtra("click_action"), intent.getExtras(), getContext());
-        }
-    }
-
-
-
-
 }

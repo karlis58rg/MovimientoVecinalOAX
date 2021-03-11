@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Oaxaca Digital</string>
+    <string name="app_name">Oaxaca Seguro</string>
     <string name="title_activity_menu_eventos">MenuEventos</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -27,6 +27,7 @@
 
     <string name="appwidget_text">MOVILIDAD SEGURA</string>
     <string name="add_widget">Agregar acceso movilidad segura</string>
+    <string name="default_notification_channel_id" translatable="false">GENERAL_CHANEL</string>
 
 
 </resources>

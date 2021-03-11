@@ -236,7 +236,10 @@ public class AlertaAmber extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
                 }else if(txtEdad.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "LA EDAD ES NECESARIA", Toast.LENGTH_LONG).show();
-                }/*else if(txtNacionalidad.getText().length() < 3 || txtNacionalidad.getText().toString().isEmpty()) {
+                }else if(varSexo == null){
+                    Toast.makeText(getApplicationContext(), "EL SEXO ES NECESARIO", Toast.LENGTH_LONG).show();
+                }
+                /*else if(txtNacionalidad.getText().length() < 3 || txtNacionalidad.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA NACIONALIDAD NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
                 }else if(txtColorOjos.getText().length() < 3 || txtColorOjos.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL COLOR DE OJOS NO PUEDE SER MENOR A 3 LETRAS NI CONTENER ESPACIOS EN BLANCO", Toast.LENGTH_LONG).show();

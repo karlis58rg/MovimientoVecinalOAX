@@ -141,8 +141,7 @@
                     android:layout_gravity="left"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
-                    android:scaleY="0.9"
-                    android:scaleX="0.6"
+
                     android:background="@drawable/ic_alerta_amber"/>
                 <TextView
                     android:layout_width="wrap_content"

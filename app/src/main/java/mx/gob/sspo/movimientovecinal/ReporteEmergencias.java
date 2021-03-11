@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -81,12 +83,12 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     TextView tv_add;
     LatLng aux;
     Location aux_loc;
-    String direccion1,municipio,estado;
+    String direccion1, municipio, estado;
     ScrollView scroll;
 
     /************** EVENTOS*****************/
     EditText txtDescEmergencia;
-    ImageView home,photo,video,audio,imgImagen,recordAu,playAu,detenerAudio;
+    ImageView home, photo, video, audio, imgImagen, recordAu, playAu, detenerAudio;
     VideoView videoViewImage;
     Chronometer tiempo;
     Button btnSendEmergencia;
@@ -95,11 +97,11 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     int status = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_VIDEO_CAPTURE = 1;
-    String cadena,cadenaVideo,cadenaAudio,mediaPath;
-    String fecha,hora,rutaMultimedia,descEmergencia;
-    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno;
+    String cadena, cadenaVideo, cadenaAudio, mediaPath;
+    String fecha, hora, rutaMultimedia, descEmergencia;
+    String cargarInfoTelefono, cargarInfoNombre, cargarInfoApaterno, cargarInfoAmaterno;
     int numberRandom;
-    String randomCodigoVerifi,codigoVerifi;
+    String randomCodigoVerifi, codigoVerifi;
     String opcDiscapacidad = "NO";
     long detenerse;
     Boolean correr = false;
@@ -130,18 +132,18 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_reporte_emergencias, container, false);
         //*****************************************************************//
         cargarDatos();
         Random();
-        scroll= view.findViewById(R.id.scrollMap);
+        scroll = view.findViewById(R.id.scrollMap);
 
         home = view.findViewById(R.id.imgHome);
         photo = view.findViewById(R.id.imgImagen);
         video = view.findViewById(R.id.imgVideo);
-        audio= view.findViewById(R.id.imgAudio);
+        audio = view.findViewById(R.id.imgAudio);
 
         imgImagen = view.findViewById(R.id.viewImage);
         videoViewImage = view.findViewById(R.id.viewVideo);
@@ -171,9 +173,9 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         switchDisc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheked) {
-                if(isCheked == true){
+                if (isCheked == true) {
                     opcDiscapacidad = "SI";
-                }else{
+                } else {
                     opcDiscapacidad = "NO";
                 }
             }
@@ -189,7 +191,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bandera == 2 || bandera == 3){
+                if (bandera == 2 || bandera == 3) {
                     videoViewImage.clearAnimation();
                     //resetChronometro();
                 }
@@ -208,7 +210,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bandera == 1 || bandera == 3){
+                if (bandera == 1 || bandera == 3) {
                     imgImagen.clearAnimation();
                     resetChronometro();
                 }
@@ -227,7 +229,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bandera == 1 || bandera == 2){
+                if (bandera == 1 || bandera == 2) {
                     imgImagen.clearAnimation();
                     videoViewImage.clearAnimation();
                 }
@@ -268,7 +270,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 if (txtDescEmergencia.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
-                }else if(tv_add.getText().toString().isEmpty()){
+                } else if (tv_add.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
                 } else if (bandera == 1) {
                     Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
@@ -355,6 +357,16 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
         map = googleMap;
         tv_add = (TextView) getActivity().findViewById(R.id.tv_miadres);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         map.setMyLocationEnabled(true);
 
         //activar el boton " ubicación" de mapa y regrese la dirección actual/////
@@ -403,6 +415,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         try {
 
             List<Address> addresses = geocoder.getFromLocation(au.latitude, au.longitude, 1);
+            lat_origen = au.latitude;
+            lon_origen = au.longitude;
             address = addresses.get(0).getAddressLine(0);
             address = "Dirección: \n" + address;
             tv_add.setText(address);

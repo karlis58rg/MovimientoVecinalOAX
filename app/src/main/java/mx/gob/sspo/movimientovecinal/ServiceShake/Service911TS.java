@@ -53,7 +53,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static mx.gob.sspo.movimientovecinal.Shake.App.CHANNEL_ID;
 
 public class Service911TS extends Service implements SensorEventListener {
     public Service911TS(Context applicationContext) {
@@ -127,10 +126,10 @@ public class Service911TS extends Service implements SensorEventListener {
                 0, notificationIntent, 0);
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                getApplicationContext(), CHANNEL_ID);
+                getApplicationContext(), getString(R.string.default_notification_channel_id));
 
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                 .setContentTitle("Movilidad Segura")
                 .setContentText("Su alerta ha sido enviada al Servicio de Emergencias 9-1-1")
                 .setSmallIcon(R.drawable.ic_logo_app)
@@ -140,7 +139,7 @@ public class Service911TS extends Service implements SensorEventListener {
 
         //All notifications should go through NotificationChannel on Android 26 & above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(getString(R.string.default_notification_channel_id), CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(NOTIFICATION_ID, notification);

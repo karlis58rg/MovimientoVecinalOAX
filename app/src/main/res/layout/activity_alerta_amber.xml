@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".AlertaAmber">
 
-
     <ImageView
         android:id="@+id/imgHeaderBackGround"
         android:layout_width="match_parent"
@@ -65,8 +64,6 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="15dp"
                     android:layout_alignParentLeft="true"
-                    android:scaleY="0.8"
-                    android:scaleX="0.6"
                     android:background="@drawable/ic_alerta_amber" />
 
                 <de.hdodenhof.circleimageview.CircleImageView

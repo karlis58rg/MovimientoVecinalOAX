@@ -52,7 +52,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="50dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_mapa"/>
+            android:src="@drawable/ic_vigilancia_vecinal"/>
 
         <TextView
             android:id="@+id/lblVigilancia"
