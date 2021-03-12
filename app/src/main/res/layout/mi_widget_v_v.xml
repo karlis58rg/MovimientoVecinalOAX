@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
     <ImageView
-        android:id="@+id/imagen_widgetT"
+        android:id="@+id/imagen_widgetVV"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_weight="0.8"
-        app:title="@string/appwidget_text">
+        app:title="@string/appwidget_text_vv">
     </ImageView>
 </LinearLayout>

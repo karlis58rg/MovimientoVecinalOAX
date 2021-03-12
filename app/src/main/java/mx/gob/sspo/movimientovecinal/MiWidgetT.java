@@ -61,9 +61,9 @@ public class MiWidgetT extends AppWidgetProvider {
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget_t);
                 views.setOnClickPendingIntent(R.id.imagen_widgetT, pendingIntent);
-                if (Transporte.num_imag_transporte == 0) {
-                    views.setImageViewResource(R.id.imagen_widgetT, R.drawable.ic_destino);
-                }
+                //if (Transporte.num_imag_transporte == 0) {
+                views.setImageViewResource(R.id.imagen_widgetT, R.drawable.ic_destino);
+                //}
                 System.out.println(appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
@@ -81,9 +81,9 @@ public class MiWidgetT extends AppWidgetProvider {
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget_t);
                 views.setOnClickPendingIntent(R.id.imagen_widgetT, pendingIntent);
-                if (Transporte.num_imag_transporte == 0) {
-                    views.setImageViewResource(R.id.imagen_widgetT, R.drawable.ic_destino);
-                }
+                //if (Transporte.num_imag_transporte == 0) {
+                views.setImageViewResource(R.id.imagen_widgetT, R.drawable.ic_destino);
+                //}
                 System.out.println(appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }

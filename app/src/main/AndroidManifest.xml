@@ -25,8 +25,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FormAvisoPrivacidad"
-            android:screenOrientation="portrait"></activity>
+
+        <receiver android:name=".MiWidgetVV"
+            android:label="@string/appwidget_text_vv">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/mi_widget_v_v_info" />
+        </receiver>
+
+        <activity
+            android:name=".FormAvisoPrivacidad"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".MiWidgetT"
@@ -40,30 +53,38 @@
                 android:resource="@xml/mi_widget_t_info" />
         </receiver>
 
-        <activity android:name=".MensajeEnviadoAlertaAmber"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".AlertaAmber"
+        <activity
+            android:name=".MensajeEnviadoAlertaAmber"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AlertaAmber"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="alertaamber" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".MensajeEnviadoVigilanciaVecinal"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MensajeSalidaVigilanciaVecinal"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".VigilanciaVecinal"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MensajeEnviadoAltoViolencia"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MensajeSalidaAltoViolencia"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AltoALaViolencia"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MensajeEnviadoVigilanciaVecinal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MensajeSalidaVigilanciaVecinal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VigilanciaVecinal"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MensajeEnviadoAltoViolencia"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MensajeSalidaAltoViolencia"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AltoALaViolencia"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".MiWidget"
@@ -82,17 +103,22 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TransporteSeguro"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
-        <activity android:name=".MensajeEnviadoReporte911"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".FormReporte911"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".FormAddTelefono"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".FormRegistroUsuario"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TransporteSeguro"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MensajeEnviadoReporte911"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FormReporte911"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FormAddTelefono"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FormRegistroUsuario"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".ServiceShake.MyFirebaseMessagingService"
@@ -101,6 +127,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_logo_app" />
@@ -114,6 +141,7 @@
         <activity
             android:name=".MenuEventos"
             android:label="@string/title_activity_menu_eventos"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Splash">
             <intent-filter>

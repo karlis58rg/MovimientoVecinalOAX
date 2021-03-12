@@ -1,11 +1,18 @@
 package mx.gob.sspo.movimientovecinal;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -44,6 +51,9 @@ public class VigilanciaVecinal extends AppCompatActivity {
     String randomCodigoVerifi,codigoVerifi;
     private static final String TAG = "VigilanciaVecinal";
     private static final int NOTIFICATION_ID = 101;
+    private int cargarInfoWalertaVecinal;
+    int wAlertaVecinal = 0;
+    private AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +79,42 @@ public class VigilanciaVecinal extends AppCompatActivity {
                 getUserVigilancia();
             }
         });
+
+        if(cargarInfoWalertaVecinal == 1){
+            Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+            getUserVigilancia();
+        }else {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
+                    .setCancelable(false)
+                    .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
+                        @SuppressLint("NewApi")
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            wAlertaVecinal= 1;
+                            guardarActividad();
+                            AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
+                            ComponentName myProvider = new ComponentName(getApplication(), MiWidgetVV.class);
+                            if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
+                                mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                            }
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                            finish();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+        }
+
+
+
     }
 
     /******************GET A LA BD***********************************/
@@ -134,6 +180,15 @@ public class VigilanciaVecinal extends AppCompatActivity {
     public void cargarUserRegistrado() {
         share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
+        cargarInfoWalertaVecinal = share.getInt("ALERTAVECINAL", 0);
+    }
+
+    private void guardarActividad() {
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putInt("ALERTAVECINAL", wAlertaVecinal );
+        editor.commit();
+        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
 
     //********************* GENERA EL NÚMERO ALEATORIO PARA EL FOLIO *****************************//

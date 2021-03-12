@@ -509,7 +509,7 @@ public class TransporteSeguro extends AppCompatActivity {
                 .add("nucSemovi", nuc)
                 .build();
         Request request = new Request.Builder()
-                .url("https://oaxacadigital.sspo.gob.mx/AppMovimientoVecinal/api/SemoviWS")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/SemoviWS")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -608,7 +608,7 @@ public class TransporteSeguro extends AppCompatActivity {
                 .add("placaSemovi", placa)
                 .build();
         Request request = new Request.Builder()
-                .url("https://oaxacadigital.sspo.gob.mx/AppMovimientoVecinal/api/SemoviPlacaWS")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/SemoviPlacaWS")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {

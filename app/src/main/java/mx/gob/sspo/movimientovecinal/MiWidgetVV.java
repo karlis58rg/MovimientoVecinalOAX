@@ -9,20 +9,18 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import mx.gob.sspo.movimientovecinal.ui.slideshow.SlideshowFragment;
-import mx.gob.sspo.movimientovecinal.ui.transporte.Transporte;
 
 /**
  * Implementation of App Widget functionality.
  */
-public class MiWidget extends AppWidgetProvider {
+public class MiWidgetVV extends AppWidgetProvider {
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    int cargarInfoViolenciaWidget,wViolencia,cargarInfoWviolencia;
+    int cargarInfoAlertaVecinalWidget,wAlertaVecinal, cargarInfoWalertavecinal;
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
     }
 
     @Override
@@ -30,36 +28,36 @@ public class MiWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         System.out.println("SE CREA EL HILO POR PRIMERA VEZ");
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-        cargarInfoViolenciaWidget= share.getInt("VIOLENCIA", 0);
+        cargarInfoAlertaVecinalWidget= share.getInt("ALERTAVECINAL", 0);
 
-        if(cargarInfoViolenciaWidget == 1) {
+        if(cargarInfoAlertaVecinalWidget == 1) {
             final int N = appWidgetIds.length;
             for (int i = 0; i < N; i++) {
                 int appWidgetId = appWidgetIds[i];
-                System.out.println(cargarInfoViolenciaWidget);
-                Intent intent = new Intent(context, AltoALaViolencia.class);
+                System.out.println(cargarInfoAlertaVecinalWidget);
+                Intent intent = new Intent(context, VigilanciaVecinal.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget);
-                views.setOnClickPendingIntent(R.id.imagen_widget, pendingIntent);
-                views.setImageViewResource(R.id.imagen_widget, R.drawable.ic_altoviolencia);
+                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget_v_v);
+                views.setOnClickPendingIntent(R.id.imagen_widgetVV, pendingIntent);
+                views.setImageViewResource(R.id.imagen_widgetVV, R.drawable.ic_vigilancia_vecinal);
                 System.out.println(appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
-        }else if(cargarInfoViolenciaWidget != 1) {
+        }else if(cargarInfoAlertaVecinalWidget != 1) {
             final int N = appWidgetIds.length;
             for (int i = 0; i < N; i++) {
                 int appWidgetId = appWidgetIds[i];
-                wViolencia = 1;
+                wAlertaVecinal = 1;
                 share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
                 editor = share.edit();
-                editor.putInt("VIOLENCIA", wViolencia);
+                editor.putInt("ALERTAVECINAL", wAlertaVecinal);
                 editor.commit();
-                System.out.println(cargarInfoViolenciaWidget);
-                Intent intent = new Intent(context, AltoALaViolencia.class);
+                System.out.println(cargarInfoAlertaVecinalWidget);
+                Intent intent = new Intent(context, VigilanciaVecinal.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget);
-                views.setOnClickPendingIntent(R.id.imagen_widget, pendingIntent);
-                views.setImageViewResource(R.id.imagen_widget, R.drawable.ic_altoviolencia);
+                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mi_widget_v_v);
+                views.setOnClickPendingIntent(R.id.imagen_widgetVV, pendingIntent);
+                views.setImageViewResource(R.id.imagen_widgetVV, R.drawable.ic_vigilancia_vecinal);
                 System.out.println(appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             }
@@ -69,7 +67,7 @@ public class MiWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        System.out.println("SE EJECUTA AL HACER CLICK VIOLENCIA");
+        System.out.println("SE EJECUTA AL HACER CLICK ALERTA VECINAL");
     }
 
     @Override
@@ -86,14 +84,13 @@ public class MiWidget extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
-        cargarInfoWviolencia = share.getInt("VIOLENCIA", 0);
-        if (cargarInfoWviolencia == 1) {
+        cargarInfoWalertavecinal = share.getInt("ALERTAVECINAL", 0);
+        if (cargarInfoWalertavecinal == 1) {
             share = context.getSharedPreferences("main", Context.MODE_PRIVATE);
             editor = share.edit();
-            editor.remove("VIOLENCIA").commit();
-            System.out.println("SE ELIMINA WIDGET VIOLENCIA");
+            editor.remove("ALERTAVECINAL").commit();
+            System.out.println("SE ELIMINA WIDGET ALERTAVECINAL");
         }
         super.onDeleted(context, appWidgetIds);
     }
 }
-
