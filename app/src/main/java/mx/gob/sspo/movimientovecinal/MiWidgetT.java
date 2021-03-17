@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import mx.gob.sspo.movimientovecinal.ServiceShake.LocationService;
 import mx.gob.sspo.movimientovecinal.ServiceShake.Service911TS;
 import mx.gob.sspo.movimientovecinal.ui.transporte.Transporte;
 

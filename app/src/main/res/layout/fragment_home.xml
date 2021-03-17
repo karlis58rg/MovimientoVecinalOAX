@@ -41,9 +41,8 @@
                     android:textColor="@color/colorBold"
                     android:text="911 Oaxaca"/>
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/lyDestinoSeguro"
+                android:id="@+id/lyVigilanciaVecinal"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="40dp"
@@ -55,8 +54,7 @@
                     android:layout_gravity="left"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
-                    android:scaleX="0.9"
-                    android:background="@drawable/ic_destino"/>
+                    android:background="@drawable/ic_vigilancia_vecinal"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,15 +63,14 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBold"
-                    android:text="Movilidad Segura"/>
+                    android:text="Alerta Vecinal"/>
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/lyAltoViolencia"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="40dp"
-                android:layout_below="@id/lyDestinoSeguro"
+                android:layout_below="@id/lyVigilanciaVecinal"
                 android:background="@drawable/drawable_pressed">
                 <ImageView
                     android:layout_width="100dp"
@@ -101,40 +98,13 @@
                     android:textColor="@color/codigoMujer"
                     android:text="Mujer"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lyVigilanciaVecinal"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="40dp"
-                android:layout_below="@id/lyAltoViolencia"
-                android:background="@drawable/drawable_pressed">
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="90dp"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="30dp"
-                    android:background="@drawable/ic_vigilancia_vecinal"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBold"
-                    android:text="Alerta Vecinal"/>
-            </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/lyAlertaAmber"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="40dp"
-                android:layout_below="@id/lyVigilanciaVecinal"
-                android:background="@drawable/drawable_pressed"
-                android:layout_marginBottom="40dp">
+                android:layout_below="@id/lyAltoViolencia"
+                android:background="@drawable/drawable_pressed">
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="90dp"
@@ -152,6 +122,32 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBold"
                     android:text="Menor Ausente"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lyDestinoSeguro"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/lyAlertaAmber"
+                android:background="@drawable/drawable_pressed"
+                android:layout_marginBottom="40dp">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:scaleX="0.9"
+                    android:background="@drawable/ic_destino"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBold"
+                    android:text="Movilidad Segura"/>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

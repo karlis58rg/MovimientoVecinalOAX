@@ -103,6 +103,11 @@
             android:enabled="true"
             android:exported="true" />
 
+        <service
+            android:name=".ServiceShake.LocationService"
+            android:foregroundServiceType="location" />
+        <receiver android:name=".receiver.LocationActionsReceiver" />
+
         <activity
             android:name=".TransporteSeguro"
             android:launchMode="singleTask"

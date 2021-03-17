@@ -39,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -53,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import mx.gob.sspo.movimientovecinal.ServiceShake.LocationService;
 import mx.gob.sspo.movimientovecinal.ServiceShake.Service911TS;
 import mx.gob.sspo.movimientovecinal.ui.transporte.Transporte;
 import okhttp3.Call;
@@ -87,9 +89,9 @@ public class TransporteSeguro extends AppCompatActivity {
     Double lat,lon;
     int cargarInfoWtransporteSeguro = 0;
     int wTransporteSeguro = 0;
-    int countResultado,banderaPlacaNuc;
+    int countResultado,banderaPlacaNuc,banderaNucPlaca;
     String Tag = "TransporteSeguro";
-    int cargarInfoBanderaPlacaNuc,cargarInfoBanderaNucPlaca;
+    int cargarInfoBanderaPlacaNuc;
 
     //********************** SENSOR *******************************//
     Intent mServiceIntent;
@@ -97,7 +99,10 @@ public class TransporteSeguro extends AppCompatActivity {
     Context ctx;
     AppWidgetManager manager;
     View view;
-
+    /******************************************/
+    //ENVIO DE COORDENADAS//
+    FloatingActionButton btnStart;
+    private static final int LOCATION_REQUEST_CODE = 1;
 
     public Context getCtx() {
         return ctx;
@@ -156,7 +161,8 @@ public class TransporteSeguro extends AppCompatActivity {
         txtAlerta = findViewById(R.id.txtAlerta);
         txtVehiculo = findViewById(R.id.txtVehiculo);
 
-
+        /**************LOCALIZACION *************************/
+        btnStart = findViewById(R.id.btn_add);
 
         lyPlacaEnviada.setVisibility(View.INVISIBLE);
         lyEncasoDe.setVisibility(View.INVISIBLE);
@@ -285,7 +291,10 @@ public class TransporteSeguro extends AppCompatActivity {
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtPlaca.getText().toString().isEmpty()){
+                if(txtPlaca.length() > 10){
+                    nuc = txtPlaca.getText().toString();
+                    getNuc();
+                }else if(txtPlaca.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"EL CAMPO **PLACA** ES OBLIGATORIO",Toast.LENGTH_LONG).show();
                 }else{
                     placa = txtPlaca.getText().toString();
@@ -309,6 +318,13 @@ public class TransporteSeguro extends AppCompatActivity {
             }
         });
 
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startLocationService();
+            }
+        });
+
         btnDetenerServicioMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -327,7 +343,6 @@ public class TransporteSeguro extends AppCompatActivity {
                 lyQr3.setVisibility(View.INVISIBLE);
             }
         });
-
         imgQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,7 +352,6 @@ public class TransporteSeguro extends AppCompatActivity {
                 lyQr3.setVisibility(View.VISIBLE);
                 lyPlaca.setVisibility(View.INVISIBLE);
                 lyEnviarPlaca.setVisibility(View.INVISIBLE);
-
             }
         });
     }
@@ -842,6 +856,13 @@ public class TransporteSeguro extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //startLocationService();
+        }
+
+
+
         switch (requestCode){
             case CODIGO_SOLICITUD_PERMISO :
                 int resultado = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -949,5 +970,12 @@ public class TransporteSeguro extends AppCompatActivity {
         editor.remove("NUC").commit();
         editor.remove("BANDERAPLACANUC").commit();
         editor.remove("servicio").commit();
+    }
+    //*************************************************************************************************//
+
+
+    private void startLocationService() {
+        Intent intent = new Intent(this, LocationService.class);
+        this.startService(intent);
     }
 }
