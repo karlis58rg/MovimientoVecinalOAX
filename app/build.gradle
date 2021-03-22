@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -8,8 +9,8 @@ android {
         applicationId "mx.gob.sspo.movimientovecinal"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "0.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -41,9 +42,10 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.8' //*******GIF
     implementation 'me.biubiubiu.justifytext:library:1.1'//******** TEXTO JUSTIFICADO
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0' //******CARRUSEL DE IMAGENES
-    implementation platform('com.google.firebase:firebase-bom:26.4.0') //***COMPLEMENTOS DE FIREBASE
+    implementation platform('com.google.firebase:firebase-bom:26.6.0') //***COMPLEMENTOS DE FIREBASE
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0'//***************** LIBRERIA QR
     implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics'
 }
