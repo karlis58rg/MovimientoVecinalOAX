@@ -88,7 +88,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
     /************** EVENTOS*****************/
     EditText txtDescEmergencia;
-    ImageView home, photo, video, audio, imgImagen, recordAu, playAu, detenerAudio;
+    ImageView home, photo, video, audio, imgImagen, recordAu, playAu, detenerAudio,cancelarAudio,imgSAlirImage,imgSalirVideos;
     VideoView videoViewImage;
     Chronometer tiempo;
     Button btnSendEmergencia;
@@ -97,7 +97,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     int status = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_VIDEO_CAPTURE = 1;
-    String cadena, cadenaVideo, cadenaAudio, mediaPath;
+    String audioEncodeString, cadena, cadenaVideo, cadenaAudio, mediaPath;
     String fecha, hora, rutaMultimedia, descEmergencia;
     String cargarInfoTelefono, cargarInfoNombre, cargarInfoApaterno, cargarInfoAmaterno;
     int numberRandom;
@@ -151,6 +151,9 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         recordAu = view.findViewById(R.id.imgGrabar);
         playAu = view.findViewById(R.id.imgReproducir);
         detenerAudio = view.findViewById(R.id.imgDetener);
+        cancelarAudio = view.findViewById(R.id.imgCancelar);
+        imgSAlirImage = view.findViewById(R.id.imgSalirImage);
+        imgSalirVideos = view.findViewById(R.id.imgSalirVideo);
 
         tiempo = view.findViewById(R.id.timer);
 
@@ -167,6 +170,11 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         recordAu.setVisibility(view.GONE);
         detenerAudio.setVisibility(view.GONE);
         playAu.setVisibility(view.GONE);
+        cancelarAudio.setVisibility(view.GONE);
+        imgSAlirImage.setVisibility(view.GONE);
+        imgSalirVideos.setVisibility(view.GONE);
+
+
         switchDisc = view.findViewById(R.id.switchDiscapacidad);
 
 
@@ -191,12 +199,15 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bandera == 2 || bandera == 3) {
+               /* if (bandera == 2 || bandera == 3) {
                     videoViewImage.clearAnimation();
-                    //resetChronometro();
-                }
+                    resetChronometro();
+                }*/
                 bandera = 1;
+                video.setVisibility(view.GONE);
+                audio.setVisibility(view.GONE);
                 imgImagen.setVisibility(view.VISIBLE);
+                imgSAlirImage.setVisibility(view.VISIBLE);
                 videoViewImage.setVisibility(view.GONE);
                 playAu.setVisibility(View.GONE);
                 recordAu.setVisibility(View.GONE);
@@ -210,12 +221,15 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bandera == 1 || bandera == 3) {
+               /* if (bandera == 1 || bandera == 3) {
                     imgImagen.clearAnimation();
                     resetChronometro();
-                }
+                }*/
                 bandera = 2;
+                photo.setVisibility(view.GONE);
+                audio.setVisibility(view.GONE);
                 videoViewImage.setVisibility(view.VISIBLE);
+                imgSalirVideos.setVisibility(view.VISIBLE);
                 imgImagen.setVisibility(view.GONE);
                 playAu.setVisibility(View.GONE);
                 recordAu.setVisibility(View.GONE);
@@ -229,11 +243,14 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         audio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bandera == 1 || bandera == 2) {
+               /* if (bandera == 1 || bandera == 2) {
                     imgImagen.clearAnimation();
                     videoViewImage.clearAnimation();
-                }
+                }*/
                 bandera = 3;
+                photo.setVisibility(view.GONE);
+                video.setVisibility(view.GONE);
+                cancelarAudio.setVisibility(View.VISIBLE);
                 recordAu.setVisibility(view.VISIBLE);
                 detenerAudio.setVisibility(View.VISIBLE);
                 detenerAudio.setEnabled(false);
@@ -241,6 +258,54 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 videoViewImage.setVisibility(view.GONE);
                 imgImagen.setVisibility(view.GONE);
                 Toast.makeText(getActivity(), "PROCESANDO SU SOLICITUD DE AUDIO", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cancelarAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(correr == true){
+                    tiempo.stop();
+                    detenerse = SystemClock.elapsedRealtime() -tiempo.getBase();
+                    correr = false;
+                    stopChronometro();
+                }
+                bandera = 0;
+                resetChronometro();
+                recordAu.setVisibility(view.GONE);
+                detenerAudio.setVisibility(View.GONE);
+                tiempo.setVisibility(View.GONE);
+                playAu.setVisibility(View.GONE);
+                audioEncodeString = null;
+                photo.setVisibility(view.VISIBLE);
+                video.setVisibility(view.VISIBLE);
+                cancelarAudio.setVisibility(view.GONE);
+            }
+        });
+
+        imgSAlirImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bandera = 0;
+                imgImagen.setImageBitmap(null);
+                imgImagen.destroyDrawingCache();
+                audio.setVisibility(view.VISIBLE);
+                video.setVisibility(view.VISIBLE);
+                imgImagen.setVisibility(View.GONE);
+                imgSAlirImage.setVisibility(view.GONE);
+            }
+        });
+
+        imgSalirVideos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bandera = 0;
+                Log.i("SaliendoVideo", String.valueOf(bandera));
+                videoViewImage.setBackgroundResource(0);
+                videoViewImage.setVisibility(view.GONE);
+                audio.setVisibility(view.VISIBLE);
+                photo.setVisibility(view.VISIBLE);
+                imgSalirVideos.setVisibility(view.GONE);
             }
         });
 
@@ -268,6 +333,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         btnSendEmergencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                 if (txtDescEmergencia.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
                 } else if (tv_add.getText().toString().isEmpty()) {
@@ -357,14 +423,9 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
         map = googleMap;
         tv_add = (TextView) getActivity().findViewById(R.id.tv_miadres);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         map.setMyLocationEnabled(true);
@@ -486,15 +547,17 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(bandera == 1){
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 imgImagen.setImageBitmap(imageBitmap);
                 imagen();
 
             }else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_CANCELED){
+                imgImagen.setImageBitmap(null);
+                imgImagen.destroyDrawingCache();
                 imgImagen.setVisibility(View.GONE);
-                imgImagen.clearAnimation();
+                audio.setVisibility(View.VISIBLE);
+                video.setVisibility(View.VISIBLE);
             }
         }else if(bandera == 2){
             super.onActivityResult(requestCode,resultCode,data);
@@ -507,6 +570,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 }else if(requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_CANCELED){
                     videoViewImage.setVisibility(View.GONE);
                     videoViewImage.clearAnimation();
+                    photo.setVisibility(View.VISIBLE);
+                    audio.setVisibility(View.VISIBLE);
                 }
                 else if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK )
                 {
@@ -537,40 +602,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     videoViewImage.setMediaController(mediaController);
                     mediaController.setAnchorView(videoViewImage);
                     Log.i("HERE", "VISTA PREVIA");
-
-                    //CONVERTIR  VIDEO A BASE64 **************************
-
-                    InputStream inputStream = null;
-                    String encodedString = null;
-
-                    try
-                    {
-                        inputStream = new FileInputStream(mediaPath);
-
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    byte[] bytes;
-                    byte[] buffer = new byte[8192];
-                    int bytesRead;
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();
-                    try
-                    {
-                        while ((bytesRead = inputStream.read(buffer)) != -1)
-                        {
-                            output.write(buffer,0,bytesRead);
-
-                        }
-
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    bytes = output.toByteArray();
-                    encodedString = Base64.encodeToString(bytes,Base64.DEFAULT);
-                    cadenaVideo = encodedString;
-                    //rest.setText(encodedString);
+                    videoBase64();
 
                 }else
                 {
@@ -600,12 +632,43 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         imgImagen.setImageBitmap(decoded);
         System.out.print("IMAGEN" + imgImagen);
     }
+    private void videoBase64(){
+        //CONVERTIR  VIDEO A BASE64 **************************
+        InputStream inputStream = null;
+        String encodedString = null;
+        try
+        {
+            inputStream = new FileInputStream(mediaPath);
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        byte[] bytes;
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try
+        {
+            while ((bytesRead = inputStream.read(buffer)) != -1)
+            {
+                output.write(buffer,0,bytesRead);
+
+            }
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        bytes = output.toByteArray();
+        encodedString = Base64.encodeToString(bytes,Base64.DEFAULT);
+        cadenaVideo = encodedString;
+        //rest.setText(encodedString);
+    }
+
     //********************************** INSERTA REGISTRO A LA BD ***********************************//
     //*********************** METODO QUE INSERTA A LA BASE DE DATOS DESPUES DE INSERTAR AL CAD ***********************//
     public void insertBdEventoIOS() {
-        if(bandera == 2){
-            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-        }
         //*************** FECHA **********************//
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -755,13 +818,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 if (response.isSuccessful()) {
                     final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
 
-                    ReporteEmergencias.this.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Toast.makeText(getActivity(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
                 }
             }
         });
@@ -817,7 +873,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             tiempo.stop();
             detenerse = SystemClock.elapsedRealtime() -tiempo.getBase();
             correr = false;
-
         }
     }
     private void startChronometro() {
@@ -837,6 +892,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             resetChronometro();
             detenerAudio.setEnabled(false);
         }
+        Toast.makeText(getActivity(), "GRABANDO", Toast.LENGTH_SHORT).show();
         startChronometro();
         detenerAudio.setEnabled(true);
         recordAu.setEnabled(false);
@@ -846,22 +902,18 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         miGrabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         miGrabacion.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         miGrabacion.setOutputFile(outputFile);
+        audioBase64();
         try {
             miGrabacion.prepare();
             miGrabacion.start();
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        //Toast.makeText(getActivity().getApplicationContext(), "La grabación comenzó", Toast.LENGTH_LONG).show();
-        //detenerAudio.setVisibility(View.VISIBLE);
-        //recordAu.setVisibility(View.GONE);
-        //playAu.setVisibility(View.GONE);
     }
     public void detener() {
+        Toast.makeText(getActivity(), "DETENIENDO GRABACION", Toast.LENGTH_SHORT).show();
         status = 1;
         runAudio = 0;
         stopChronometro();
@@ -893,13 +945,13 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         m.start();
-        //Toast.makeText(getActivity().getApplicationContext(), "reproducción de audio", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), "REPRODUCIENDO AUDIO", Toast.LENGTH_LONG).show();
         audioBase64();
     }
     public void audioBase64(){
         //CONVERTIR AUDIO A BASE64
         InputStream inputStream = null;
-        String audioEncodeString = null;
+        audioEncodeString = null;
         try
         {
             inputStream = new FileInputStream(outputFile);

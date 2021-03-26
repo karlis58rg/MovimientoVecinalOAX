@@ -224,10 +224,17 @@
                     android:background="@drawable/drawable_pressed"
                     android:layout_below="@id/lyEnviarEmergencia"
                     android:gravity="center_horizontal">
+                    <ImageView
+                        android:id="@+id/imgSalirVideo"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/ic_salir"/>
                     <VideoView
                         android:id="@+id/viewVideo"
+                        android:layout_marginTop="10dp"
                         android:layout_width="200dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:layout_marginBottom="50dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -239,9 +246,16 @@
                     android:layout_below="@id/lyEnviarEmergencia"
                     android:gravity="center_horizontal">
                     <ImageView
+                        android:id="@+id/imgSalirImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/ic_salir"/>
+                    <ImageView
                         android:id="@+id/viewImage"
                         android:layout_width="200dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="50dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -263,11 +277,20 @@
                 <LinearLayout
                     android:id="@+id/lyAudio"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/drawable_pressed"
                     android:layout_below="@id/lyCronometro"
                     android:gravity="center_horizontal">
+                    <ImageView
+                        android:id="@+id/imgCancelar"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:scaleX="0.8"
+                        android:scaleY="0.9"
+                        android:tooltipText="Cancelar nota"
+                        android:background="@drawable/ic_cancelar"/>
                     <ImageView
                         android:id="@+id/imgGrabar"
                         android:layout_width="60dp"

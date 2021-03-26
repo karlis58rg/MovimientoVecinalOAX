@@ -369,7 +369,7 @@ public class AlertaAmber extends AppCompatActivity {
         estatura = "1.50";
         complexion = "DELGADO";
         fechaNacimiento = "01/01/2000";
-        lugarHechos = "OAXACA";
+        lugarHechos = "OAXACA"; //poner el numero de telefono
         descripcionHechos = "DESAPARECIDO";
 
 

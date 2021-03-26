@@ -9,11 +9,13 @@
     <string name="action_settings">Settings</string>
     <string name="msg_subscribed">INSCRITO</string>
     <string name="msg_subscribe_failed">ERROR AL INSCRIBIRSE</string>
+    <string name="letras_permitidas">A BCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
     <string name="menu_home">Menú principal</string>
     <string name="menu_gallery">¿Qué es?</string>
     <string name="menu_funciones">Funciones</string>
     <string name="menu_slideshow">Conf. Código Mujer</string>
+    <string name="menu_vigilancia_vecinal">Conf. Alerta Vecinal</string>
     <string name="menu_transporte">Conf. Movilidad Segura</string>
     <string name="menu_nino_perdido">Menores Ausentes</string>
     <string name="menu_tools">Aviso de Privacidad</string>
@@ -25,11 +27,12 @@
 
     <string name="appwidget_text_v">CÓDIGO  MUJER</string>
     <string name="add_widget_v">Agregar acceso mujer oaxaqueña</string>
+
     <string name="appwidget_text">MOVILIDAD SEGURA</string>
     <string name="add_widget">Agregar acceso movilidad segura</string>
+
     <string name="appwidget_text_vv">ALERTA VECINAL</string>
     <string name="add_widget_vv">Agregar acceso alerta vecinal</string>
-
 
     <string name="default_notification_channel_id" translatable="false">GENERAL_CHANEL</string>
 

@@ -23,22 +23,27 @@
         tools:layout="@layout/funciones_fragment" />
 
     <fragment
+        android:id="@+id/vigilancia"
+        android:name="mx.gob.sspo.movimientovecinal.ui.vigilancia_vecinal.Vigilancia"
+        android:label="vigilancia_fragment"
+        tools:layout="@layout/vigilancia_fragment" />
+
+    <fragment
         android:id="@+id/nav_slideshow"
         android:name="mx.gob.sspo.movimientovecinal.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
-    <fragment
-        android:id="@+id/transporte"
-        android:name="mx.gob.sspo.movimientovecinal.ui.transporte.Transporte"
-        android:label="transporte_fragment"
-        tools:layout="@layout/transporte_fragment" />
 
     <fragment
         android:id="@+id/ninoPerdido"
         android:name="mx.gob.sspo.movimientovecinal.ui.nino_perdido.NinoPerdido"
         android:label="nino_perdido_fragment"
         tools:layout="@layout/nino_perdido_fragment" />
-
+    <fragment
+        android:id="@+id/transporte"
+        android:name="mx.gob.sspo.movimientovecinal.ui.transporte.Transporte"
+        android:label="transporte_fragment"
+        tools:layout="@layout/transporte_fragment" />
     <fragment
         android:id="@+id/nav_tools"
         android:name="mx.gob.sspo.movimientovecinal.ui.tools.ToolsFragment"
@@ -56,6 +61,7 @@
         android:name="mx.gob.sspo.movimientovecinal.ui.send.SendFragment"
         android:label="@string/menu_send"
         tools:layout="@layout/fragment_send" />
+
 
 
 </navigation>

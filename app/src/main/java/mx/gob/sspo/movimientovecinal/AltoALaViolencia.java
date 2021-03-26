@@ -73,9 +73,6 @@ public class AltoALaViolencia extends AppCompatActivity {
         locationStart();
         if(cargarInfoUserRegistrado != 1){
             getUserViolencia();
-            Intent i = new Intent(AltoALaViolencia.this,MensajeSalidaAltoViolencia.class);
-            startActivity(i);
-            finish();
         }
         if(cargarInfoWaltoViolencia == 1){
             Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
@@ -393,7 +390,9 @@ public class AltoALaViolencia extends AppCompatActivity {
                                 respuestaJson = jObj.getString("m_Item1");
                                 m_Item1 = "SIN INFORMACION";
                                 if (respuestaJson.equals(m_Item1)) {
-                                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, NO SE CUENTA CON INFORMACIÓN DE ESTE NÚMERO TELEFÓNICO", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(AltoALaViolencia.this,MensajeSalidaAltoViolencia.class);
+                                    startActivity(i);
+                                    finish();
                                 } else {
                                     cargarInfoVictimaUserRegistrado = 1;
                                     guardarUserRegistrado();

@@ -47,7 +47,7 @@
         android:layout_marginTop="50dp"
         android:maxLength="10"
         android:inputType="number"
-        android:hint="Ejem: 7731402098"
+        android:hint="Ejem: 9511402098"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblNoTelefonico" />

@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import mx.gob.sspo.movimientovecinal.ui.vigilancia_vecinal.Vigilancia;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -43,8 +44,9 @@ import pl.droidsonroids.gif.GifImageView;
 public class VigilanciaVecinal extends AppCompatActivity {
 
     ImageView home;
-    GifImageView btnVigilancia;
+    ImageView btnVigilancia;
     String cargarInfoTelefono,respuestaJson,m_Item1,fecha,hora;
+    int cargarInfoUserRegistradoVigilancia,guardarInfoUserRegistradoVigilancia;
     SharedPreferences share;
     SharedPreferences.Editor editor;
     int numberRandom;
@@ -61,24 +63,9 @@ public class VigilanciaVecinal extends AppCompatActivity {
         setContentView(R.layout.activity_vigilancia_vecinal);
         cargarUserRegistrado();
         Random();
-
-        home = findViewById(R.id.imgHomeVigilancia);
-        btnVigilancia = findViewById(R.id.gifMapa);
-
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        btnVigilancia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                getUserVigilancia();
-            }
-        });
+        if(cargarInfoUserRegistradoVigilancia != 1){
+            getUserVigilancia();
+        }
 
         if(cargarInfoWalertaVecinal == 1){
             Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
@@ -113,8 +100,23 @@ public class VigilanciaVecinal extends AppCompatActivity {
             alert.show();
         }
 
+        home = findViewById(R.id.imgHomeVigilancia);
+        btnVigilancia = findViewById(R.id.imgAlertaVecinal);
 
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
+        btnVigilancia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                getUserVigilancia();
+            }
+        });
     }
 
     /******************GET A LA BD***********************************/
@@ -160,10 +162,15 @@ public class VigilanciaVecinal extends AppCompatActivity {
                                     Intent i = new Intent(VigilanciaVecinal.this,MensajeSalidaVigilanciaVecinal.class);
                                     startActivity(i);
                                     finish();
-                                } else {
+                                } else if(cargarInfoWalertaVecinal == 1) {
                                     Intent i = new Intent(VigilanciaVecinal.this,MensajeEnviadoVigilanciaVecinal.class);
                                     startActivity(i);
                                     Log.i("HERE", "" + jObj);
+                                    finish();
+                                }else {
+                                    guardarInfoUserRegistradoVigilancia = 1;
+                                    guardarUsuarioVV();
+                                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
 
@@ -177,10 +184,18 @@ public class VigilanciaVecinal extends AppCompatActivity {
         });
     }
 
+    private void guardarUsuarioVV() {
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putInt("BANDERAUSERVIGILANCIAVECINAL", guardarInfoUserRegistradoVigilancia );
+        editor.commit();
+    }
+
     public void cargarUserRegistrado() {
         share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         cargarInfoWalertaVecinal = share.getInt("ALERTAVECINAL", 0);
+        cargarInfoUserRegistradoVigilancia = share.getInt("BANDERAUSERVIGILANCIAVECINAL", 0);
     }
 
     private void guardarActividad() {

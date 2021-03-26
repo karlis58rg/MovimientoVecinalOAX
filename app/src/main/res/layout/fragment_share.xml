@@ -15,5 +15,157 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
+
+        <LinearLayout
+            android:id="@+id/bodyFormEmergenciasMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblApartado1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="ACEPTACIÓN"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="En el presente documento se establecen los términos y condiciones que serán de aplicación al acceso y uso por parte del “Usuario” a la “APP “Oaxaca Seguro” en adelante “LA APP”.Al acceder o utilizar “LA APP”, el “Usuario” acepta cumplir los términos y condiciones establecidos en el presente documento.
+                \n\nEn caso de que usted no acepte quedar vinculado por los presentes términos y condiciones, no podrá acceder ni utilizar “LA APP”
+                \n\nEl Gobierno del Estado de Oaxaca a través del Centro de Control de Control, Comando y Comunicación, por sus siglas y en C4 se reserva el derecho de actualizar los presentes términos y condiciones siempre que lo consideren oportuno. En consecuencia, recomendamos al Usuario revisar periódicamente los términos y condiciones."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/lblApartado3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="REQUISITOS RELATIVOS AL USUARIO."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="La presente aplicación, está dirigida exclusivamente a personas residentes en el Estado de Oaxaca y que cuenten con alguna orden, medida de protección o cautelar emitida por alguna autoridad competente y facultada para ello.
+                \n\nPara el caso de dispositivos con sistema operativo Android “LA APP” solo está disponible para versiones 6.0 en adelante."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/lblApartado5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="PROHIBICIÓN GENERAL."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Al acceder y utilizar “LA APP”, el Usuario se compromete a:
+                \n\nNo emitir ningún alertamiento que resulte falso o de broma; pues de conformidad con artículo 231 bis del Código Penal para el Estado Libre y Soberano de Oaxaca, al que haga “uso indebido de los sistemas de emergencia” podrá ser castigado en términos de dicha normatividad."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/lblApartado7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="UTILIZACIÓN Y OBLIGACIONES CONCRETAS."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Utilizarla de manera responsable emitido el alertamiento correspondiente en casos de verdadera necesidad.
+                \n\nSolo podrán hacer uso de “LA APP” las personas que hayan sido dadas de alta por parte de las autoridades encargadas de emitir la aplicación de las medidas, órdenes de protección o medidas cautelares en términos de la Ley de Acceso de las Mujeres a una Vida Libre de Violencia y del Código Nacional de Procedimientos Penales.
+                \n\nA las personas que no estén dadas de alta por dichas autoridades, se les informa que de manera ordinaria pueden hacer uso de la línea de emergencia 9-1-1 en caso de requerir apoyo en incidentes; médicos, de protección civil, seguridad, o asistencia.
+                \n\nY para el caso de querer denunciar de manera anónima un posible delito que requiera ser investigado, se pone a disposición la línea 089. O el portal de internet: https://sspo.gob.mx/?page_id=38."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/lblApartado9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="DE LA VIGENCIA Y TEMPORALIDAD."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="La vigencia y temporalidad de las respectivas ordenes, medidas de protección o cautelares, es determinado por la autoridad competente que las emite, por lo que el C4 sin mayor responsabilidad queda únicamente sujeto a respetar dicha temporalidad y vigencia."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/lblApartado11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:text="TÉRMINO."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <me.biubiubiu.justifytext.library.JustifyTextView
+                android:id="@+id/lblApartado12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="El Gobierno del Estado de Oaxaca a través del C4 puede terminar, cambiar, suspender o descontinuar cualquier aspecto de “LA APP” en cualquier momento. De igual manera se puede restringir, suspender o terminar su acceso “LA APP” si creemos que usted está en incumplimiento de nuestros términos y condiciones o de la ley aplicable, o por cualquier otra razón sin notificación o responsabilidad."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="50dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

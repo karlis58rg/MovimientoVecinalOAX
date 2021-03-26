@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lblPrincipal" />
 
 
-    <TextView
+    <me.biubiubiu.justifytext.library.JustifyTextView
         android:id="@+id/lblSegundo"
         android:layout_width="300dp"
         android:layout_height="wrap_content"

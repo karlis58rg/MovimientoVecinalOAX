@@ -17,18 +17,24 @@
             android:icon="@drawable/ic_view_carousel_black_24dp"
             android:title="@string/menu_funciones" />
         <item
+            android:id="@+id/vigilancia"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="@string/menu_vigilancia_vecinal" />
+
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/menu_slideshow" />
-        <item
-            android:id="@+id/transporte"
-            android:icon="@drawable/ic_info_black_24dp"
-            android:title="@string/menu_transporte" />
 
         <item
             android:id="@+id/ninoPerdido"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/menu_nino_perdido" />
+
+        <item
+            android:id="@+id/transporte"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="@string/menu_transporte" />
 
         <item
             android:id="@+id/nav_tools"

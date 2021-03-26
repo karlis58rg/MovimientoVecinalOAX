@@ -92,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Nombre:"
                     android:inputType="textCapCharacters"
+                    android:digits="@string/letras_permitidas"
                     android:layout_marginTop="30dp"
                     android:layout_marginLeft="40dp"
                     android:maxLength="30"
@@ -106,6 +107,7 @@
                     android:layout_below="@id/txtNombreAlerta"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="40dp"
+                    android:digits="@string/letras_permitidas"
                     android:inputType="textCapCharacters"
                     android:imeOptions="actionNext"
                     android:maxLength="30"/>
@@ -115,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:hint="A. materno:"
                     android:layout_below="@id/txtApaternoAlerta"
+                    android:digits="@string/letras_permitidas"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="40dp"
                     android:inputType="textCapCharacters"

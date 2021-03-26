@@ -218,7 +218,6 @@
                                 android:layout_height="50dp"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
                                 android:inputType="textCapCharacters"
                                 android:maxLength="25"/>
                         </LinearLayout>
@@ -277,7 +276,6 @@
                                 android:layout_height="50dp"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
                                 android:inputType="textCapCharacters"
                                 android:maxLength="25"/>
                         </LinearLayout>
@@ -340,7 +338,6 @@
                                 android:layout_height="50dp"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ  abcdfghijklmnñopqrstuvwxyz 0123456789 "
                                 android:inputType="textCapCharacters"
                                 android:maxLength="25"/>
                         </LinearLayout>
