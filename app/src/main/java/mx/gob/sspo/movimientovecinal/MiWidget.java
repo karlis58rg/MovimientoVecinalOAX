@@ -18,8 +18,6 @@ public class MiWidget extends AppWidgetProvider {
     SharedPreferences share;
     SharedPreferences.Editor editor;
     int cargarInfoViolenciaWidget,wViolencia,cargarInfoWviolencia;
-
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 

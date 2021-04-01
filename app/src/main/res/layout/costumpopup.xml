@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="400dp"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/lblCerrarMensaje"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ic_salir"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <me.biubiubiu.justifytext.library.JustifyTextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Para detener el envió de su ubicación, debe presionar el botón **Detener** ubicado dentro de la notificación emergencte, en su centro de notificaciones"
+            android:textColor="@color/colorAltoViolencia"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</LinearLayout>

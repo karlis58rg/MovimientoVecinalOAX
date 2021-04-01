@@ -271,8 +271,19 @@
                     android:layout_marginTop="50dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/btn_redondo"
-                    android:layout_below="@id/txtDescripcionHechos"
-                    android:layout_marginBottom="100dp"/>
+                    android:layout_below="@id/txtDescripcionHechos" />
+
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:id="@+id/lblVamosEnTuApoyo911"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnEnviarAlertaAmber"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorBold"
+                    android:text="A través de este botón ud. podrá realizar el reporte de extravío de algún menor que se encuentre bajo su tutela, como emergencia inmediata al 911. Una vez transcurridas 72 del reporte ud. deberá llamar al 089 o acudir a Fiscalía General de Oaxaca, ubicada en Cd. Judicial, Edificio A Jesús Chu Rasgado, 2do nivel. Tel. 951 501 6900 para hacer una denuncia formal e iniciar una investigación. Sujeto a Términos y Condiciones, y aceptación de Aviso de Privacidad."
+                    android:textSize="15dp" />
 
             </RelativeLayout>
         </ScrollView>

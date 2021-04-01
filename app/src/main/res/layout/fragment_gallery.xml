@@ -33,7 +33,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
-                android:text="El Secretariado Ejecutivo Del Sistema Estatal De Seguridad Pública De Oaxaca presenta una aplicación digital disponible en los teléfonos celulares cuyo objetivo es facilitar el envió de alertas al Servicio de Emergencia  9-1-1 de Oaxaca."
+                android:text="El Gobierno del Estado de Oaxaca presenta LA APP Móvil OAXACA SEGURO, disponible para facilitar las alertas de la ciudadanía Oaxaqueña al Servicio de llamadas del 911 Oaxaca."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 

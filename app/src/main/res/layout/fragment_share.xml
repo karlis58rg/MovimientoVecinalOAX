@@ -26,17 +26,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lblApartado1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="ACEPTACIÓN"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <me.biubiubiu.justifytext.library.JustifyTextView
                 android:id="@+id/lblApartado2"
                 android:layout_width="match_parent"
@@ -44,125 +33,32 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:text="En el presente documento se establecen los términos y condiciones que serán de aplicación al acceso y uso por parte del “Usuario” a la “APP “Oaxaca Seguro” en adelante “LA APP”.Al acceder o utilizar “LA APP”, el “Usuario” acepta cumplir los términos y condiciones establecidos en el presente documento.
-                \n\nEn caso de que usted no acepte quedar vinculado por los presentes términos y condiciones, no podrá acceder ni utilizar “LA APP”
-                \n\nEl Gobierno del Estado de Oaxaca a través del Centro de Control de Control, Comando y Comunicación, por sus siglas y en C4 se reserva el derecho de actualizar los presentes términos y condiciones siempre que lo consideren oportuno. En consecuencia, recomendamos al Usuario revisar periódicamente los términos y condiciones."
+                android:text="EL QUE SUSCRIBE LA PRESENTE SOLICITUD DE REGISTRO Y USO DE LAS HERRAMIENTAS O BOTONES DEL PROGRAMA O APLICATIVO “OAXACA SEGURO” MANIFIESTA BAJO PROTESTA DE DECIR VERDAD QUE TODOS Y CADA UNO DE LOS DATOS ASENTADOS EN EL REGISTRO INICIAL Y LAS ALERTAS ENVIADAS A TRAVÉS DE LOS MISMOS SON CIERTOS Y AUTÉNTICOS, HACIÉNDOSE SABEDOR DE LAS PENAS DE QUIENES DECLARAN CON FALSEDAD.
+\n\nMANIFIESTO QUE HE LEÍDO, Y AL REALIZAR MI REGISTRO INICIAL A TRAVÉS DEL MEDIO ELECTRÓNICO APP OAXACA SEGURO, ACEPTO DE CONFORMIDAD EL AVISO DE PRIVACIDAD Y LOS TÉRMINOS Y CONDICIONES AQUÍ DESCRITOS, QUE ESPECIFICAN LOS LINEAMIENTOS PARA EL USO DE LA HERRAMIENTA DE ALERTAMIENTO APP OAXACA SEGURO, LIGADO A MI IDENTIDAD, NÚMERO TELEFÓNICO Y UBICACIÓN GPS.
+\n\nOAXACA, MEXICO. FECHA DE REGISTRO
+\n\n1.- ACEPTACIÓN.
+\n\nEn el presente documento se establecen los términos y condiciones que serán de aplicación al acceso y uso por parte del “Usuario” a la “APP “Oaxaca Seguro” en adelante “LA APP”.
+\n\nAl acceder o utilizar “LA APP”, el “Usuario” acepta cumplir los términos y condiciones establecidos en el presente documento. En caso de que usted no acepte quedar vinculado por los presentes términos y condiciones, no podrá acceder ni utilizar “LA APP”
+\n\nEl Gobierno del Estado de Oaxaca a través del Centro de Control de Control, Comando y Comunicación, por sus siglas “C4” se reserva el derecho de actualizar los presentes términos y condiciones siempre que lo consideren oportuno. En consecuencia, recomendamos al Usuario revisar periódicamente los términos y condiciones.
+\n\n2.- REQUISITOS RELATIVOS AL USUARIO.
+\n\nLa presente aplicación, está dirigida exclusivamente a personas residentes o visitantes en el Estado de Oaxaca. El usuario deberá descargar de las tiendas virtuales “Google Play” (Android) / “App Store” (iOS) el aplicativo móvil publicado bajo el nombre “OAXACA SEGURO”, e instalarlo en un dispositivo móvil con cualquiera de los sistemas operativos que se publican. Para el caso de dispositivos con sistema operativo Android “LA APP” solo está disponible para versiones 8.0 en adelante y para el caso de los dispositivos con sistema operativo iOS “LA APP” solo está disponible para versiones 10.1 en adelante. El usuario deberá contar con carga en la batería de su teléfono y conectividad de datos móviles o wifi al momento de emitir su alerta. El Gobierno del Estado de Oaxaca y/o el Centro de Control de Control, Comando y Comunicación, por sus siglas C4 no será responsable por fallos técnicos o falta de batería y conectividad que resulte en envíos no exitosos de alertas.
+\n\nDespués de la instalación, LA APP solicitará al usuario realizar un REGISTRO INICIAL, quien deberá proporcionar la información y manifestar la aceptación y consentimiento del Aviso de Privacidad y Términos y Condiciones, así como dar los permisos en su dispositivo para el acceso a realizar y gestionar llamadas, tomar fotos y grabar videos, acceder a la ubicación del dispositivo, acceder a fotos, archivos de medios, galería, etc. del dispositivo, y grabar archivos de audio. Igualmente el usuario deberá registrar Nombre, Apellido Paterno, Apellido Materno, Dirección, fotografía personal y número de confianza, que podrá ser contactado en caso de necesidad en el seguimiento a un incidente reportado al momento de usar “LA APP”. El usuario deberá aceptar el uso de Accesos Directos o “WIDGETS” de los botones de Movilidad Segura, y en su caso Código Mujer y Alerta Vecinal, LA APP colocará un acceso directo desde la pantalla base de su dispositivo; cada acceso directo tiene el objetivo de facilitar la emisión de alertas del botón que se trate sin necesidad de abrir LA APP.
+\n\n3.- PROHIBICIÓN GENERAL.
+\n\nAl acceder y utilizar “LA APP”, el Usuario se compromete a:
+\n\nNo emitir ninguna alerta que resulte falso o de broma; pues de conformidad con artículo 231 bis del Código Penal para el Estado Libre y Soberano de Oaxaca, al que haga “uso indebido de los sistemas de emergencia” podrá ser castigado en términos de dicha normatividad.
+\n\n4. UTILIZACIÓN Y OBLIGACIONES CONCRETAS.
+\n\nEl usuario se compromete a utilizar LA APP de manera responsable, y a emitir las alertas que correspondan en caso de verdadera necesidad, peligro inminente, causas de fuerza mayor, amenaza en contra de su vida o de la vida de terceros que se encuentren a su alcance y cuya situación de peligro o riesgo sea testigo.
+\n\nBOTÓN 911. Todos los usuarios de LA APP tendrán acceso a este botón y será el medio principal para el envío de alertas, el usuario que emita un reporte deberá indicar un texto breve y podrá adjuntar (opcional)  un archivo de audio, video o fotografía, así como manifestar si es una persona con algún tipo de discapacidad.
+\n\nBOTÓN MOVILIDAD SEGURA. Todos los usuarios de LA APP tendrán acceso a este botón, con el cual podrán validar si la unidad de transporte público que estuvieran a punto de abordar esté legalmente registrada en SEMOVI Oaxaca, en caso de NO estar registrada, el usuario recibirá una notificación de alerta; si el usuario decidiera abordar una unidad No registrada aun en el conocimiento de que es una unidad no registrada, El Gobierno del Estado de Oaxaca, Secretaría de Seguridad Pública, Secretaría de Movilidad y/o el Centro de Control de Control, Comando y Comunicación, por sus siglas C4 no serán responsables de las implicaciones o consecuencias que resulten de las decisiones del usuario; sin embargo el seguimiento de su trayectoria GPS será registrada para que en caso de existir alguna alerta se notifique al Servicio de llamadas del 911. Para el uso del botón, el usuario deberá ingresar la placa, número económico o NUC de la unidad, a partir de ese momento LA APP hará el registro de su trayectoria GPS, y en caso de emitir un Alertamiento, dicha trayectoria y la subsecuente serán proyectadas al operador del Servicio de llamadas del 911.
+\n\nBOTÓN MENOR AUSENTE. Todos los usuarios de LA APP tendrán acceso a este botón y podrán reportar el extravío de algún menor que se encuentre bajo su tutela legal para la distribución masiva de su información a todos los usuarios registrados de la APP y así auxiliar en su localización. El Alertamiento que fuera emitido no será inmediatamente publicado, sino que se llevará a cabo un proceso de autenticación para el cual el padre / madre o tutor debe estar preparado. El usuario que haga uso de este botón deberá enviar mediante el formulario inicial, disponible en el Botón, la siguiente información: Nombre del menor, Apellido Paterno, Apellido Materno, Sexo, Edad, Señas particulares y una fotografía legible del Menor, mismas que serán revisadas y procesadas de acuerdo al Protocolo de Atencion de llamadas de 911, por el cual se procederá al contacto con el usuario solicitante. Al hacer el contacto por parte del C4 hacia el usuario solicitante éste deberá presentar y enviar su identificación oficial vigente digitalizada y acta de nacimiento digitalizada del menor, o documento que acredite la patria potestad o tutela, mismos que se comprometerá a presentar de forma presencial, escrita y en original en las oficinas del C4 Oaxaca dentro de las siguientes 24 hrs subsecuentes a su solicitud. En caso de no hacerlo así, la información del menor será dada de baja automáticamente de los visores de información al público usuario de LA APP y El Gobierno del Estado de Oaxaca, la Secretaría de Seguridad Pública ni ninguna otra instancia será responsable por tal omisión. Una vez transcurridas 72 hrs de la publicación, toda la información del reporte será dada de baja del sistema y el usuario deberá acudir a Fiscalía General o 089 para presentar una denuncia para comenzar una investigación formal. El servicio de llamadas 911, Secretaría de Seguridad Pública, C4 y los cuerpos de asistencia no son responsables del seguimiento posterior que el Padre / madre o tutor ejerza después de las 72 hrs transcurridas a partir del reporte Menor Ausente. En caso de que algún reporte desenlace en la localización del menor, el usuario tiene la obligación de dar aviso y conocimiento por escrito a la Secretaría de Seguridad Pública.
+\n\nBOTÓN CÓDIGO MUJER. Este botón únicamente estará disponible para las usuarias que tengan un número de registro y que se encuentren en un proceso de seguimiento con la Secretaría de las Mujeres de Oaxaca.
+\n\nBOTÓN ALERTA VECINAL. Este botón de Alertamiento estará disponible únicamente para usuarios que hayan registrado una solicitud aprobada para afiliarse al programa “Alerta Vecinal” como un medio de activación de las alertas del programa.  Al activar la alerta por el usuario registrado será enviada la información de registro inicial, ubicación GPS y la información privada que el usuario acuerde en la suscripción / afiliación en “Alerta Vecinal”.
+\n\nPARA EL CASO DE QUERER DENUNCIAR DE MANERA ANÓNIMA UN POSIBLE DELITO QUE REQUIERA SER INVESTIGADO, SE PONE A DISPOSICIÓN LA LÍNEA 089. O EL PORTAL DE INTERNET: HTTPS://SSPO.GOB.MX/?PAGE_ID=38
+\n\n5.- DE LA VIGENCIA Y TEMPORALIDAD.
+\n\nLa vigencia y temporalidad de las respectivas ordenes, medidas de protección o cautelares, es determinado por la autoridad competente que las emite, por lo que el C4 sin mayor responsabilidad queda únicamente sujeto a respetar dicha temporalidad y vigencia.
+\n\n6.- TÉRMINO. El Gobierno del Estado de Oaxaca a través del C4 puede terminar, cambiar, suspender o descontinuar cualquier aspecto de “LA APP” en cualquier momento. De igual manera se puede restringir, suspender o terminar su acceso “LA APP” si creemos que usted está en incumplimiento de nuestros términos y condiciones o de la ley aplicable, o por cualquier otra razón sin notificación o responsabilidad."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/lblApartado3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="REQUISITOS RELATIVOS AL USUARIO."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblApartado4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="La presente aplicación, está dirigida exclusivamente a personas residentes en el Estado de Oaxaca y que cuenten con alguna orden, medida de protección o cautelar emitida por alguna autoridad competente y facultada para ello.
-                \n\nPara el caso de dispositivos con sistema operativo Android “LA APP” solo está disponible para versiones 6.0 en adelante."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/lblApartado5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="PROHIBICIÓN GENERAL."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblApartado6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="Al acceder y utilizar “LA APP”, el Usuario se compromete a:
-                \n\nNo emitir ningún alertamiento que resulte falso o de broma; pues de conformidad con artículo 231 bis del Código Penal para el Estado Libre y Soberano de Oaxaca, al que haga “uso indebido de los sistemas de emergencia” podrá ser castigado en términos de dicha normatividad."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/lblApartado7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="UTILIZACIÓN Y OBLIGACIONES CONCRETAS."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblApartado8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="Utilizarla de manera responsable emitido el alertamiento correspondiente en casos de verdadera necesidad.
-                \n\nSolo podrán hacer uso de “LA APP” las personas que hayan sido dadas de alta por parte de las autoridades encargadas de emitir la aplicación de las medidas, órdenes de protección o medidas cautelares en términos de la Ley de Acceso de las Mujeres a una Vida Libre de Violencia y del Código Nacional de Procedimientos Penales.
-                \n\nA las personas que no estén dadas de alta por dichas autoridades, se les informa que de manera ordinaria pueden hacer uso de la línea de emergencia 9-1-1 en caso de requerir apoyo en incidentes; médicos, de protección civil, seguridad, o asistencia.
-                \n\nY para el caso de querer denunciar de manera anónima un posible delito que requiera ser investigado, se pone a disposición la línea 089. O el portal de internet: https://sspo.gob.mx/?page_id=38."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-            <TextView
-                android:id="@+id/lblApartado9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="DE LA VIGENCIA Y TEMPORALIDAD."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblApartado10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="La vigencia y temporalidad de las respectivas ordenes, medidas de protección o cautelares, es determinado por la autoridad competente que las emite, por lo que el C4 sin mayor responsabilidad queda únicamente sujeto a respetar dicha temporalidad y vigencia."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-            <TextView
-                android:id="@+id/lblApartado11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="TÉRMINO."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblApartado12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="El Gobierno del Estado de Oaxaca a través del C4 puede terminar, cambiar, suspender o descontinuar cualquier aspecto de “LA APP” en cualquier momento. De igual manera se puede restringir, suspender o terminar su acceso “LA APP” si creemos que usted está en incumplimiento de nuestros términos y condiciones o de la ley aplicable, o por cualquier otra razón sin notificación o responsabilidad."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="50dp"/>
 
         </LinearLayout>
     </ScrollView>

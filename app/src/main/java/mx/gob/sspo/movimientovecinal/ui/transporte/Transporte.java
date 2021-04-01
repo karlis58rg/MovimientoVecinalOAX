@@ -53,8 +53,6 @@ public class Transporte extends Fragment {
                 if(cargarInfoWtransporteSeguro == 1){
                     Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
                 }else{
-                    widgetTransporte = 1;
-                    guardarActividad();
                     AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
                     ComponentName myProvider = new ComponentName(v.getContext(), MiWidgetT.class);
                     if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
@@ -71,14 +69,6 @@ public class Transporte extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(TransporteViewModel.class);
         // TODO: Use the ViewModel
-    }
-
-    private void guardarActividad() {
-        share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("TRANSPORTE", widgetTransporte );
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
 
     private void cargarServicio(){

@@ -1,21 +1,32 @@
 package mx.gob.sspo.movimientovecinal;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +40,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,11 +68,18 @@ public class AlertaAmber extends AppCompatActivity {
     int numberRandom;
     String randomCodigoVerifi,codigoVerifi;
 
+    String mensaje1,mensaje2,direccion, municipio, estado;
+    Double lat,lon;
+    SharedPreferences share;
+    SharedPreferences.Editor editor;
+    private String cargarInfoLat,cargarInfoLong,cargarInfoTelefono;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alerta_amber);
         Random();
+        locationStart();
 
         home = findViewById(R.id.imgHomeAlertaAmber);
         btnEnviarAlertaAmber = findViewById(R.id.btnEnviarAlertaAmber);
@@ -347,6 +367,7 @@ public class AlertaAmber extends AppCompatActivity {
     }
     //********************************** INSERTA REGISTROP AL SERVIDOR ***********************************//
     public void insertUserDesaparecido(){
+        cargarLatLong();
         //*************** FECHA **********************//
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -356,18 +377,15 @@ public class AlertaAmber extends AppCompatActivity {
         aPaternoAlerta = txtApaternoAlerta.getText().toString();
         aMaternoAlerta = txtAmaternoAlerta.getText().toString();
         edad = txtEdad.getText().toString();
-        /*nacionalidad = txtNacionalidad.getText().toString();
-        colorOjos = txtColorOjos.getText().toString();
-        estatura = txtEstatura.getText().toString();
+        nacionalidad = cargarInfoLat;
+        colorOjos = cargarInfoLong;
+        /*estatura = txtEstatura.getText().toString();
         complexion = txtComplexion.getText().toString();
         fechaNacimiento = txtFechaNacimiento.getText().toString();
         fechaHechos = txtFechaHechos.getText().toString();
         lugarHechos = txtLugarHechos.getText().toString();
         descripcionHechos = txtDescripcionHechos.getText().toString();*/
-        nacionalidad = "MEXICANA";
-        colorOjos = "CAFÉ";
         estatura = "1.50";
-        complexion = "DELGADO";
         fechaNacimiento = "01/01/2000";
         lugarHechos = "OAXACA"; //poner el numero de telefono
         descripcionHechos = "DESAPARECIDO";
@@ -383,7 +401,7 @@ public class AlertaAmber extends AppCompatActivity {
                 .add("Nacionalidad",nacionalidad)
                 .add("ColorOjos",colorOjos)
                 .add("Estatura",estatura)
-                .add("Complexion",complexion)
+                .add("Complexion",cargarInfoTelefono)
                 .add("FechaNacimiento",fechaNacimiento)
                 .add("FechaHechos",fechaHechos)
                 .add("LugarHechos",lugarHechos)
@@ -423,7 +441,134 @@ public class AlertaAmber extends AppCompatActivity {
         });
     }
 
+    /*********************Apartir de aqui empezamos a obtener la direciones y coordenadas************************/
+    public void locationStart() {
+        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        AlertaAmber.Localizacion Local = new AlertaAmber.Localizacion();
+        Local.setAlertaAmber(this);
+        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!gpsEnabled) {
+            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(settingsIntent);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            return;
+        }
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
+        mensaje1 = "Localizacion agregada";
+        mensaje2 = "";
+        Log.i("HERE", mensaje1);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1000) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                locationStart();
+                return;
+            }
+        }
+    }
+
+    public void setLocation(Location loc) {
+        /***********Obtener la direccion de la calle a partir de la latitud y la longitud******************************/
+        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
+            try {
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<Address> list = geocoder.getFromLocation(
+                        loc.getLatitude(), loc.getLongitude(), 1);
+                if (!list.isEmpty()) {
+                    Address DirCalle = list.get(0);
+                    direccion = DirCalle.getAddressLine(0);
+                    municipio = DirCalle.getLocality();
+                    estado = DirCalle.getAdminArea();
+                    if (municipio != null) {
+                        municipio = DirCalle.getLocality();
+                    } else {
+                        municipio = "SIN INFORMACION";
+                    }
+                    Log.i("HERE", "dir" + direccion + "mun" + municipio + "est" + estado);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**************************Aqui empieza la Clase Localizacion********************************/
+    public class Localizacion implements LocationListener {
+        AlertaAmber alertaAmber;
+
+        public AlertaAmber getAltoALaViolencia() {
+            return alertaAmber;
+        }
+
+        public void setAlertaAmber(AlertaAmber alertaAmber1) {
+            this.alertaAmber = alertaAmber1;
+        }
+
+        @Override
+        public void onLocationChanged(Location loc) {
+            // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
+            // debido a la deteccion de un cambio de ubicacion
+            loc.getLatitude();
+            loc.getLongitude();
+            lat = loc.getLatitude();
+            lon = loc.getLongitude();
+            guardarCoor();
+            String Text = "Lat = " + loc.getLatitude() + "\n Long = " + loc.getLongitude();
+            mensaje1 = Text;
+            Log.i("HERE", mensaje1);
+            this.alertaAmber.setLocation(loc);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // Este metodo se ejecuta cuando el GPS es desactivado
+            mensaje1 = "GPS Desactivado";
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // Este metodo se ejecuta cuando el GPS es activado
+            mensaje1 = "GPS Activado";
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            switch (status) {
+                case LocationProvider.AVAILABLE:
+                    Log.d("debug", "LocationProvider.AVAILABLE");
+                    break;
+                case LocationProvider.OUT_OF_SERVICE:
+                    Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
+                    break;
+                case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                    Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
+                    break;
+            }
+        }
+    }
+
     //********************* GENERA EL NÚMERO ALEATORIO PARA EL FOLIO *****************************//
+    /****************SE GUARDA LA INFO DE LAS COORDENADAS****************/
+
+    private void guardarCoor() {
+        share = getSharedPreferences("main", MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("LATITUDE", lat.toString());
+        editor.putString("LONGITUDE", lon.toString());
+        editor.commit();
+        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
+    }
+    //*********************************************************************//
+    public void cargarLatLong() {
+        share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
+        cargarInfoLat = share.getString("LATITUDE", "SIN INFORMACION");
+        cargarInfoLong = share.getString("LONGITUDE", "SIN INFORMACION");
+        cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
+    }
     public void Random(){
         Random random = new Random();
         numberRandom = random.nextInt(9000)*99;

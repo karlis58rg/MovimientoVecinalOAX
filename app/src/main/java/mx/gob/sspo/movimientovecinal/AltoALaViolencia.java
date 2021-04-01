@@ -1,11 +1,13 @@
 package mx.gob.sspo.movimientovecinal;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -14,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -63,6 +66,7 @@ public class AltoALaViolencia extends AppCompatActivity {
     Double lat,lon;
     String respuestaJson,m_Item1;
     int wAltoViolencia = 0;
+    public static final int ACTION_APPWIDGET_BIND = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +90,13 @@ public class AltoALaViolencia extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            wAltoViolencia= 1;
-                            guardarActividad();
                             AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
                             ComponentName myProvider = new ComponentName(getApplication(), MiWidget.class);
                             if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
                                 mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
                             }
                             finish();
+
                         }
                     })
                     .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
@@ -107,12 +110,6 @@ public class AltoALaViolencia extends AppCompatActivity {
             alert.show();
         }
 
-
-        /*if(cargarInfoUserRegistrado == 0){
-            getUserViolencia();
-        }else if(cargarInfoUserRegistrado == 1) {
-            insertUserRegistrado();
-        }*/
 
         btnViolencia = findViewById(R.id.btnViolencia);
         home = findViewById(R.id.imgHomeViolencia);
@@ -349,13 +346,6 @@ public class AltoALaViolencia extends AppCompatActivity {
         share = getSharedPreferences("main", MODE_PRIVATE);
         editor = share.edit();
         editor.putInt("BANDERAUSERREGISTRADO", cargarInfoVictimaUserRegistrado);
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
-    }
-    private void guardarActividad() {
-        share = getSharedPreferences("main",MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("VIOLENCIA", wAltoViolencia );
         editor.commit();
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }

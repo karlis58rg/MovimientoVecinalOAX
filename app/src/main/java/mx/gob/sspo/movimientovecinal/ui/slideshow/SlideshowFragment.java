@@ -3,9 +3,12 @@ package mx.gob.sspo.movimientovecinal.ui.slideshow;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +23,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import mx.gob.sspo.movimientovecinal.AltoALaViolencia;
+import mx.gob.sspo.movimientovecinal.MensajeSalidaAltoViolencia;
 import mx.gob.sspo.movimientovecinal.MiWidget;
 import mx.gob.sspo.movimientovecinal.R;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
     Button btnCrear;
-    public static int num_imag_violencia = 0;
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    int widgetViolencia = 0,cargarInfoWViolencia;
+    String cargarInfoTelefono,respuestaJson,m_Item1;
+    int widgetViolencia = 0,cargarInfoWViolencia,cargarInfoUserRegistrado,cargarInfoVictimaUserRegistrado;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +54,9 @@ public class SlideshowFragment extends Fragment {
         /*************************************************************/
         //*****************************************************************//
         cargarServicio();
+        if(cargarInfoUserRegistrado != 1){
+            getUserViolencia();
+        }
         btnCrear = root.findViewById(R.id.boton_crear_widget);
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +67,6 @@ public class SlideshowFragment extends Fragment {
                 if(cargarInfoWViolencia == 1){
                     Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
                 }else{
-                    widgetViolencia = 1;
-                    guardarActividad();
                     AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
                     ComponentName myProvider = new ComponentName(v.getContext(), MiWidget.class);
                     if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
@@ -62,17 +78,65 @@ public class SlideshowFragment extends Fragment {
 
         return root;
     }
+    /******************GET A LA BD***********************************/
+    public void getUserViolencia() {
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
+                .build();
 
-    private void guardarActividad() {
-        share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare();
+                Toast.makeText(getContext(),"ERROR AL OBTENER LA INFORMACIÓN, POR FAVOR VERIFIQUE SU CONEXIÓN A INTERNET",Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    SlideshowFragment.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jObj = null;
+                                String resObj = myResponse;
+                                System.out.println(resObj);
+                                jObj = new JSONObject("" + resObj + "");
+                                respuestaJson = jObj.getString("m_Item1");
+                                m_Item1 = "SIN INFORMACION";
+                                if (respuestaJson.equals(m_Item1)) {
+                                    Intent i = new Intent(getContext(), MensajeSalidaAltoViolencia.class);
+                                    startActivity(i);
+                                    getActivity().finish();
+                                } else {
+                                    cargarInfoVictimaUserRegistrado = 1;
+                                    guardarUserRegistrado();
+                                    Log.i("HERE", "" + jObj);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void guardarUserRegistrado() {
+        share = getActivity().getSharedPreferences("main", getContext().MODE_PRIVATE);
         editor = share.edit();
-        editor.putInt("VIOLENCIA", widgetViolencia );
+        editor.putInt("BANDERAUSERREGISTRADO", cargarInfoVictimaUserRegistrado);
         editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
     private void cargarServicio(){
         share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
         cargarInfoWViolencia = share.getInt("VIOLENCIA", 0);
-        //Toast.makeText(getApplicationContext(),cargarInfoServicio,Toast.LENGTH_LONG).show();
+        cargarInfoUserRegistrado = share.getInt("BANDERAUSERREGISTRADO", 0);
+        cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
     }
 }

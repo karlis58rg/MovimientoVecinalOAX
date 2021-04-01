@@ -283,7 +283,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
         avatar2.buildDrawingCache();
         Bitmap bitmap = avatar2.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, baos);
         byte[] imgBytes = baos.toByteArray();
         String imgString = android.util.Base64.encodeToString(imgBytes, android.util.Base64.NO_WRAP);
         cadena = imgString;

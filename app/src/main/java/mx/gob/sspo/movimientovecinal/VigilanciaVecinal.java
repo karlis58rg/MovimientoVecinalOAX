@@ -64,9 +64,8 @@ public class VigilanciaVecinal extends AppCompatActivity {
         cargarUserRegistrado();
         Random();
         if(cargarInfoUserRegistradoVigilancia != 1){
-            getUserVigilancia();
+            getUserExistVV();
         }
-
         if(cargarInfoWalertaVecinal == 1){
             Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
             getUserVigilancia();
@@ -79,8 +78,6 @@ public class VigilanciaVecinal extends AppCompatActivity {
                         @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            wAlertaVecinal= 1;
-                            guardarActividad();
                             AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
                             ComponentName myProvider = new ComponentName(getApplication(), MiWidgetVV.class);
                             if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
@@ -120,6 +117,46 @@ public class VigilanciaVecinal extends AppCompatActivity {
     }
 
     /******************GET A LA BD***********************************/
+    public void getUserExistVV() {
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("http://187.174.102.142/AppMovimientoVecinal/api/VigilanciaVecinal?telefonoVV="+cargarInfoTelefono)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare();
+                Toast.makeText(getApplicationContext(),"ERROR AL OBTENER LA INFORMACIÓN, POR FAVOR VERIFIQUE SU CONEXIÓN A INTERNET",Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    VigilanciaVecinal.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final String resp = myResponse;
+                            final String valor = "true";
+                            if(resp.equals(valor)){
+                                guardarInfoUserRegistradoVigilancia = 1;
+                                guardarUsuarioVV();
+                            }else{
+                                Intent i = new Intent(VigilanciaVecinal.this,MensajeSalidaVigilanciaVecinal.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i("HERE", resp);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /******************GET A LA BD***********************************/
     public void getUserVigilancia() {
         //*************** FECHA **********************//
         Date date = new Date();
@@ -151,32 +188,10 @@ public class VigilanciaVecinal extends AppCompatActivity {
                     VigilanciaVecinal.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                JSONObject jObj = null;
-                                String resObj = myResponse;
-                                System.out.println(resObj);
-                                jObj = new JSONObject("" + resObj + "");
-                                respuestaJson = jObj.getString("m_Item1");
-                                m_Item1 = "SIN INFORMACION";
-                                if (respuestaJson.equals(m_Item1)) {
-                                    Intent i = new Intent(VigilanciaVecinal.this,MensajeSalidaVigilanciaVecinal.class);
-                                    startActivity(i);
-                                    finish();
-                                } else if(cargarInfoWalertaVecinal == 1) {
-                                    Intent i = new Intent(VigilanciaVecinal.this,MensajeEnviadoVigilanciaVecinal.class);
-                                    startActivity(i);
-                                    Log.i("HERE", "" + jObj);
-                                    finish();
-                                }else {
-                                    guardarInfoUserRegistradoVigilancia = 1;
-                                    guardarUsuarioVV();
-                                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(VigilanciaVecinal.this,MensajeEnviadoVigilanciaVecinal.class);
+                            startActivity(i);
+                            finish();
                         }
                     });
                 }
@@ -198,13 +213,6 @@ public class VigilanciaVecinal extends AppCompatActivity {
         cargarInfoUserRegistradoVigilancia = share.getInt("BANDERAUSERVIGILANCIAVECINAL", 0);
     }
 
-    private void guardarActividad() {
-        share = getSharedPreferences("main",MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("ALERTAVECINAL", wAlertaVecinal );
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
-    }
 
     //********************* GENERA EL NÚMERO ALEATORIO PARA EL FOLIO *****************************//
     public void Random(){
