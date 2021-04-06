@@ -35,17 +35,31 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Alerta Vecinal” como se muestra a continuación. "
+        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Alerta Vecinal” como se muestra a continuación.\n\n"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgVV" />
+
+    <TextView
+        android:id="@+id/lblTerceroVigilancia"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Cargando..."
+        android:textAlignment="center"
+        android:textColor="@color/colorAltoViolencia"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/boton_crear_widget_vigilancia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Crear Widget Alerta Vecinal"
+        android:text="Crear widget Alerta Vecinal"
         android:background="@drawable/btn_redondo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

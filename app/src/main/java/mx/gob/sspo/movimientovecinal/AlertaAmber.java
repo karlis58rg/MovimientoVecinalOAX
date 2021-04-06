@@ -242,23 +242,24 @@ public class AlertaAmber extends AppCompatActivity {
         btnEnviarAlertaAmber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtNombreAlerta.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "EL NOMBRE ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if (txtNombreAlerta.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL NOMBRE NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtApaternoAlerta.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "EL A. PATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if(txtApaternoAlerta.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. PATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtAmaternoAlerta.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "EL A. MATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if(txtAmaternoAlerta.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtEdad.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "LA EDAD ES NECESARIA", Toast.LENGTH_LONG).show();
-                }else if(varSexo == null){
-                    Toast.makeText(getApplicationContext(), "EL SEXO ES NECESARIO", Toast.LENGTH_LONG).show();
-                }
+                try {
+                    if(txtNombreAlerta.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "EL NOMBRE ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if (txtNombreAlerta.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL NOMBRE NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtApaternoAlerta.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "EL A. PATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if(txtApaternoAlerta.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. PATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtAmaternoAlerta.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "EL A. MATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if(txtAmaternoAlerta.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, EL A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtEdad.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "LA EDAD ES NECESARIA", Toast.LENGTH_LONG).show();
+                    }else if(varSexo == null){
+                        Toast.makeText(getApplicationContext(), "EL SEXO ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }
                 /*else if(txtNacionalidad.getText().length() < 3 || txtNacionalidad.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA NACIONALIDAD NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
                 }else if(txtColorOjos.getText().length() < 3 || txtColorOjos.getText().toString().isEmpty()) {
@@ -276,12 +277,18 @@ public class AlertaAmber extends AppCompatActivity {
                 }else if(txtDescripcionHechos.getText().length() < 3 || txtDescripcionHechos.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA DESCRIPCIÓN DE LOS HECHOS NO PUEDE SER MENOR A 3 LETRA NI CONTENER ESPACIOS EN BLANCO", Toast.LENGTH_LONG).show();
                 }*/
-                else if(banderaFoto == 0){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA FOTOGRAFIA ES NECESARIA PARA LA BUSQUEDA DE LA PERSONA DESAPARECIDA", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
-                    insertImagenDesaparecido();
-                    insertUserDesaparecido();
+                    else if(banderaFoto == 0){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, LA FOTOGRAFIA ES NECESARIA PARA LA BUSQUEDA DE LA PERSONA DESAPARECIDA", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
+                        insertImagenDesaparecido();
+                        insertUserDesaparecido();
+                    }
+
+                }catch (Exception e){
+                    Intent i = new Intent(AlertaAmber.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
                 }
             }
         });
@@ -296,7 +303,6 @@ public class AlertaAmber extends AppCompatActivity {
         Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         takePictureIntent.setType("image/");
         startActivityForResult(takePictureIntent.createChooser(takePictureIntent,"Selecciona la aplicación"),REQUEST_IMAGE_CAPTURE);
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

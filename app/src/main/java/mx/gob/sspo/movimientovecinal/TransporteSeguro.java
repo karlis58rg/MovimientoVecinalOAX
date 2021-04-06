@@ -158,6 +158,7 @@ public class TransporteSeguro extends AppCompatActivity {
         lyPlaca.setVisibility(View.INVISIBLE);
         lyEnviarPlaca.setVisibility(View.INVISIBLE);
 
+
         if(cargarInfoWtransporteSeguro == 1){
         }else {
             txtPlaca.setEnabled(false);
@@ -177,7 +178,7 @@ public class TransporteSeguro extends AppCompatActivity {
                             finish();
                         }
                     })
-                    .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
@@ -256,18 +257,27 @@ public class TransporteSeguro extends AppCompatActivity {
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtPlaca.length() > 10){
-                    nuc = txtPlaca.getText().toString();
-                    guardar();
-                    getNuc();
-                }else if(txtPlaca.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(),"EL CAMPO **PLACA** ES OBLIGATORIO",Toast.LENGTH_LONG).show();
-                }else{
-                    placa = txtPlaca.getText().toString();
-                    lblNoPlaca.setText(placa);
-                    guardar();
-                    getPlaca();
+                try {
+                    if(txtPlaca.length() > 10){
+                        nuc = txtPlaca.getText().toString();
+                        guardar();
+                        getNuc();
+                    }else if(txtPlaca.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(),"EL CAMPO **PLACA** ES OBLIGATORIO",Toast.LENGTH_LONG).show();
+                    }else{
+                        placa = txtPlaca.getText().toString();
+                        lblNoPlaca.setText(placa);
+                        guardar();
+                        getPlaca();
+                    }
+
+                }catch (Exception e){
+                    Intent i = new Intent(TransporteSeguro.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
                 }
+
+
             }
         });
 

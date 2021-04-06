@@ -40,7 +40,7 @@
         android:id="@+id/lblUsuarioNoRegistrado"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Este botón únicamente estará disponible para las usuarias que tengan un número de registro y que se encuentren en un proceso de seguimiento con la Secretaría de las Mujeres de Oaxaca."
+        android:text="Este botón únicamente estará disponible para las usuarias que tengan un número de registro y que se encuentren en un proceso de seguimiento con la Secretaría de las Mujeres de Oaxaca.\n\n"
         android:textColor="@color/colorAltoViolencia"
         android:textSize="20sp"
         android:layout_marginTop="80dp"
@@ -50,14 +50,12 @@
 
     <ImageView
         android:id="@+id/img911"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblUsuarioNoRegistrado"
-        app:srcCompat="@drawable/ic_911blanco"
-        android:scaleY="2"
-        android:scaleX="1.9"
+        android:background="@drawable/ic_911blanco"
         android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

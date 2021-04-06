@@ -126,36 +126,42 @@ public class FormRegistroUsuario extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtNombre.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "SU NOMBRE ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if (txtNombre.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU NOMBRE NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtApaterno.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "SU A. PATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if(txtApaterno.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. PATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtAmaterno.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "SU A. MATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if(txtAmaterno.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtDireccion.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "SU DIRECCIÓN ES NECESARIA", Toast.LENGTH_LONG).show();
-                }else if(txtDireccion.getText().length() < 3){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. DIRECCIÓN NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
-                }else if(txtNoConfianza.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "EL NÓ DE ALGUN CONTACTO DE CONFIANZA ES NECESARIO", Toast.LENGTH_LONG).show();
-                }else if(txtNoConfianza.getText().length() < 10){
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU NO TELEFóNICO NO PUEDE SER MENOR A 10 NÚMEROS", Toast.LENGTH_LONG).show();
-                }else if(banderaFoto == 0) {
-                    Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU FOTOGRAFIA ES NECESARIA PARA EL USO DE ESTA APLICACIÓN", Toast.LENGTH_LONG).show();
-                }else if(bandera == 1){
-                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
-                    insertUserNoRegistrado();
-                    insertImagen();
-                }else{
-                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
-                    updateUserRegistrado();
-                    insertImagen();
+                try {
+                    if(txtNombre.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "SU NOMBRE ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if (txtNombre.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU NOMBRE NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtApaterno.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "SU A. PATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if(txtApaterno.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. PATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtAmaterno.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "SU A. MATERNO ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if(txtAmaterno.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. MATERNO NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtDireccion.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "SU DIRECCIÓN ES NECESARIA", Toast.LENGTH_LONG).show();
+                    }else if(txtDireccion.getText().length() < 3){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU A. DIRECCIÓN NO PUEDE SER MENOR A 3 LETRAS", Toast.LENGTH_LONG).show();
+                    }else if(txtNoConfianza.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "EL NÓ DE ALGUN CONTACTO DE CONFIANZA ES NECESARIO", Toast.LENGTH_LONG).show();
+                    }else if(txtNoConfianza.getText().length() < 10){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU NO TELEFóNICO NO PUEDE SER MENOR A 10 NÚMEROS", Toast.LENGTH_LONG).show();
+                    }else if(banderaFoto == 0) {
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU FOTOGRAFIA ES NECESARIA PARA EL USO DE ESTA APLICACIÓN", Toast.LENGTH_LONG).show();
+                    }else if(bandera == 1){
+                        Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
+                        insertUserNoRegistrado();
+                        insertImagen();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
+                        updateUserRegistrado();
+                        insertImagen();
+                    }
+                }catch (Exception e){
+                    Intent i = new Intent(FormRegistroUsuario.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
                 }
             }
         });
@@ -283,7 +289,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
         avatar2.buildDrawingCache();
         Bitmap bitmap = avatar2.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
         byte[] imgBytes = baos.toByteArray();
         String imgString = android.util.Base64.encodeToString(imgBytes, android.util.Base64.NO_WRAP);
         cadena = imgString;

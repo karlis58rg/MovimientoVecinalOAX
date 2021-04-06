@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
     <string name="msg_subscribed">INSCRITO</string>
     <string name="msg_subscribe_failed">ERROR AL INSCRIBIRSE</string>
-    <string name="letras_permitidas">A BCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="letras_permitidas">A BCDEFGHIJKLMÑNOPQRSTUVWXYZ</string>
 
     <string name="menu_home">Menú principal</string>
     <string name="menu_gallery">¿Qué es?</string>
@@ -35,6 +35,12 @@
     <string name="add_widget_vv">Agregar acceso alerta vecinal</string>
 
     <string name="default_notification_channel_id" translatable="false">GENERAL_CHANEL</string>
+    <string name="title_activity_mensaje_error">MensajeError</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 
 
 </resources>

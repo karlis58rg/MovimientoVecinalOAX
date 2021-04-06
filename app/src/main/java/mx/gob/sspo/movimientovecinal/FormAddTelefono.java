@@ -47,15 +47,20 @@ public class FormAddTelefono extends AppCompatActivity {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtNumeroUsuario.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(),"SU NÚMERO TELEFÓNICO ES NECESARIO PARA PROCESAR LA SOLICITUD",Toast.LENGTH_SHORT).show();
-                }else if(txtNumeroUsuario.getText().length() < 10){
-                    Toast.makeText(getApplicationContext(),"LO SENTIMOS SU NÚMERO TELEFÓNICO NO PUEDE SER MENOR A 10 DIGITOS",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                    getUser();
+                try {
+                    if(txtNumeroUsuario.getText().toString().isEmpty()){
+                        Toast.makeText(getApplicationContext(),"SU NÚMERO TELEFÓNICO ES NECESARIO PARA PROCESAR LA SOLICITUD",Toast.LENGTH_SHORT).show();
+                    }else if(txtNumeroUsuario.getText().length() < 10){
+                        Toast.makeText(getApplicationContext(),"LO SENTIMOS SU NÚMERO TELEFÓNICO NO PUEDE SER MENOR A 10 DIGITOS",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                        getUser();
+                    }
+                }catch (Exception e){
+                    Intent i = new Intent(FormAddTelefono.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
                 }
-
             }
         });
 

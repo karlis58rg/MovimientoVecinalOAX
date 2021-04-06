@@ -23,7 +23,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Para detener el envió de su ubicación, debe presionar el botón **Detener** ubicado dentro de la notificación emergencte, en su centro de notificaciones"
+            android:text="Para detener el envió de su ubicación, debe presionar el botón **Detener** ubicado dentro de la notificación emergencte, en su centro de notificaciones.\n\n"
             android:textColor="@color/colorAltoViolencia"
             android:textStyle="bold"
             android:textSize="18dp"

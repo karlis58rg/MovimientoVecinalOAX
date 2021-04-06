@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -32,6 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import me.biubiubiu.justifytext.library.JustifyTextView;
 import mx.gob.sspo.movimientovecinal.MensajeEnviadoVigilanciaVecinal;
 import mx.gob.sspo.movimientovecinal.MensajeSalidaVigilanciaVecinal;
 import mx.gob.sspo.movimientovecinal.MenuEventos;
@@ -49,11 +52,12 @@ public class Vigilancia extends Fragment {
 
     private VigilanciaViewModel mViewModel;
     Button btnCrear;
+    TextView lblTitulo,lblCargando;
+    ImageView imgVV;
+    JustifyTextView lblCuerpo;
     SharedPreferences share;
-    SharedPreferences.Editor editor;
-    int widgetVigilanciaV = 0,cargarInfoWVigilanciaV;
-    String cargarInfoTelefono,respuestaJson,m_Item1,fecha,hora;
-    int cargarInfoUserRegistradoVigilancia,guardarInfoUserRegistradoVigilancia;
+    int cargarInfoWVigilanciaV;
+    String cargarInfoTelefono;
 
 
     public static Vigilancia newInstance() {
@@ -67,16 +71,32 @@ public class Vigilancia extends Fragment {
         /*************************************************************/
         //*****************************************************************//
         cargarServicio();
-       if(cargarInfoUserRegistradoVigilancia != 1){
-            getUserVigilanciaExist();
-        }
+        lblTitulo = root.findViewById(R.id.lblVigilanciaVecinal);
+        imgVV = root.findViewById(R.id.imgVV);
+        lblCuerpo = root.findViewById(R.id.lblSegundoVigilancia);
+        lblCargando = root.findViewById(R.id.lblTerceroVigilancia);
         btnCrear = root.findViewById(R.id.boton_crear_widget_vigilancia);
+
+        lblTitulo.setVisibility(View.GONE);
+        imgVV.setVisibility(View.GONE);
+        btnCrear.setVisibility(View.GONE);
+        lblCuerpo.setVisibility(View.GONE);
+        getUserVigilanciaExist();
+
+        if(cargarInfoWVigilanciaV == 1){
+            btnCrear.setText("WIDGET CREADO");
+            btnCrear.setEnabled(false);
+        }
+
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+                cargarServicio();
                 if(cargarInfoWVigilanciaV == 1){
+                    btnCrear.setText("WIDGET CREADO");
+                    btnCrear.setEnabled(false);
                     Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
                 }else{
                     AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
@@ -114,8 +134,11 @@ public class Vigilancia extends Fragment {
                             final String resp = myResponse;
                             final String valor = "true";
                             if(resp.equals(valor)){
-                                guardarInfoUserRegistradoVigilancia = 1;
-                                guardarUsuarioVV();
+                                lblTitulo.setVisibility(View.VISIBLE);
+                                imgVV.setVisibility(View.VISIBLE);
+                                btnCrear.setVisibility(View.VISIBLE);
+                                lblCuerpo.setVisibility(View.VISIBLE);
+                                lblCargando.setVisibility(View.GONE);
                             }else{
                                 Intent i = new Intent(getContext(),MensajeSalidaVigilanciaVecinal.class);
                                 startActivity(i);
@@ -139,13 +162,7 @@ public class Vigilancia extends Fragment {
     private void cargarServicio(){
         share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
         cargarInfoWVigilanciaV = share.getInt("ALERTAVECINAL", 0);
-        cargarInfoUserRegistradoVigilancia = share.getInt("BANDERAUSERVIGILANCIAVECINAL", 0);
-    }
-    private void guardarUsuarioVV() {
-        share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("BANDERAUSERVIGILANCIAVECINAL", guardarInfoUserRegistradoVigilancia );
-        editor.commit();
+        cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
     }
 
 }

@@ -56,7 +56,7 @@
 \n\nPARA EL CASO DE QUERER DENUNCIAR DE MANERA ANÓNIMA UN POSIBLE DELITO QUE REQUIERA SER INVESTIGADO, SE PONE A DISPOSICIÓN LA LÍNEA 089. O EL PORTAL DE INTERNET: HTTPS://SSPO.GOB.MX/?PAGE_ID=38
 \n\n5.- DE LA VIGENCIA Y TEMPORALIDAD.
 \n\nLa vigencia y temporalidad de las respectivas ordenes, medidas de protección o cautelares, es determinado por la autoridad competente que las emite, por lo que el C4 sin mayor responsabilidad queda únicamente sujeto a respetar dicha temporalidad y vigencia.
-\n\n6.- TÉRMINO. El Gobierno del Estado de Oaxaca a través del C4 puede terminar, cambiar, suspender o descontinuar cualquier aspecto de “LA APP” en cualquier momento. De igual manera se puede restringir, suspender o terminar su acceso “LA APP” si creemos que usted está en incumplimiento de nuestros términos y condiciones o de la ley aplicable, o por cualquier otra razón sin notificación o responsabilidad."
+\n\n6.- TÉRMINO. El Gobierno del Estado de Oaxaca a través del C4 puede terminar, cambiar, suspender o descontinuar cualquier aspecto de “LA APP” en cualquier momento. De igual manera se puede restringir, suspender o terminar su acceso “LA APP” si creemos que usted está en incumplimiento de nuestros términos y condiciones o de la ley aplicable, o por cualquier otra razón sin notificación o responsabilidad.\n\n"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 

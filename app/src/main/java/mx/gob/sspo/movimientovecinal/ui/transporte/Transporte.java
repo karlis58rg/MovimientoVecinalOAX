@@ -45,12 +45,19 @@ public class Transporte extends Fragment {
         //*****************************************************************//
         cargarServicio();
         btnCrear = root.findViewById(R.id.boton_crear_widget_transporte);
+        if(cargarInfoWtransporteSeguro == 1){
+            btnCrear.setText("WIDGET CREADO");
+            btnCrear.setEnabled(false);
+        }
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+                cargarServicio();
                 if(cargarInfoWtransporteSeguro == 1){
+                    btnCrear.setText("WIDGET CREADO");
+                    btnCrear.setEnabled(false);
                     Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
                 }else{
                     AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);

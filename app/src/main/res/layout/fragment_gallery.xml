@@ -33,7 +33,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
-                android:text="El Gobierno del Estado de Oaxaca presenta LA APP Móvil OAXACA SEGURO, disponible para facilitar las alertas de la ciudadanía Oaxaqueña al Servicio de llamadas del 911 Oaxaca."
+                android:text="El Gobierno del Estado de Oaxaca presenta LA APP Móvil OAXACA SEGURO, disponible para facilitar las alertas de la ciudadanía Oaxaqueña al Servicio de llamadas del 911 Oaxaca.\n\n"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 

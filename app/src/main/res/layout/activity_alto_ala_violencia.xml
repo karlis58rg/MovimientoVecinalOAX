@@ -36,6 +36,20 @@
         app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
         app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround" />
 
+    <TextView
+        android:id="@+id/lblCodigoMujerC"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Cargando..."
+        android:textAlignment="center"
+        android:textColor="@color/colorAltoViolencia"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/lyViolencia"
         android:layout_width="match_parent"

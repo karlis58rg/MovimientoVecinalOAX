@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import me.biubiubiu.justifytext.library.JustifyTextView;
 import mx.gob.sspo.movimientovecinal.AltoALaViolencia;
 import mx.gob.sspo.movimientovecinal.MensajeSalidaAltoViolencia;
 import mx.gob.sspo.movimientovecinal.MiWidget;
@@ -42,10 +44,12 @@ public class SlideshowFragment extends Fragment {
 
     private SlideshowViewModel slideshowViewModel;
     Button btnCrear;
+    TextView lblTitulo,lblCargando;
+    ImageView imgCM;
+    JustifyTextView lblCuerpo;
     SharedPreferences share;
-    SharedPreferences.Editor editor;
     String cargarInfoTelefono,respuestaJson,m_Item1;
-    int widgetViolencia = 0,cargarInfoWViolencia,cargarInfoUserRegistrado,cargarInfoVictimaUserRegistrado;
+    int cargarInfoWViolencia;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,17 +58,32 @@ public class SlideshowFragment extends Fragment {
         /*************************************************************/
         //*****************************************************************//
         cargarServicio();
-        if(cargarInfoUserRegistrado != 1){
-            getUserViolencia();
-        }
+        lblTitulo = root.findViewById(R.id.lblPrincipal);
+        imgCM = root.findViewById(R.id.imgCM);
+        lblCuerpo = root.findViewById(R.id.lblSegundo);
+        lblCargando = root.findViewById(R.id.lblTerceroCodigoMujer);
         btnCrear = root.findViewById(R.id.boton_crear_widget);
+
+        lblTitulo.setVisibility(View.GONE);
+        imgCM.setVisibility(View.GONE);
+        lblCuerpo.setVisibility(View.GONE);
+        btnCrear.setVisibility(View.GONE);
+        getUserViolencia();
+
+        if(cargarInfoWViolencia == 1){
+            btnCrear.setText("WIDGET CREADO");
+            btnCrear.setEnabled(false);
+        }
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+                cargarServicio();
                 if(cargarInfoWViolencia == 1){
+                    btnCrear.setText("WIDGET CREADO");
+                    btnCrear.setEnabled(false);
                     Toast.makeText(getContext(), "LO SENTIMOS, USTED YA CUENTA CON UN ACCESO DIRECTO EN EL MENÚ DE SU DISPOSITIVO", Toast.LENGTH_LONG).show();
                 }else{
                     AppWidgetManager mAppWidgetManager = v.getContext().getSystemService(AppWidgetManager.class);
@@ -112,8 +131,11 @@ public class SlideshowFragment extends Fragment {
                                     startActivity(i);
                                     getActivity().finish();
                                 } else {
-                                    cargarInfoVictimaUserRegistrado = 1;
-                                    guardarUserRegistrado();
+                                    lblTitulo.setVisibility(View.VISIBLE);
+                                    imgCM.setVisibility(View.VISIBLE);
+                                    lblCuerpo.setVisibility(View.VISIBLE);
+                                    btnCrear.setVisibility(View.VISIBLE);
+                                    lblCargando.setVisibility(View.GONE);
                                     Log.i("HERE", "" + jObj);
                                 }
 
@@ -126,17 +148,9 @@ public class SlideshowFragment extends Fragment {
             }
         });
     }
-
-    private void guardarUserRegistrado() {
-        share = getActivity().getSharedPreferences("main", getContext().MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("BANDERAUSERREGISTRADO", cargarInfoVictimaUserRegistrado);
-        editor.commit();
-    }
     private void cargarServicio(){
         share = getActivity().getSharedPreferences("main",getContext().MODE_PRIVATE);
         cargarInfoWViolencia = share.getInt("VIOLENCIA", 0);
-        cargarInfoUserRegistrado = share.getInt("BANDERAUSERREGISTRADO", 0);
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
     }
 }

@@ -101,32 +101,8 @@
 \n\nEl usuario reconoce que al instalar y utilizar el servicio APP OAXACA SEGURO, el C4 recaba, utiliza, transmite y trata sus datos personales, con el fin de prestar el servicio, por lo que usted acepta y otorga su consentimiento para que se lleven a cabo dichas acciones. Asimismo, se le informa que sus datos personales recabados serán protegidos, incorporados y tratados en el sistema de Datos Personales del Servicio de Atención a Llamadas de Emergencia “9-1-1-”.
 \n\nXI.- Medio para comunicar cambios al Aviso de Privacidad.
 \n\nEl C4 se reserva el derecho de cambiar, modificar, agregar o eliminar partes del presente Aviso de Privacidad en cualquier momento. En tal caso, se publicarán dichas modificaciones en la plataforma tecnológica e indicará la fecha de última versión del aviso. Para cualquier duda en materia de privacidad de datos por favor envíe un correo electrónico al C4 y con gusto será atendida.
-\n\nMANIFIESTO QUE HE LEÍDO, Y AL REALIZAR MI REGISTRO INICIAL A TRAVÉS DEL MEDIO ELECTRÓNICO APP OAXACA SEGURO, ACEPTO DE CONFORMIDAD EL PRESENTE AVISO DE PRIVACIDAD Y LOS TÉRMINOS Y CONDICIONES QUE ALINEAN EL USO DE LA HERRAMIENTA DE ALERTAMIENTO APP OAXACA SEGURO LIGADO A MI IDENTIDAD, NÚMERO TELEFÓNICO Y UBICACIÓN GPS. OAXACA, MEXICO FECHA DE REGISTRO
-."
+\n\nMANIFIESTO QUE HE LEÍDO, Y AL REALIZAR MI REGISTRO INICIAL A TRAVÉS DEL MEDIO ELECTRÓNICO APP OAXACA SEGURO, ACEPTO DE CONFORMIDAD EL PRESENTE AVISO DE PRIVACIDAD Y LOS TÉRMINOS Y CONDICIONES QUE ALINEAN EL USO DE LA HERRAMIENTA DE ALERTAMIENTO APP OAXACA SEGURO LIGADO A MI IDENTIDAD, NÚMERO TELEFÓNICO Y UBICACIÓN GPS. OAXACA, MEXICO FECHA DE REGISTRO.\n\n"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/lblApartadoCM"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:text="CÓDIGO MUJER"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/lblSegundo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="La Secretaría de las Mujeres de Oaxaca es responsable del tratamiento de los datos personales que se recaben durante las entrevistas, servicios, estrategias jurídicas, realizar escritos, realizar acciones legales ante las instancias de administración y procuración de justicia, que se sigan a su favor como parte de los servicios de atención que se brindan en el Centro PAIMEF de Atención Integral a Mujeres en Situación de Violencia de Género. De acuerdo a la Ley de Transparencia y Acceso a la Información Pública para el Estado de Oaxaca, en relación con la Ley de Datos Personales en Posesión de Sujetos Obligados del Estado de Oaxaca, la información proporcionada al personal de esta Secretaría tendrá el carácter de reservada; por lo que estos datos se incorporarán y tratarán con fines de registro, seguimiento, entrega de apoyos, y/o estadísticos, en los sistemas que la Secretaría de las Mujeres de Oaxaca, haciéndose responsable de los expedientes internos que se integren. El derecho de Acceso, Rectificación, Cancelación y Oposición (ARCO), se podrá ejercer ante la oficina de la Unidad de Transparencia, ubicada en Heroica Escuela Naval Militar número 221, Colonia Reforma, Oaxaca de Juárez, Oaxaca. C.P. 68050, teléfono 951 132 82 43, de lunes a viernes de 9:00 a 17:00 horas en días hábiles. \n\n Por lo que, una vez que se me ha explicado el tratamiento de mis datos personales, expreso mi consentimiento de manera libre e informada para que los datos que proporcioné sean registrados con fines estadísticos y puedan ser únicamente comunicados o transmitidos al personal del Centro PAIMEF que me brinde atención de los diversos servicios que necesito."
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="50dp"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </LinearLayout>

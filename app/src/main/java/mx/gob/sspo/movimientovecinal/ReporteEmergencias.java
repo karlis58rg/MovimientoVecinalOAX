@@ -2,8 +2,14 @@ package mx.gob.sspo.movimientovecinal;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,9 +22,12 @@ import android.location.Location;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -85,6 +94,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     Location aux_loc;
     String direccion1, municipio, estado;
     ScrollView scroll;
+    AlertDialog alert = null;
 
     /************** EVENTOS*****************/
     EditText txtDescEmergencia;
@@ -96,6 +106,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     int bandera = 0;
     int status = 0;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_GALERY_CAPTURE = 2;
     static final int REQUEST_VIDEO_CAPTURE = 1;
     String audioEncodeString, cadena, cadenaVideo, cadenaAudio, mediaPath;
     String fecha, hora, rutaMultimedia, descEmergencia;
@@ -110,6 +121,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     private MediaRecorder miGrabacion;
     SharedPreferences share;
     SharedPreferences.Editor editor;
+    Dialog myDialog;
+    TextView txtCamara,txtGaleria,txtCerrarNotificacion;
 
 
     public ReporteEmergencias() {
@@ -138,6 +151,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         //*****************************************************************//
         cargarDatos();
         Random();
+        myDialog = new Dialog(getContext());
         scroll = view.findViewById(R.id.scrollMap);
 
         home = view.findViewById(R.id.imgHome);
@@ -199,22 +213,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if (bandera == 2 || bandera == 3) {
-                    videoViewImage.clearAnimation();
-                    resetChronometro();
-                }*/
-                bandera = 1;
-                video.setVisibility(view.GONE);
-                audio.setVisibility(view.GONE);
-                imgImagen.setVisibility(view.VISIBLE);
-                imgSAlirImage.setVisibility(view.VISIBLE);
-                videoViewImage.setVisibility(view.GONE);
-                playAu.setVisibility(View.GONE);
-                recordAu.setVisibility(View.GONE);
-                detenerAudio.setVisibility(View.GONE);
-                tiempo.setVisibility(View.GONE);
-                llamarItem();
-                Toast.makeText(getActivity(), "PROCESANDO SU SOLICITUD DE IMAGEN", Toast.LENGTH_SHORT).show();
+                showPopUp(v);
             }
         });
 
@@ -254,6 +253,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 recordAu.setVisibility(view.VISIBLE);
                 detenerAudio.setVisibility(View.VISIBLE);
                 detenerAudio.setEnabled(false);
+                playAu.setVisibility(View.VISIBLE);
+                playAu.setEnabled(false);
                 tiempo.setVisibility(View.VISIBLE);
                 videoViewImage.setVisibility(view.GONE);
                 imgImagen.setVisibility(view.GONE);
@@ -264,48 +265,21 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         cancelarAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(correr == true){
-                    tiempo.stop();
-                    detenerse = SystemClock.elapsedRealtime() -tiempo.getBase();
-                    correr = false;
-                    stopChronometro();
-                }
-                bandera = 0;
-                resetChronometro();
-                recordAu.setVisibility(view.GONE);
-                detenerAudio.setVisibility(View.GONE);
-                tiempo.setVisibility(View.GONE);
-                playAu.setVisibility(View.GONE);
-                audioEncodeString = null;
-                photo.setVisibility(view.VISIBLE);
-                video.setVisibility(view.VISIBLE);
-                cancelarAudio.setVisibility(view.GONE);
+                alertaEliminarAudio();
             }
         });
 
         imgSAlirImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bandera = 0;
-                imgImagen.setImageBitmap(null);
-                imgImagen.destroyDrawingCache();
-                audio.setVisibility(view.VISIBLE);
-                video.setVisibility(view.VISIBLE);
-                imgImagen.setVisibility(View.GONE);
-                imgSAlirImage.setVisibility(view.GONE);
+                alertaEliminarImagen();
             }
         });
 
         imgSalirVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bandera = 0;
-                Log.i("SaliendoVideo", String.valueOf(bandera));
-                videoViewImage.setBackgroundResource(0);
-                videoViewImage.setVisibility(view.GONE);
-                audio.setVisibility(view.VISIBLE);
-                photo.setVisibility(view.VISIBLE);
-                imgSalirVideos.setVisibility(view.GONE);
+                alertaEliminarVideo();
             }
         });
 
@@ -333,45 +307,93 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         btnSendEmergencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                if (txtDescEmergencia.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
-                } else if (tv_add.getText().toString().isEmpty()) {
-                    Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
-                } else if (bandera == 1) {
+                try {
                     Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                    insertBdEventoIOS();
-                    insertImagen();
-                    Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                    //(i.putExtra("valorRandom", randomCodigoVerifi);
-                    startActivity(i);
-                    getActivity().onBackPressed();
-                } else if (bandera == 2) {
-                    Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                    insertBdEventoIOS();
-                    insertVideo();
-                    Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                    //i.putExtra("valorRandom", randomCodigoVerifi);
-                    startActivity(i);
-                    getActivity().onBackPressed();
-                } else if (bandera == 3) {
-                    recordAu.setVisibility(view.GONE);
-                    detenerAudio.setVisibility(view.GONE);
-                    playAu.setVisibility(view.GONE);
-                    tiempo.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                    insertBdEventoIOS();
-                    insertAudio();
-                    resetChronometro();
-                    Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                    // i.putExtra("valorRandom", randomCodigoVerifi);
-                    startActivity(i);
-                    getActivity().onBackPressed();
-                } else {
-                    Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                    insertBdEventoIOS();
-                    Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                    //i.putExtra("valorRandom", randomCodigoVerifi);
+                    if (txtDescEmergencia.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
+                    } else if (tv_add.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
+                    } else if (bandera == 1) {
+                        if(cadena.isEmpty()){
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            bandera = 0;
+                            insertBdEventoIOS();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                            //(i.putExtra("valorRandom", randomCodigoVerifi);
+                        }else{
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            insertImagen();
+                            insertBdEventoIOS();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            getActivity().onBackPressed();
+                            //(i.putExtra("valorRandom", randomCodigoVerifi);
+                        }
+
+                    } else if (bandera == 2) {
+                        if(cadenaVideo.isEmpty()){
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            bandera = 0;
+                            insertBdEventoIOS();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                            //i.putExtra("valorRandom", randomCodigoVerifi);
+                        }else{
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            insertBdEventoIOS();
+                            insertVideo();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            getActivity().onBackPressed();
+                            //i.putExtra("valorRandom", randomCodigoVerifi);
+                        }
+
+                    } else if (bandera == 3) {
+                        if(cadenaAudio.isEmpty()){
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            bandera = 0;
+                            recordAu.setVisibility(view.GONE);
+                            detenerAudio.setVisibility(view.GONE);
+                            playAu.setVisibility(view.GONE);
+                            tiempo.setVisibility(View.GONE);
+                            resetChronometro();
+                            insertBdEventoIOS();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                            // i.putExtra("valorRandom", randomCodigoVerifi);
+                        }else{
+                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            recordAu.setVisibility(view.GONE);
+                            detenerAudio.setVisibility(view.GONE);
+                            playAu.setVisibility(view.GONE);
+                            tiempo.setVisibility(View.GONE);
+                            insertBdEventoIOS();
+                            insertAudio();
+                            resetChronometro();
+                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                            startActivity(i);
+                            getActivity().onBackPressed();
+                            // i.putExtra("valorRandom", randomCodigoVerifi);
+                        }
+
+                    } else {
+                        Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                        insertBdEventoIOS();
+                        Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                        //i.putExtra("valorRandom", randomCodigoVerifi);
+                        startActivity(i);
+                        getActivity().onBackPressed();
+                    }
+
+                }catch (Exception e){
+                    Intent i = new Intent(getActivity(), MensajeError.class);
                     startActivity(i);
                     getActivity().onBackPressed();
                 }
@@ -531,6 +553,11 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
         }
     }
+    private  void llamarItemGaleria(){
+        Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        takePictureIntent.setType("image/");
+        startActivityForResult(takePictureIntent.createChooser(takePictureIntent,"SELECCIONA LA APLICACIÓN"),REQUEST_GALERY_CAPTURE);
+    }
     //********************************** VIDEO ***********************************//
     //****************************** PARA UTILIZACIÓN DEL VIDEO ***********************************//
 
@@ -551,13 +578,26 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 imgImagen.setImageBitmap(imageBitmap);
                 imagen();
-
+            }else if(requestCode == REQUEST_GALERY_CAPTURE && resultCode == Activity.RESULT_OK){
+                Uri path = data.getData();
+                imgImagen.setImageURI(path);
+                imgImagen.buildDrawingCache();
+                imagen();
             }else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_CANCELED){
                 imgImagen.setImageBitmap(null);
                 imgImagen.destroyDrawingCache();
                 imgImagen.setVisibility(View.GONE);
                 audio.setVisibility(View.VISIBLE);
                 video.setVisibility(View.VISIBLE);
+                imgSAlirImage.setVisibility(View.GONE);
+            }
+            else if(requestCode == REQUEST_GALERY_CAPTURE && resultCode == Activity.RESULT_CANCELED){
+                imgImagen.setImageBitmap(null);
+                imgImagen.destroyDrawingCache();
+                imgImagen.setVisibility(View.GONE);
+                audio.setVisibility(View.VISIBLE);
+                video.setVisibility(View.VISIBLE);
+                imgSAlirImage.setVisibility(View.GONE);
             }
         }else if(bandera == 2){
             super.onActivityResult(requestCode,resultCode,data);
@@ -622,10 +662,11 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         imgImagen.buildDrawingCache();
         Bitmap bitmap = imgImagen.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,70,baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG,40,baos);
         byte[] imgBytes = baos.toByteArray();
         String imgString = android.util.Base64.encodeToString(imgBytes, android.util.Base64.NO_WRAP);
         cadena = imgString;
+        Log.i("BASE64",cadena);
 
         imgBytes = android.util.Base64.decode(imgString, android.util.Base64.NO_WRAP);
         Bitmap decoded= BitmapFactory.decodeByteArray(imgBytes,0,imgBytes.length);
@@ -894,15 +935,17 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         }
         Toast.makeText(getActivity(), "GRABANDO", Toast.LENGTH_SHORT).show();
         startChronometro();
+        recordAu.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_grabar_dos));
         detenerAudio.setEnabled(true);
         recordAu.setEnabled(false);
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Grabacion.3gp";
+        outputFile = getContext().getExternalFilesDir(null).getAbsolutePath() + "/Grabacion.3gp";
         miGrabacion = new MediaRecorder();
         miGrabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
         miGrabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         miGrabacion.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         miGrabacion.setOutputFile(outputFile);
-        audioBase64();
+        Log.i("RUTA_AUDIO",outputFile);
+        //audioBase64();
         try {
             miGrabacion.prepare();
             miGrabacion.start();
@@ -917,6 +960,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         status = 1;
         runAudio = 0;
         stopChronometro();
+        recordAu.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.ic_grabar));
         recordAu.setEnabled(true);
         if (miGrabacion != null) {
             miGrabacion.stop();
@@ -924,7 +968,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             miGrabacion = null;
             //Toast.makeText(getActivity().getApplicationContext(), "El audio fue grabado con éxito", Toast.LENGTH_LONG).show();
         }
-        playAu.setVisibility(View.VISIBLE);
         playAu.setEnabled(true);
     }
     public void reproducir() {
@@ -995,5 +1038,149 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         numberRandom = random.nextInt(9000)*99;
         codigoVerifi = String.valueOf(numberRandom);
         randomCodigoVerifi = "OAX2021"+codigoVerifi;
+    }
+
+    public void alertaEliminarImagen(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("EL ARCHIVO SE ELIMINARA.\n ¿DESEA CONTINUAR?")
+                .setCancelable(false)
+                .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bandera = 0;
+                        imgImagen.setImageBitmap(null);
+                        imgImagen.destroyDrawingCache();
+                        audio.setVisibility(View.VISIBLE);
+                        video.setVisibility(View.VISIBLE);
+                        imgImagen.setVisibility(View.GONE);
+                        imgSAlirImage.setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
+    public void alertaEliminarVideo(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("EL ARCHIVO SE ELIMINARA.\n ¿DESEA CONTINUAR?")
+                .setCancelable(false)
+                .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        bandera = 0;
+                        Log.i("SaliendoVideo", String.valueOf(bandera));
+                        videoViewImage.setBackgroundResource(0);
+                        videoViewImage.setVisibility(View.GONE);
+                        audio.setVisibility(View.VISIBLE);
+                        photo.setVisibility(View.VISIBLE);
+                        imgSalirVideos.setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
+    public void alertaEliminarAudio(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("EL ARCHIVO SE ELIMINARA.\n ¿DESEA CONTINUAR?")
+                .setCancelable(false)
+                .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(correr == true){
+                            tiempo.stop();
+                            detenerse = SystemClock.elapsedRealtime() -tiempo.getBase();
+                            correr = false;
+                            stopChronometro();
+                        }
+                        bandera = 0;
+                        resetChronometro();
+                        recordAu.setVisibility(View.GONE);
+                        detenerAudio.setVisibility(View.GONE);
+                        tiempo.setVisibility(View.GONE);
+                        playAu.setVisibility(View.GONE);
+                        audioEncodeString = null;
+                        photo.setVisibility(View.VISIBLE);
+                        video.setVisibility(View.VISIBLE);
+                        cancelarAudio.setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
+    }
+    public void showPopUp(View v){
+        myDialog.setContentView(R.layout.costumpopupimage);
+        txtCamara = myDialog.findViewById(R.id.lblCamara);
+        txtGaleria = myDialog.findViewById(R.id.lblGaleria);
+        txtCerrarNotificacion = myDialog.findViewById(R.id.lblCancelarImagen);
+
+        txtCamara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bandera = 1;
+                video.setVisibility(View.GONE);
+                audio.setVisibility(View.GONE);
+                imgImagen.setVisibility(View.VISIBLE);
+                imgSAlirImage.setVisibility(View.VISIBLE);
+                videoViewImage.setVisibility(View.GONE);
+                playAu.setVisibility(View.GONE);
+                recordAu.setVisibility(View.GONE);
+                detenerAudio.setVisibility(View.GONE);
+                tiempo.setVisibility(View.GONE);
+                llamarItem();
+                Toast.makeText(getActivity(), "PROCESANDO SU SOLICITUD DE TOMA DE FOTO", Toast.LENGTH_SHORT).show();
+                myDialog.dismiss();
+            }
+        });
+        txtGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                    bandera = 1;
+                    video.setVisibility(View.GONE);
+                    audio.setVisibility(View.GONE);
+                    imgImagen.setVisibility(View.VISIBLE);
+                    imgSAlirImage.setVisibility(View.VISIBLE);
+                    videoViewImage.setVisibility(View.GONE);
+                    playAu.setVisibility(View.GONE);
+                    recordAu.setVisibility(View.GONE);
+                    detenerAudio.setVisibility(View.GONE);
+                    tiempo.setVisibility(View.GONE);
+                    llamarItemGaleria();
+                    Toast.makeText(getActivity(), "PROCESANDO SU SOLICITUD DE IMAGEN DESDE GALERIA", Toast.LENGTH_SHORT).show();
+                    myDialog.dismiss();
+                }
+            }
+        });
+
+        txtCerrarNotificacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDialog.dismiss();
+            }
+        });
+        myDialog.show();
     }
 }

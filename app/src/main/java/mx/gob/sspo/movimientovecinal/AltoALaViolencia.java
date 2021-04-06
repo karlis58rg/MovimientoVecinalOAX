@@ -30,6 +30,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -53,10 +54,11 @@ import okhttp3.Response;
 import pl.droidsonroids.gif.GifImageView;
 
 public class AltoALaViolencia extends AppCompatActivity {
+    TextView lblViolencia,lblCargando;
     ImageView home;
     GifImageView btnViolencia;
     AlertDialog alert = null;
-    int cargarInfoUserRegistrado,cargarInfoVictimaUserRegistrado;
+    int cargarInfoUserRegistrado;
     SharedPreferences share;
     SharedPreferences.Editor editor;
     int numberRandom,cargarInfoWaltoViolencia;
@@ -65,8 +67,6 @@ public class AltoALaViolencia extends AppCompatActivity {
     String mensaje1,mensaje2,direccion, municipio, estado,fecha,hora;
     Double lat,lon;
     String respuestaJson,m_Item1;
-    int wAltoViolencia = 0;
-    public static final int ACTION_APPWIDGET_BIND = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,44 +75,15 @@ public class AltoALaViolencia extends AppCompatActivity {
         cargarUserRegistrado();
         Random();
         locationStart();
-        if(cargarInfoUserRegistrado != 1){
-            getUserViolencia();
-        }
-        if(cargarInfoWaltoViolencia == 1){
-            Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-            insertUserRegistrado();
-        }else {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
-                    .setCancelable(false)
-                    .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
-                        @SuppressLint("NewApi")
-                        @RequiresApi(api = Build.VERSION_CODES.M)
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
-                            ComponentName myProvider = new ComponentName(getApplication(), MiWidget.class);
-                            if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
-                                mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
-                            }
-                            finish();
 
-                        }
-                    })
-                    .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                            finish();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
-
-
+        lblCargando = findViewById(R.id.lblCodigoMujerC);
+        lblViolencia = findViewById(R.id.lblViolencia);
         btnViolencia = findViewById(R.id.btnViolencia);
         home = findViewById(R.id.imgHomeViolencia);
+
+        lblViolencia.setVisibility(View.GONE);
+        btnViolencia.setVisibility(View.GONE);
+        getUserViolencia();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,8 +95,15 @@ public class AltoALaViolencia extends AppCompatActivity {
         btnViolencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                insertUserRegistrado();
+                try {
+                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                    insertUserRegistrado();
+                }catch (Exception e){
+                    Intent i = new Intent(AltoALaViolencia.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
+                }
+
             }
         });
     }
@@ -193,12 +171,12 @@ public class AltoALaViolencia extends AppCompatActivity {
     //*********************************************************************//
     public void cargarUserRegistrado() {
         share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
+        cargarInfoWaltoViolencia = share.getInt("VIOLENCIA", 0);
         cargarInfoUserRegistrado = share.getInt("BANDERAUSERREGISTRADO", 0);
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         cargarInfoNombre = share.getString("NOMBRE", "SIN INFORMACION");
         cargarInfoApaterno = share.getString("APATERNO", "SIN INFORMACION");
         cargarInfoAmaterno = share.getString("AMATERNO", "SIN INFORMACION");
-        cargarInfoWaltoViolencia = share.getInt("VIOLENCIA", 0);
         cargarInfoMunicipio = share.getString("MUNICIPIO", "SIN INFORMACION");
         cargarInfoLat = share.getString("LATITUDE", "SIN INFORMACION");
         cargarInfoLong = share.getString("LONGITUDE", "SIN INFORMACION");
@@ -342,13 +320,6 @@ public class AltoALaViolencia extends AppCompatActivity {
         // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
     }
 
-    private void guardarUserRegistrado() {
-        share = getSharedPreferences("main", MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("BANDERAUSERREGISTRADO", cargarInfoVictimaUserRegistrado);
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
-    }
 
     /******************GET A LA BD***********************************/
     public void getUserViolencia() {
@@ -384,9 +355,41 @@ public class AltoALaViolencia extends AppCompatActivity {
                                     startActivity(i);
                                     finish();
                                 } else {
-                                    cargarInfoVictimaUserRegistrado = 1;
-                                    guardarUserRegistrado();
+                                    lblCargando.setVisibility(View.GONE);
+                                    lblViolencia.setVisibility(View.VISIBLE);
+                                    btnViolencia.setVisibility(View.VISIBLE);
                                     Log.i("HERE", "" + jObj);
+
+                                    if(cargarInfoWaltoViolencia == 1){
+                                        Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                                        insertUserRegistrado();
+                                    }else {
+                                        final AlertDialog.Builder builder = new AlertDialog.Builder(AltoALaViolencia.this);
+                                        builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
+                                                .setCancelable(false)
+                                                .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
+                                                    @SuppressLint("NewApi")
+                                                    @RequiresApi(api = Build.VERSION_CODES.M)
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
+                                                        ComponentName myProvider = new ComponentName(getApplication(), MiWidget.class);
+                                                        if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
+                                                            mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                                                        }
+                                                        finish();
+                                                    }
+                                                })
+                                                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.cancel();
+                                                        finish();
+                                                    }
+                                                });
+                                        alert = builder.create();
+                                        alert.show();
+                                    }
                                 }
 
                             } catch (JSONException e) {

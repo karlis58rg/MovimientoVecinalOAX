@@ -135,10 +135,17 @@
                 android:layout_height="wrap_content"
                 android:maxLength="10"
                 android:inputType="number"
-                android:hint="No. de confianza:"
+                android:hint="Teléfono de confianza"
                 android:layout_below="@id/txtDireccion"
                 android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/lblConfianza"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="de un familiar en caso de emergencia."
+                android:layout_below="@id/txtNoConfianza"/>
 
             <Button
                 android:id="@+id/btnRegistrar"
@@ -148,7 +155,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/btn_redondo"
-                android:layout_below="@id/txtNoConfianza"
+                android:layout_below="@id/lblConfianza"
                 android:layout_marginBottom="20dp"/>
         </RelativeLayout>
     </ScrollView>

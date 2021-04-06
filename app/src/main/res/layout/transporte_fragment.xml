@@ -35,7 +35,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Movilidad Segura” como se muestra a continuación. "
+        android:text="En este apartado usted podrá configurar un acceso directo al aplicativo para uso rápido, únicamente debe presión “Crear Widget” y en la pantalla principal de su dispositivo podrá ver un icono con la imagen de “Movilidad Segura” como se muestra a continuación.\n\n"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgMS" />
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Crear Widget Movilidad Segura"
+        android:text="Widget Creado"
         android:background="@drawable/btn_redondo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

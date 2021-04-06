@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,8 +44,8 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class VigilanciaVecinal extends AppCompatActivity {
 
-    ImageView home;
-    ImageView btnVigilancia;
+    TextView lblTitulo,lblCargando;
+    ImageView home,btnVigilancia;
     String cargarInfoTelefono,respuestaJson,m_Item1,fecha,hora;
     int cargarInfoUserRegistradoVigilancia,guardarInfoUserRegistradoVigilancia;
     SharedPreferences share;
@@ -63,42 +64,15 @@ public class VigilanciaVecinal extends AppCompatActivity {
         setContentView(R.layout.activity_vigilancia_vecinal);
         cargarUserRegistrado();
         Random();
-        if(cargarInfoUserRegistradoVigilancia != 1){
-            getUserExistVV();
-        }
-        if(cargarInfoWalertaVecinal == 1){
-            Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-            getUserVigilancia();
-        }else {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
-                    .setCancelable(false)
-                    .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
-                        @SuppressLint("NewApi")
-                        @RequiresApi(api = Build.VERSION_CODES.M)
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
-                            ComponentName myProvider = new ComponentName(getApplication(), MiWidgetVV.class);
-                            if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
-                                mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
-                            }
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("EN OTRO MOMENTO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                            finish();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
 
         home = findViewById(R.id.imgHomeVigilancia);
+        lblTitulo = findViewById(R.id.lblVigilancia);
+        lblCargando = findViewById(R.id.lblTerceroVigilanciaVecinal);
         btnVigilancia = findViewById(R.id.imgAlertaVecinal);
+
+        lblTitulo.setVisibility(View.GONE);
+        btnVigilancia.setVisibility(View.GONE);
+        getUserExistVV();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +84,14 @@ public class VigilanciaVecinal extends AppCompatActivity {
         btnVigilancia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                getUserVigilancia();
+                try {
+                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                    getUserVigilancia();
+                }catch (Exception e){
+                    Intent i = new Intent(VigilanciaVecinal.this,MensajeError.class);
+                    startActivity(i);
+                    finish();
+                }
             }
         });
     }
@@ -141,8 +121,39 @@ public class VigilanciaVecinal extends AppCompatActivity {
                             final String resp = myResponse;
                             final String valor = "true";
                             if(resp.equals(valor)){
-                                guardarInfoUserRegistradoVigilancia = 1;
-                                guardarUsuarioVV();
+                                lblCargando.setVisibility(View.GONE);
+                                lblTitulo.setVisibility(View.VISIBLE);
+                                btnVigilancia.setVisibility(View.VISIBLE);
+                                if(cargarInfoWalertaVecinal == 1){
+                                    Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                                    getUserVigilancia();
+                                }else {
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(VigilanciaVecinal.this);
+                                    builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
+                                            .setCancelable(false)
+                                            .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
+                                                @SuppressLint("NewApi")
+                                                @RequiresApi(api = Build.VERSION_CODES.M)
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
+                                                    ComponentName myProvider = new ComponentName(getApplication(), MiWidgetVV.class);
+                                                    if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
+                                                        mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
+                                                    }
+                                                    finish();
+                                                }
+                                            })
+                                            .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.cancel();
+                                                    finish();
+                                                }
+                                            });
+                                    alert = builder.create();
+                                    alert.show();
+                                }
                             }else{
                                 Intent i = new Intent(VigilanciaVecinal.this,MensajeSalidaVigilanciaVecinal.class);
                                 startActivity(i);
@@ -197,13 +208,6 @@ public class VigilanciaVecinal extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void guardarUsuarioVV() {
-        share = getSharedPreferences("main",MODE_PRIVATE);
-        editor = share.edit();
-        editor.putInt("BANDERAUSERVIGILANCIAVECINAL", guardarInfoUserRegistradoVigilancia );
-        editor.commit();
     }
 
     public void cargarUserRegistrado() {

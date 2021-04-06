@@ -56,24 +56,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imgImagen"
-                    android:layout_width="100dp"
-                    android:layout_height="90dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_alignParentLeft="true"
-                    android:scaleX="0.9"
-                    android:background="@drawable/ic_alerta_amber" />
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image_Amber"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
                     app:civ_border_color="#000000"
                     app:civ_border_width="1dp" />
 
@@ -81,9 +69,8 @@
                     android:id="@+id/pickFoto_Amber"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="30dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
                     android:background="@drawable/ic_perfil" />
 
                 <EditText
@@ -282,7 +269,7 @@
                     android:layout_marginBottom="100dp"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorBold"
-                    android:text="A través de este botón ud. podrá realizar el reporte de extravío de algún menor que se encuentre bajo su tutela, como emergencia inmediata al 911. Una vez transcurridas 72 del reporte ud. deberá llamar al 089 o acudir a Fiscalía General de Oaxaca, ubicada en Cd. Judicial, Edificio A Jesús Chu Rasgado, 2do nivel. Tel. 951 501 6900 para hacer una denuncia formal e iniciar una investigación. Sujeto a Términos y Condiciones, y aceptación de Aviso de Privacidad."
+                    android:text="A través de este botón ud. podrá realizar el reporte de extravío de algún menor que se encuentre bajo su tutela, como emergencia inmediata al 911. Una vez transcurridas 72 horas del reporte ud. deberá llamar al 089 o acudir a Fiscalía General de Oaxaca, ubicada en Cd. Judicial, Edificio A Jesús Chu Rasgado, 2do nivel. Tel. 951 501 6900 para hacer una denuncia formal e iniciar una investigación. Sujeto a Términos y Condiciones, y aceptación de Aviso de Privacidad.\n\n"
                     android:textSize="15dp" />
 
             </RelativeLayout>
