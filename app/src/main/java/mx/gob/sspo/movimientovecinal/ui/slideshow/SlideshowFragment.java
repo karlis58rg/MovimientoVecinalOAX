@@ -101,7 +101,7 @@ public class SlideshowFragment extends Fragment {
     public void getUserViolencia() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -129,7 +129,7 @@ public class SlideshowFragment extends Fragment {
                                 if (respuestaJson.equals(m_Item1)) {
                                     Intent i = new Intent(getContext(), MensajeSalidaAltoViolencia.class);
                                     startActivity(i);
-                                    getActivity().finish();
+                                    getActivity().onBackPressed();
                                 } else {
                                     lblTitulo.setVisibility(View.VISIBLE);
                                     imgCM.setVisibility(View.VISIBLE);

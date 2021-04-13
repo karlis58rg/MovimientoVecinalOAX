@@ -3,8 +3,10 @@ package mx.gob.sspo.movimientovecinal.ServiceShake;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -38,7 +40,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import mx.gob.sspo.movimientovecinal.AlertaAmber;
+import mx.gob.sspo.movimientovecinal.MensajeEnviadoAlertaAmber;
+import mx.gob.sspo.movimientovecinal.MensajeError;
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.Transporte.TransporteNoExiste;
 import mx.gob.sspo.movimientovecinal.receiver.LocationActionsReceiver;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -58,8 +64,15 @@ public class LocationService extends Service {
     String direccion, municipio, estado;
     String valorRandom,codigoVerifi,randomCodigoVerifi,fecha,hora;
     Double lat, lon;
-    int numberRandom,cargarInfoWtransporteMW,cargarInfoValorWidget,bandera = 0,banderaInsert = 0;
-    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoPlaca,cargarInfoDireccion,cargarInfoMunicipio,cargarInfoEstado,cargarInfoLat,cargarInfoLong,serbar = "sincrear";
+    int numberRandom,banderaInsert = 0;
+    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoPlaca,serbar = "sincrear";
+    String cargarPlacaJson,cargarPlaca,cargarNucJson,cargarNuc,cargarSitio,cargarMarca,cargarTipo,sinInformacion="SIN INFORMACION",placaCad="";
+    String tituloNotificacion = "Localizando..";
+    String cuerpoNotificacion = "Verificando información.";
+    String tituloCancelar = "Detener";
+    String enviando = "";
+    String noEnviando = "";
+    boolean folioEncontrado = false;
 
     /************GUARDAR PREFERENCIAS DEL SISTEMA***************/
     SharedPreferences shared;
@@ -74,6 +87,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Random();
     }
 
     @Override
@@ -87,11 +101,11 @@ public class LocationService extends Service {
                 0, receiverIntent, 0);
 
         String GENERAL_CHANNEL_ID = getString(R.string.default_notification_channel_id);
-        Notification notification = new NotificationCompat.Builder(this, GENERAL_CHANNEL_ID)
-                .setContentTitle("Localizando")
-                .setContentText("Enviando ubicación...")
+        final Notification notification = new NotificationCompat.Builder(this, GENERAL_CHANNEL_ID)
+                .setContentTitle(tituloNotificacion)
+                .setContentText(cuerpoNotificacion)
                 .setSmallIcon(R.drawable.ic_logo_app)
-                .addAction(R.drawable.ic_baseline_cancel_24, "Detener", pendingIntent)
+                .addAction(R.drawable.ic_baseline_cancel_24, tituloCancelar, pendingIntent)
                 .build();
 
         startForeground(1, notification);
@@ -123,9 +137,22 @@ public class LocationService extends Service {
                         } else {
                             municipio = "SIN INFORMACION";
                         }
-                        //guardar();
-                        Log.i("DIRECCION", "dir" + direccion + "mun" + municipio + "est" + estado);
+                        Log.i(TAG, "dir" + direccion + "mun" + municipio + "est" + estado);
                     }
+                    if(banderaInsert == 1 && folioEncontrado == true){
+                        cuerpoNotificacion = "Enviando ubicación..";
+                        enviando = cuerpoNotificacion;
+                        pushCad();
+                        getDatosMapaRobos();
+                    }else if(banderaInsert == 1 && folioEncontrado == false){
+                        tituloNotificacion = "¡Alerta!";
+                        cuerpoNotificacion = "Su emergencia no pudo ser enviada";
+                        TransporteNoExiste.lblTituloNoExiste.setText("Tu emergencia no se logró enviar por este medio, comunícate al 9-1-1 vía telefónica.");
+                        pushCad();
+                    } else if(banderaInsert != 1){
+                        insertBdEventoTransportePublicoIOS();
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -140,6 +167,8 @@ public class LocationService extends Service {
                         PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         }
+
+
         return START_NOT_STICKY;
     }
 
@@ -151,8 +180,22 @@ public class LocationService extends Service {
     /******************************************************************************************************************/
     //*********************** METODO QUE INSERTA A LA BASE DE DATOS DESPUES DE INSERTAR AL CAD ***********************//
     public void insertBdEventoTransportePublicoIOS(){
-        banderaInsert = 1;
         cargar();
+        if(cargarPlaca != sinInformacion){
+            placaCad = cargarPlaca;
+        }else if(cargarPlacaJson != sinInformacion){
+            placaCad = cargarPlacaJson;
+        }else if(cargarNuc != sinInformacion){
+            placaCad = cargarNuc;
+        }else if (cargarNucJson != sinInformacion){
+            placaCad = cargarNucJson;
+        }
+
+        String sitio = cargarSitio != "SIN INFORMACION" ? cargarSitio : "SIN INFORMACION";
+        String marca = cargarMarca != "SIN INFORMACION" ? cargarMarca : "SIN INFORMACION" ;
+        String modelo = cargarTipo != "SIN INFORMACION" ? cargarTipo : "SIN INFORMACION" ;
+
+        banderaInsert = 1;
         valorRandom = "OAX2021"+ randomCodigoVerifi;
         //*************** FECHA **********************//
         Date date = new Date();
@@ -171,43 +214,52 @@ public class LocationService extends Service {
                 .add("NombreUsuario", cargarInfoNombre)
                 .add("ApaternoUsuario", cargarInfoApaterno)
                 .add("AmaternoUsuario", cargarInfoAmaterno)
-                .add("Placa", cargarInfoPlaca)
-                .add("Direccion", cargarInfoDireccion)
-                .add("Municipio", cargarInfoMunicipio)
-                .add("Estado", cargarInfoEstado)
-                .add("Latitud", cargarInfoLat)
-                .add("Longitud", cargarInfoLong)
+                .add("Placa", placaCad)
+                .add("Sitio", sitio)
+                .add("Marca", marca)
+                .add("Modelo", modelo)
+                .add("Direccion", direccion)
+                .add("Municipio", municipio)
+                .add("Estado", estado)
+                .add("Latitud", lat.toString())
+                .add("Longitud", lon.toString())
                 .add("Hora", hora)
                 .add("Fecha", fecha)
                 //.add("idTipoEmergencia", "6000") /*********¿QUÉ TIPO DE EMERGENCIA ES**************/
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/EventosTransportePublicoApp/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/EventosTransportePublicoApp/")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                Looper.prepare(); // to be able to make toast
+                Looper.prepare();
                 Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
-                    insertBdEventoTransportePublicoRobosIOS();
-
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
+                    String respCad = resp;
+                    final String valor = "\"false\"";
+                    if(respCad.equals(valor)){
+                        folioEncontrado = false;
+                    }else{
+                        folioEncontrado= true;
+                    }
+                    Log.i(TAG, resp);
                 }
             }
         });
     }
     //**************** INSERTA A LA TABLA DE ROBOS CON LAS COORDENADAS EN TIEMPO REAL *****************//
     public void insertBdEventoTransportePublicoRobosIOS() {
-        cargar();
         valorRandom = "OAX2021"+ randomCodigoVerifi;
         //*************** FECHA **********************//
         Date date = new Date();
@@ -223,18 +275,18 @@ public class LocationService extends Service {
         RequestBody body = new FormBody.Builder()
                 .add("FolioRobo",valorRandom)
                 .add("Telefono", cargarInfoTelefono)
-                .add("Longitud", cargarInfoLong)
-                .add("Latitud", cargarInfoLat)
+                .add("Longitud", lon.toString())
+                .add("Latitud", lat.toString())
                 .add("Status", "1")
                 .add("Fecha", fecha)
                 .add("Hora", hora)
                 .add("Placa", cargarInfoPlaca)
-                .add( "Direccion",cargarInfoDireccion)
+                .add( "Direccion",direccion)
                 .add( "Revisado", "1")
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/EventosTransportePublicoRobosApp/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/EventosTransportePublicoRobosApp/")
                 .post(body)
                 .build();
 
@@ -242,7 +294,7 @@ public class LocationService extends Service {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                Looper.prepare(); // to be able to make toast
+                Looper.prepare();
                 Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
@@ -251,8 +303,6 @@ public class LocationService extends Service {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     final String myResponse = response.body().toString();
-                    bandera = 1;/********** ME REGRESA LA RESPUESTA DEL WS ****************/
-                    //startTimer();
                 }
             }
         });
@@ -263,8 +313,7 @@ public class LocationService extends Service {
     public void getDatosMapaRobos(){
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/EventosTransportePublicoRobosApp?folioRobo=OAX2021"+randomCodigoVerifi+"&statusRobo=1")
-                //.url("http://c5.hidalgo.gob.mx:58/api/EventosTransportePublicoRobos?folioRobo=C5I2019891&statusRobo=1")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/EventosTransportePublicoRobosApp?folioRobo=OAX2021"+randomCodigoVerifi+"&statusRobo=1")
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -278,27 +327,12 @@ public class LocationService extends Service {
                     final String resp = myResponse;
                     final String valor = "true";
                     if(resp.equals(valor)){
-                        Log.i("HERE", "BANDERA 1 CON CICLO");
-                        Log.i("HERE", resp);
                         insertBdEventoTransportePublicoRobosIOS();
-                    }else{
-                        bandera = 3;
-                        Log.i("HERE", resp);
-                        Log.i("HERE", "PROCESO TERMINADO");
                     }
                     Log.i("HERE", resp);
-
                 }
             }
         });
-    }
-
-    private void guardarServicio() {
-        shared = getSharedPreferences("main", MODE_PRIVATE);
-        editor = shared.edit();
-        editor.putString("servicio", serbar);
-        //editor.putInt("bandera", bandera);
-        editor.apply();
     }
 
     private void cargar() {
@@ -308,39 +342,19 @@ public class LocationService extends Service {
         cargarInfoApaterno = shared.getString("APATERNO", "SIN INFORMACION");
         cargarInfoAmaterno = shared.getString("AMATERNO", "SIN INFORMACION");
         cargarInfoPlaca = shared.getString("PLACA","SIN INFORMACION");
-        cargarInfoDireccion = shared.getString("DIRECCION","SIN INFORMACION");
-        cargarInfoMunicipio = shared.getString("MUNICIPIO","SIN INFORMACION");
-        cargarInfoEstado = shared.getString("ESTADO","SIN INFORMACION");
-        //cargarInfoLat = shared.getString("LATITUDE","SIN INFORMACION");
-        //cargarInfoLong = shared.getString("LONGITUDE","SIN INFORMACION");
-        //cargarInfoWtransporteMW = shared.getInt("WTRANSPORTE", 0);
-        //cargarInfoValorWidget = shared.getInt("OPRIMIR", 0);
+        cargarPlacaJson = shared.getString("placaJson", "SIN INFORMACION");
+        cargarNucJson = shared.getString("nucJson", "SIN INFORMACION");
+        cargarPlaca = shared.getString("PLACA", "SIN INFORMACION");
+        cargarNuc = shared.getString("NUC", "SIN INFORMACION");
+        cargarSitio = shared.getString("sitioJson", "SIN INFORMACION");
+        cargarMarca = shared.getString("marcaJson", "SIN INFORMACION");
+        cargarTipo = shared.getString("tipoJson", "SIN INFORMACION");
     }
-
-    private void eliminarServicio(){
-        shared = getSharedPreferences("main", MODE_PRIVATE);
-        shared.edit().remove("servicio").commit();
-        //Toast.makeText(getApplicationContext(),"Dato Eliminado",Toast.LENGTH_LONG).show();
-    }
-
-    /****************SE GUARDA LA INFO DE LAS COORDENADAS****************/
-    private void guardar() {
+    private void guardarServicio() {
         shared = getSharedPreferences("main", MODE_PRIVATE);
         editor = shared.edit();
-        editor.putString("DIRECCION", direccion);
-        editor.putString("MUNICIPIO", municipio);
-        editor.putString("ESTADO", estado);
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
-    }
-
-    private void guardarCoor() {
-        shared = getSharedPreferences("main", MODE_PRIVATE);
-        editor = shared.edit();
-        editor.putString("LATITUDE", lat.toString());
-        editor.putString("LONGITUDE", lon.toString());
-        editor.commit();
-        // Toast.makeText(getApplicationContext(),"Dato Guardado",Toast.LENGTH_LONG).show();
+        editor.putString("servicio", serbar);
+        editor.apply();
     }
 
     //********************* GENERA EL NÚMERO ALEATORIO PARA EL FOLIO *****************************//
@@ -349,6 +363,24 @@ public class LocationService extends Service {
         numberRandom = random.nextInt(9000)*99;
         codigoVerifi = String.valueOf(numberRandom);
         randomCodigoVerifi = codigoVerifi;
+    }
+
+    public void pushCad (){
+        NotificationManager notificationManager = (NotificationManager)
+                getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent receiverIntent1 = new Intent(getApplication(),
+                LocationActionsReceiver.class)
+                .setAction(LocationActionsReceiver.ACTION_CANCEL);
+        PendingIntent pendingIntent1 = PendingIntent.getBroadcast(getApplication(),
+                0, receiverIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        String GENERAL_CHANNEL_ID = getString(R.string.default_notification_channel_id);
+        Notification notification = new NotificationCompat.Builder(getApplication(), GENERAL_CHANNEL_ID)
+                .setContentTitle(tituloNotificacion)
+                .setContentText(cuerpoNotificacion)
+                .setSmallIcon(R.drawable.ic_logo_app)
+                .addAction(R.drawable.ic_baseline_cancel_24, tituloCancelar, pendingIntent1)
+                .build();
+        notificationManager.notify(1, notification);
     }
 
 }

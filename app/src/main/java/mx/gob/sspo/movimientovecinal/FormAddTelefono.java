@@ -1,13 +1,20 @@
 package mx.gob.sspo.movimientovecinal;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -33,6 +40,7 @@ public class FormAddTelefono extends AppCompatActivity {
     String numero,respuestaJson,m_Item1,nombreV,aPaternoV,aMaternoV,direccionV,nuc,idVictima;
     SharedPreferences share;
     SharedPreferences.Editor editor;
+    AlertDialog alert = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,7 @@ public class FormAddTelefono extends AppCompatActivity {
                     }else{
                         Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                         getUser();
+                        codigoVerificacion();
                     }
                 }catch (Exception e){
                     Intent i = new Intent(FormAddTelefono.this,MensajeError.class);
@@ -78,7 +87,66 @@ public class FormAddTelefono extends AppCompatActivity {
         numero = txtNumeroUsuario.getText().toString();
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+numero)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+numero)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Looper.prepare();
+                Toast.makeText(getApplicationContext(),"ERROR AL OBTENER LA INFORMACIÓN, POR FAVOR VERIFIQUE SU CONEXIÓN A INTERNET",Toast.LENGTH_SHORT).show();
+                Looper.loop();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+                    FormAddTelefono.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jObj = null;
+                                String resObj = myResponse;
+                                System.out.println(resObj);
+                                jObj = new JSONObject("" + resObj + "");
+                                respuestaJson = jObj.getString("m_Item1");
+                                m_Item1 = "SIN INFORMACION";
+                                if (respuestaJson.equals(m_Item1)) {
+                                    guardarNumeroUser();
+                                    getUserNoRegistrado();
+                                } else {
+                                    nombreV = jObj.getString("m_Item1");
+                                    aPaternoV = jObj.getString("m_Item2");
+                                    aMaternoV = jObj.getString("m_Item3");
+                                    direccionV = jObj.getString("m_Item4");
+                                    nuc = jObj.getString("m_Item5");
+                                    idVictima = jObj.getString("m_Item6");
+                                    guardarDatosUser();
+                                    Intent i = new Intent(FormAddTelefono.this, FormRegistroUsuario.class);
+                                    startActivity(i);
+                                    Log.i("HERE", "" + jObj);
+                                    finish();
+
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+    /******************GET A LA BD***********************************/
+    public void getUserNoRegistrado() {
+        numero = txtNumeroUsuario.getText().toString();
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioNoRegistrado?telefono="+numero)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -114,14 +182,11 @@ public class FormAddTelefono extends AppCompatActivity {
                                     aPaternoV = jObj.getString("m_Item2");
                                     aMaternoV = jObj.getString("m_Item3");
                                     direccionV = jObj.getString("m_Item4");
-                                    nuc = jObj.getString("m_Item5");
-                                    idVictima = jObj.getString("m_Item6");
                                     guardarDatosUser();
                                     Intent i = new Intent(FormAddTelefono.this, FormRegistroUsuario.class);
                                     startActivity(i);
                                     Log.i("HERE", "" + jObj);
                                     finish();
-
                                 }
 
                             } catch (JSONException e) {
@@ -154,6 +219,22 @@ public class FormAddTelefono extends AppCompatActivity {
         editor.putString("NUC",nuc);
         editor.putString("IDVICTIMA",idVictima);
         editor.commit();
+    }
+
+    private void codigoVerificacion(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("MENSAJE DE VERIFICACIÓN ENVIADO")
+                .setCancelable(false)
+                .setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+        alert = builder.create();
+        alert.show();
     }
 
     //***************************** SE OPTIENEN TODOS LOS PERMISOS AL INICIAR LA APLICACIÓN *********************************//

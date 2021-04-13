@@ -40,7 +40,7 @@
         android:id="@+id/lblMensajeError"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Servidores en mantenimiento. Marca al 9-1-1.\n\n"
+        android:text="Tu emergencia no se logró enviar por este medio, comunícate al 9-1-1 vía telefónica. Presiona el teléfono para enlazarte.\n\n"
         android:textColor="@color/colorAltoViolencia"
         android:textSize="20sp"
         android:layout_marginTop="80dp"

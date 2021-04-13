@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), TransporteSeguro.class);
+                i.putExtra("home",1);
                 startActivity(i);
             }
         });

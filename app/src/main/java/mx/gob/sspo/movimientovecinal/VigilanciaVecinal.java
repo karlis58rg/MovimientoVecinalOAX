@@ -100,7 +100,7 @@ public class VigilanciaVecinal extends AppCompatActivity {
     public void getUserExistVV() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/VigilanciaVecinal?telefonoVV="+cargarInfoTelefono)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/VigilanciaVecinal?telefonoVV="+cargarInfoTelefono)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -181,7 +181,7 @@ public class VigilanciaVecinal extends AppCompatActivity {
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/VigilanciaVecinal?folioVigilancia="+randomCodigoVerifi+"&telefonoVigilancia="+cargarInfoTelefono+"&fechaVigilancia="+fecha+"&horaVigilancia="+hora)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/VigilanciaVecinal?folioVigilancia="+randomCodigoVerifi+"&telefonoVigilancia="+cargarInfoTelefono+"&fechaVigilancia="+fecha+"&horaVigilancia="+hora)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -194,15 +194,24 @@ public class VigilanciaVecinal extends AppCompatActivity {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful()){
                     final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     VigilanciaVecinal.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(VigilanciaVecinal.this,MensajeEnviadoVigilanciaVecinal.class);
-                            startActivity(i);
-                            finish();
+                            String respCad = resp;
+                            final String valor = "\"false\"";
+                            if(respCad.equals(valor)){
+                                Intent i = new Intent(VigilanciaVecinal.this, MensajeError.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(VigilanciaVecinal.this, MensajeEnviadoVigilanciaVecinal.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i(TAG, resp);
                         }
                     });
                 }

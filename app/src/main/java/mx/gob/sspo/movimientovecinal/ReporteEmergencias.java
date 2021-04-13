@@ -114,6 +114,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     int numberRandom;
     String randomCodigoVerifi, codigoVerifi;
     String opcDiscapacidad = "NO";
+    String TAG = "REPORTE EMERGENCIAS";
     long detenerse;
     Boolean correr = false;
     int runAudio = 0;
@@ -318,8 +319,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
                             insertBdEventoIOS();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
                             Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                             //(i.putExtra("valorRandom", randomCodigoVerifi);
@@ -327,8 +326,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             insertImagen();
                             insertBdEventoIOS();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
                             getActivity().onBackPressed();
                             //(i.putExtra("valorRandom", randomCodigoVerifi);
                         }
@@ -338,8 +335,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
                             insertBdEventoIOS();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
                             Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                             //i.putExtra("valorRandom", randomCodigoVerifi);
@@ -347,8 +342,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             insertBdEventoIOS();
                             insertVideo();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
                             getActivity().onBackPressed();
                             //i.putExtra("valorRandom", randomCodigoVerifi);
                         }
@@ -363,8 +356,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             tiempo.setVisibility(View.GONE);
                             resetChronometro();
                             insertBdEventoIOS();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
                             Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                             // i.putExtra("valorRandom", randomCodigoVerifi);
@@ -377,19 +368,16 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             insertBdEventoIOS();
                             insertAudio();
                             resetChronometro();
-                            Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                            startActivity(i);
-                            getActivity().onBackPressed();
                             // i.putExtra("valorRandom", randomCodigoVerifi);
                         }
 
                     } else {
                         Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                         insertBdEventoIOS();
-                        Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                        //Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
                         //i.putExtra("valorRandom", randomCodigoVerifi);
-                        startActivity(i);
-                        getActivity().onBackPressed();
+                        //startActivity(i);
+                        //getActivity().onBackPressed();
                     }
 
                 }catch (Exception e){
@@ -722,15 +710,15 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
         //************************************* RUTA MULTIMEDIA *************************//
         if (bandera == 1) {
-            rutaMultimedia = "http://187.174.102.142/AppMovimientoVecinal/Images/" + randomCodigoVerifi + ".jpg";
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/" + randomCodigoVerifi + ".jpg";
 
         } else if (bandera == 2) {
-            rutaMultimedia = "http://187.174.102.142/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
 
         } else if (bandera == 3) {
-            rutaMultimedia = "http://187.174.102.142/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
         } else {
-            rutaMultimedia = "http://187.174.102.142/AppMovimientoVecinal/Images/sinarchivo.jpg";
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/sinarchivo.jpg";
         }
         descEmergencia = txtDescEmergencia.getText().toString().toUpperCase();
 
@@ -754,7 +742,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/Eventos911/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/Eventos911/")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -769,25 +757,24 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
-
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     ReporteEmergencias.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            bandera = 0;
-                            txtDescEmergencia.setText("");
-                            imgImagen.setVisibility(View.GONE);
-                            videoViewImage.setVisibility(View.GONE);
-                            imgImagen.clearAnimation();
-                            videoViewImage.clearAnimation();
-                            playAu.setVisibility(View.GONE);
-                            recordAu.setVisibility(View.GONE);
-                            detenerAudio.setVisibility(View.GONE);
-                            tiempo.setVisibility(View.GONE);
-                            switchDisc.setChecked(false);
-
+                                String respCad = resp;
+                                final String valor = "\"false\"";
+                                if(respCad.equals(valor)){
+                                    Intent i = new Intent(getActivity(), MensajeError.class);
+                                    startActivity(i);
+                                    getActivity().onBackPressed();
+                                }else{
+                                    Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                                    startActivity(i);
+                                    getActivity().onBackPressed();
+                                }
+                                Log.i(TAG, resp);
                         }
                     });
                 }
@@ -803,7 +790,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/MultimediaImageUser/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaImageUser/")
                 .post(body)
                 .build();
 
@@ -841,7 +828,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/MultimediaVideoUser/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaVideoUser/")
                 .post(body)
                 .build();
 
@@ -874,7 +861,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/MultimediaAudioUser/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaAudioUser/")
                 .post(body)
                 .build();
 

@@ -113,7 +113,7 @@ public class Vigilancia extends Fragment {
     private void getUserVigilanciaExist() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/VigilanciaVecinal?telefonoVV="+cargarInfoTelefono)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/VigilanciaVecinal?telefonoVV="+cargarInfoTelefono)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -142,7 +142,7 @@ public class Vigilancia extends Fragment {
                             }else{
                                 Intent i = new Intent(getContext(),MensajeSalidaVigilanciaVecinal.class);
                                 startActivity(i);
-                                getActivity().finish();
+                                getActivity().onBackPressed();
                             }
                             Log.i("HERE", resp);
                         }

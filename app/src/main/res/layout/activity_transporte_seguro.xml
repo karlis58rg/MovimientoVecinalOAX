@@ -5,182 +5,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TransporteSeguro">
-    <ImageView
-        android:id="@+id/imgHeaderBackGround"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/ic_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgHeader"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
-        app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
-        app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
-        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
-        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
-        app:srcCompat="@drawable/ic_logo_header" />
+        <ImageView
+            android:id="@+id/imgHeaderBackGround"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/ic_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgHomeTransporte"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:src="@drawable/ic_menu_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
-        app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
-        app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround" />
+        <ImageView
+            android:id="@+id/imgHeader"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+            app:layout_constraintEnd_toEndOf="@+id/imgHeaderBackGround"
+            app:layout_constraintStart_toEndOf="@+id/imgHeaderBackGround"
+            app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+            app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround"
+            app:srcCompat="@drawable/ic_logo_header" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_cancel_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:useCompatPadding="true"
-        android:visibility="gone"/>
-
-    <RelativeLayout
-        android:id="@+id/relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgHeaderBackGround">
+        <ImageView
+            android:id="@+id/imgHomeTransporte"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_menu_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgHeaderBackGround"
+            app:layout_constraintStart_toStartOf="@+id/imgHeaderBackGround"
+            app:layout_constraintTop_toTopOf="@+id/imgHeaderBackGround" />
 
         <ScrollView
             android:id="@+id/scrollTransporte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true">
+            app:layout_constraintTop_toBottomOf="@id/imgHeaderBackGround">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--BLOQUE 1 ENCABEZADO-->
-
                 <LinearLayout
                     android:id="@+id/lyTransporte"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="50dp"
-                    android:layout_height="100dp">
-                    <ImageView
-                        android:layout_width="110dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginLeft="30dp"
-                        android:scaleX="0.9"
-                        android:background="@drawable/ic_destino"/>
-
-                    <TextView
-                        android:id="@+id/lblTransporte"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Movilidad Segura"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                </LinearLayout>
-
-                <!--BLOQUE 2 SELECCION PLACA Ó QR-->
-
-                <LinearLayout
-                    android:id="@+id/lyIntroduce"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_below="@id/lyTransporte"
                     android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/imgVehiculoT"
+                        android:layout_width="250dp"
+                        android:layout_height="130dp"
+                        android:src="@drawable/ic_vehiculo_transporte"
+                        android:layout_marginTop="50dp"
+                        android:layout_gravity="center"/>
+
                     <TextView
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:textAlignment="center"
-                        android:layout_gravity="center"
-                        android:text="Selecciona busqueda por Placa-Nuc o Qr"/>
-                </LinearLayout>
-
-                <!--BLOQUE 3 IMG PLACA Y QR-->
-
-
-                <LinearLayout
-                    android:id="@+id/lyPlacaQr"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_below="@id/lyIntroduce"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <ImageView
-                        android:id="@+id/imgPlacaMS"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:background="@drawable/ic_placas"/>
-                    <ImageView
-                        android:id="@+id/imgQrMS"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/ic_qr"
-                        android:scaleY="0.8"
-                        android:scaleX="0.9"/>
-                </LinearLayout>
-
-                <!--BLOQUE 4 TXT PLACA-->
-
-                <LinearLayout
-                    android:id="@+id/lyPlaca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_below="@id/lyPlacaQr"
-                    android:gravity="center_horizontal">
-
-                    <EditText
-                        android:id="@+id/txtPlaca"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:hint="Ejemplo: PLACA O NUC"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="20"/>
-                </LinearLayout>
-
-                <!--BLOQUE 5 BTN ENVIO DE PLACA-->
-
-                <LinearLayout
-                    android:id="@+id/lyEnviarPlaca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_below="@id/lyPlaca"
-                    android:gravity="center_horizontal">
-                    <Button
-                        android:id="@+id/btnIniciar"
+                        android:id="@+id/lblTitulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/btn_redondo"
-                        android:text="Enviar" />
+                        android:text="Ingresa la PLACA o NUC o QR de la unidad"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
-
-                <!--BLOQUE 6 DATOS DEL QR -->
 
                 <LinearLayout
                     android:id="@+id/lyQR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/lyPlacaQr"
+                    android:layout_marginTop="40dp"
+                    android:layout_below="@id/lyTransporte"
                     android:gravity="center_horizontal">
                     <LinearLayout
                         android:id="@+id/contentConsultaIV"
@@ -189,7 +82,7 @@
                         android:orientation="horizontal">
                         <!--DATOS DENTRO DEL CUADRO -->
                         <LinearLayout
-                            android:id="@+id/lblForma"
+                            android:id="@+id/lblPlaca"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -199,8 +92,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text="Forma" />
+                                android:layout_marginRight="10dp"
+                                android:text="Placa" />
                         </LinearLayout>
                         <!--TITULO IMAGEN1 TITLE-->
                         <LinearLayout
@@ -213,26 +106,33 @@
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.15">
                             <EditText
-                                android:id="@+id/txtForma"
+                                android:id="@+id/txtPlaca"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
-                                android:maxLength="25"/>
+                                android:hint="ABCD123"
+                                android:maxLength="10"/>
                         </LinearLayout>
                         <!--IMAGEN3 TITLE-->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center|left"
+                            android:gravity="center"
                             android:weightSum="1"
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.05">
+                            <ImageView
+                                android:id="@+id/imgBorrarPlaca"
+                                android:layout_width="25dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_borrar_transporte"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/lyQR2"
                     android:layout_width="match_parent"
@@ -257,8 +157,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text="Nuc" />
+                                android:layout_marginRight="10dp"
+                                android:text="NUC" />
                         </LinearLayout>
                         <!--TITULO IMAGEN1 TITLE-->
                         <LinearLayout
@@ -277,30 +177,87 @@
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
                                 android:inputType="textCapCharacters"
-                                android:maxLength="25"/>
+                                android:hint="00-000/AA-BBB-000"
+                                android:maxLength="20"/>
                         </LinearLayout>
                         <!--IMAGEN3 TITLE-->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center|left"
+                            android:gravity="center"
                             android:weightSum="1"
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.05">
                             <ImageView
-                                android:id="@+id/imgBuscarDatosQR1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:id="@+id/imgBorrarNuc"
+                                android:layout_width="25dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_borrar_transporte"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyQRText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lyQR2"
+                    android:gravity="center_horizontal">
+                    <LinearLayout
+                        android:id="@+id/contentConsultaIV12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <!--DATOS DENTRO DEL CUADRO -->
+                        <LinearLayout
+                            android:id="@+id/lblNuc2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|right"
+                            android:weightSum="1"
+                            android:layout_weight="0.08">
+                        </LinearLayout>
+                        <!--TITULO IMAGEN1 TITLE-->
+                        <LinearLayout
+                            android:id="@+id/lblConsultaIV22"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.15">
+                            <TextView
+                                android:id="@+id/lblText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center|top"
+                                android:text="00-000/AA-BBB-000"
+                                android:maxLength="20"/>
+                        </LinearLayout>
+                        <!--IMAGEN3 TITLE-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.05">
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
                 <LinearLayout
                     android:id="@+id/lyQR3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/lyQR2"
+                    android:layout_below="@id/lyQRText"
                     android:gravity="center_horizontal">
                     <LinearLayout
                         android:id="@+id/contentConsultaIV3"
@@ -309,7 +266,7 @@
                         android:orientation="horizontal">
                         <!--DATOS DENTRO DEL CUADRO -->
                         <LinearLayout
-                            android:id="@+id/lblNoSerie"
+                            android:id="@+id/lblQR"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -319,8 +276,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text="No. Serie" />
+                                android:layout_marginRight="10dp"
+                                android:text="QR" />
                         </LinearLayout>
                         <!--TITULO IMAGEN1 TITLE-->
                         <LinearLayout
@@ -332,154 +289,73 @@
                             android:weightSum="1"
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.15">
-                            <EditText
-                                android:id="@+id/txtNoSerie"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:inputType="textCapCharacters"
-                                android:maxLength="25"/>
+                            <ImageView
+                                android:id="@+id/imgQR"
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_qr"/>
                         </LinearLayout>
                         <!--IMAGEN3 TITLE-->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center|left"
+                            android:gravity="center"
                             android:weightSum="1"
                             android:background="@drawable/drawable_pressed"
                             android:layout_weight="0.05">
-                            <ImageView
-                                android:id="@+id/imgBuscarDatosQR3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!--BLOQUE 7 ENVIO EN CASO DE EMERGECNIA -->
-
                 <LinearLayout
-                    android:id="@+id/lyPlacaEnviada"
+                    android:id="@+id/lyVerificar"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imgEnviado"
-                        android:layout_width="110dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:scaleX="0.9"
-                        android:background="@drawable/ic_enviado"/>
-
-                    <TextView
-                        android:id="@+id/lblNoPlaca"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Movilidad Segura"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lyEncasoDe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_below="@id/lyPlacaEnviada"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/txtAlerta"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:text="En caso de emergencia."/>
-                    <TextView
-                        android:id="@+id/txtVehiculo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorTxtPlaca"
-                        android:text="Presiona el acceso directo para mandar una alerta"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lyDetenerServicio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="300dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:text="Al finalizar tu viaje, oprime el botón."/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lyDetenerServicioEjecución"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_below="@id/lyDetenerServicio"
+                    android:layout_below="@id/lyQR3"
                     android:gravity="center_horizontal">
-                    <Button
-                        android:id="@+id/btnDetenerServicioMS"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/btn_redondo"
-                        android:text="Detener ubicación"  />
+                    <LinearLayout
+                        android:id="@+id/contentConsultaIV4"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:orientation="horizontal">
+                        <!--DATOS DENTRO DEL CUADRO -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|right"
+                            android:weightSum="1"
+                            android:layout_weight="0.08"/>
+                        <!--TITULO IMAGEN1 TITLE-->
+                        <LinearLayout
+                            android:id="@+id/lblConsultaIV4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center|top"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.15">
+                            <Button
+                                android:id="@+id/btnEnviarInformacion"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_redondo"
+                                android:text="Verificar"/>
+                        </LinearLayout>
+                        <!--IMAGEN3 TITLE-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:weightSum="1"
+                            android:background="@drawable/drawable_pressed"
+                            android:layout_weight="0.05"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lyEmergenciaEnviada"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="75dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="110dp"
-                        android:layout_gravity="center"
-                        android:scaleX="0.9"
-                        android:background="@drawable/ic_enviado"/>
-
-                    <TextView
-                        android:id="@+id/lblEmergenciaEnviada"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:textAlignment="center"
-                        android:text="Su alerta se envio exitosamente.\n Un momento por favor."
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                </LinearLayout>
-
             </RelativeLayout>
         </ScrollView>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/lblCoordenadasSensorPlaca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coordenadas"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

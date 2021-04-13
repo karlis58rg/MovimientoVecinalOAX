@@ -46,8 +46,8 @@ public class FormRegistroUsuario extends AppCompatActivity {
     ImageView pickFotoAvatar;
     CircleImageView avatar2;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    EditText txtNombre,txtApaterno,txtAmaterno,txtDireccion,txtNoConfianza;
-    String nombre,aPaterno,aMaterno,direccionUsuario,noConfianza,cadena;
+    EditText txtNombre,txtApaterno,txtAmaterno,txtDireccion,txtNoConfianza,txtCodigoVerificacion;
+    String nombre,aPaterno,aMaterno,direccionUsuario,noConfianza,codVerificacion,cadena;
     String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoDireccion,cargarInfoNuc,cargarInfoIdVictima;
     int bandera = 0;
     int banderaUserRegistrado = 0;
@@ -65,14 +65,15 @@ public class FormRegistroUsuario extends AppCompatActivity {
         txtAmaterno = findViewById(R.id.txtAmaterno);
         txtDireccion = findViewById(R.id.txtDireccion);
         txtNoConfianza = findViewById(R.id.txtNoConfianza);
+        txtCodigoVerificacion = findViewById(R.id.txtCodVerificacion);
         btnRegistrar = findViewById(R.id.btnRegistrar);
         pickFotoAvatar = findViewById(R.id.pickFoto);
         avatar2 = findViewById(R.id.profile_image);
 
         cargarDatos();
-        if(cargarInfoNombre.equals("SIN INFORMACION")){
+        if(cargarInfoNuc.equals("SIN INFORMACION")){
             bandera = 1;
-            Toast.makeText(getApplicationContext(), "USUARIO NO REGISTRADO", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "USUARIO NO REGISTRADO", Toast.LENGTH_LONG).show();
         }else{
             bandera = 2;
             banderaUserRegistrado = 1;
@@ -151,12 +152,10 @@ public class FormRegistroUsuario extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU FOTOGRAFIA ES NECESARIA PARA EL USO DE ESTA APLICACIÓN", Toast.LENGTH_LONG).show();
                     }else if(bandera == 1){
                         Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
-                        insertUserNoRegistrado();
-                        insertImagen();
+                        updateUserNoRegistrado();
                     }else{
                         Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_LONG).show();
                         updateUserRegistrado();
-                        insertImagen();
                     }
                 }catch (Exception e){
                     Intent i = new Intent(FormRegistroUsuario.this,MensajeError.class);
@@ -168,12 +167,13 @@ public class FormRegistroUsuario extends AppCompatActivity {
     }
 
     //********************************** INSERT Y UPDATE AL SERVIDOR ***********************************//
-    public void insertUserNoRegistrado(){
+    public void updateUserNoRegistrado(){
         nombre = txtNombre.getText().toString();
         aPaterno = txtApaterno.getText().toString();
         aMaterno = txtAmaterno.getText().toString();
         direccionUsuario = txtDireccion.getText().toString();
         noConfianza = txtNoConfianza.getText().toString();
+        codVerificacion = txtCodigoVerificacion.getText().toString();
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
@@ -183,10 +183,11 @@ public class FormRegistroUsuario extends AppCompatActivity {
                 .add("AMaterno",aMaterno)
                 .add("Direccion",direccionUsuario)
                 .add("TelefonoConfianza",noConfianza)
+                .add("CodigoAutorizacion",codVerificacion)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/UsuarioNoRegistrado")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/NoRegistrados?telefono="+cargarInfoTelefono+"&nombre="+nombre+"&aPaterno="+aPaterno+"&aMaterno="+aMaterno+"&direccion="+direccionUsuario+"&telConfianza="+noConfianza+"&codigoVerificacion="+codVerificacion)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -200,21 +201,30 @@ public class FormRegistroUsuario extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     FormRegistroUsuario.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            guardarDatosUser();
-                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            txtNombre.setText("");
-                            txtApaterno.setText("");
-                            txtAmaterno.setText("");
-                            txtDireccion.setText("");
-                            txtNoConfianza.setText("");
-                            Intent i = new Intent(FormRegistroUsuario.this,MenuEventos.class);
-                            startActivity(i);
-                            finish();
+                            String respCad = resp;
+                            final String valor = "false";
+                            if(respCad.equals(valor)){
+                                Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU CÓDIGO DE VERIFICACIÓN ES INCORRECTO", Toast.LENGTH_LONG).show();
+                            }else{
+                                insertImagen();
+                                guardarDatosUser();
+                                Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
+                                txtNombre.setText("");
+                                txtApaterno.setText("");
+                                txtAmaterno.setText("");
+                                txtDireccion.setText("");
+                                txtNoConfianza.setText("");
+                                Intent i = new Intent(FormRegistroUsuario.this,MenuEventos.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i(TAG, resp);
                         }
                     });
                 }
@@ -223,13 +233,15 @@ public class FormRegistroUsuario extends AppCompatActivity {
     }
     public void updateUserRegistrado(){
         noConfianza = txtNoConfianza.getText().toString();
+        codVerificacion = txtCodigoVerificacion.getText().toString();
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("TelefonoConfianza",noConfianza)
+                .add("CodigoAutorizacion",codVerificacion)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/Victimas?nucVictima="+cargarInfoNuc+"&idVictima="+cargarInfoIdVictima+"&telConfianza="+noConfianza)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/Victimas?nucVictima="+cargarInfoNuc+"&idVictima="+cargarInfoIdVictima+"&telConfianza="+noConfianza+"&codigoVerificacion="+codVerificacion)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -243,21 +255,30 @@ public class FormRegistroUsuario extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     FormRegistroUsuario.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            guardarTelConfianzaUser();
-                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            txtNombre.setText("");
-                            txtApaterno.setText("");
-                            txtAmaterno.setText("");
-                            txtDireccion.setText("");
-                            txtNoConfianza.setText("");
-                            Intent i = new Intent(FormRegistroUsuario.this,MenuEventos.class);
-                            startActivity(i);
-                            finish();
+                            String respCad = resp;
+                            final String valor = "false";
+                            if(respCad.equals(valor)){
+                                Toast.makeText(getApplicationContext(), "LO SENTIMOS, SU CÓDIGO DE VERIFICACIÓN ES INCORRECTO", Toast.LENGTH_LONG).show();
+                            }else{
+                                insertImagen();
+                                guardarTelConfianzaUser();
+                                Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
+                                txtNombre.setText("");
+                                txtApaterno.setText("");
+                                txtAmaterno.setText("");
+                                txtDireccion.setText("");
+                                txtNoConfianza.setText("");
+                                Intent i = new Intent(FormRegistroUsuario.this,MenuEventos.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i(TAG, resp);
                         }
                     });
                 }
@@ -307,7 +328,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
                 .add("ImageData", cadena)
                 .build();
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/MultimediaFotoUser/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaFotoUser/")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {

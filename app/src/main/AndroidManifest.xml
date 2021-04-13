@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mx.gob.sspo.movimientovecinal">
 
-
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -26,11 +25,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".TransporteSeguroRespuesta"
+            android:launchMode="singleTask">
+        </activity>
         <activity
             android:name=".MensajeError"
-            android:launchMode="singleTask"
-            android:label="@string/title_activity_mensaje_error">
-        </activity>
+            android:label="@string/title_activity_mensaje_error"
+            android:launchMode="singleTask"></activity>
 
         <receiver
             android:name=".MiWidgetVV"
@@ -173,6 +174,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCSbd2L7Vt9Hw8CHN6JZIvvEOlaop9RtrM" />

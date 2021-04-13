@@ -58,7 +58,6 @@ public class AltoALaViolencia extends AppCompatActivity {
     ImageView home;
     GifImageView btnViolencia;
     AlertDialog alert = null;
-    int cargarInfoUserRegistrado;
     SharedPreferences share;
     SharedPreferences.Editor editor;
     int numberRandom,cargarInfoWaltoViolencia;
@@ -67,6 +66,7 @@ public class AltoALaViolencia extends AppCompatActivity {
     String mensaje1,mensaje2,direccion, municipio, estado,fecha,hora;
     Double lat,lon;
     String respuestaJson,m_Item1;
+    String TAG = "Alto a la Violencia";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class AltoALaViolencia extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/EventosViolencia")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/EventosViolencia")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -153,15 +153,24 @@ public class AltoALaViolencia extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     AltoALaViolencia.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(AltoALaViolencia.this,MensajeEnviadoAltoViolencia.class);
-                            startActivity(i);
-                            finish();
+                            String respCad = resp;
+                            final String valor = "\"false\"";
+                            if(respCad.equals(valor)){
+                                Intent i = new Intent(AltoALaViolencia.this, MensajeError.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(AltoALaViolencia.this, MensajeEnviadoAltoViolencia.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i(TAG, resp);
                         }
                     });
                 }
@@ -172,7 +181,6 @@ public class AltoALaViolencia extends AppCompatActivity {
     public void cargarUserRegistrado() {
         share = getApplication().getSharedPreferences("main", Context.MODE_PRIVATE);
         cargarInfoWaltoViolencia = share.getInt("VIOLENCIA", 0);
-        cargarInfoUserRegistrado = share.getInt("BANDERAUSERREGISTRADO", 0);
         cargarInfoTelefono = share.getString("TELEFONO", "SIN INFORMACION");
         cargarInfoNombre = share.getString("NOMBRE", "SIN INFORMACION");
         cargarInfoApaterno = share.getString("APATERNO", "SIN INFORMACION");
@@ -325,7 +333,7 @@ public class AltoALaViolencia extends AppCompatActivity {
     public void getUserViolencia() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {

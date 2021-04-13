@@ -62,11 +62,12 @@ public class AlertaAmber extends AppCompatActivity {
     ImageView home,pickFotoAvatar;
     CircleImageView avatar2;
     int banderaFoto = 0;
-    String nombreCompleto,nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,nacionalidad,colorOjos,estatura,complexion,fechaNacimiento,fechaHechos,lugarHechos,descripcionHechos,cadena;
+    String nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,fechaReporte,cadena;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private int dia,mes,año,dia1,mes1,año1;
     int numberRandom;
     String randomCodigoVerifi,codigoVerifi;
+    String TAG = "Alerta Amber";
 
     String mensaje1,mensaje2,direccion, municipio, estado;
     Double lat,lon;
@@ -346,7 +347,7 @@ public class AlertaAmber extends AppCompatActivity {
                 .add("ImageData", cadena)
                 .build();
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/MultimediaFotoUserDesaparecidos/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaFotoUserDesaparecidos/")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -377,25 +378,11 @@ public class AlertaAmber extends AppCompatActivity {
         //*************** FECHA **********************//
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        fechaHechos = dateFormat.format(date);
-
         nombreAlerta = txtNombreAlerta.getText().toString();
         aPaternoAlerta = txtApaternoAlerta.getText().toString();
         aMaternoAlerta = txtAmaternoAlerta.getText().toString();
         edad = txtEdad.getText().toString();
-        nacionalidad = cargarInfoLat;
-        colorOjos = cargarInfoLong;
-        /*estatura = txtEstatura.getText().toString();
-        complexion = txtComplexion.getText().toString();
-        fechaNacimiento = txtFechaNacimiento.getText().toString();
-        fechaHechos = txtFechaHechos.getText().toString();
-        lugarHechos = txtLugarHechos.getText().toString();
-        descripcionHechos = txtDescripcionHechos.getText().toString();*/
-        estatura = "1.50";
-        fechaNacimiento = "01/01/2000";
-        lugarHechos = "OAXACA"; //poner el numero de telefono
-        descripcionHechos = "DESAPARECIDO";
-
+        fechaReporte = dateFormat.format(date);
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
@@ -404,20 +391,16 @@ public class AlertaAmber extends AppCompatActivity {
                 .add("AMaterno",aMaternoAlerta)
                 .add("Genero",varSexo)
                 .add("Edad",edad)
-                .add("Nacionalidad",nacionalidad)
-                .add("ColorOjos",colorOjos)
-                .add("Estatura",estatura)
-                .add("Complexion",cargarInfoTelefono)
-                .add("FechaNacimiento",fechaNacimiento)
-                .add("FechaHechos",fechaHechos)
-                .add("LugarHechos",lugarHechos)
-                .add("DescripcionHechos",descripcionHechos)
-                .add("UrlaFoto","http://187.174.102.142/AppMovimientoVecinal/FotoDesaparecidos/"+randomCodigoVerifi+".jpg")
+                .add("Latitud",cargarInfoLat)
+                .add("Longitud",cargarInfoLong)
+                .add("Telefono",cargarInfoTelefono)
+                .add("FechaReporte",fechaReporte)
+                .add("UrlaFoto","https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/FotoDesaparecidos/"+randomCodigoVerifi+".jpg")
                 .add("StatusDesaparicion","1")
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://187.174.102.142/AppMovimientoVecinal/api/AlertaAmber/")
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/AlertaAmber/")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -431,15 +414,24 @@ public class AlertaAmber extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     AlertaAmber.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(AlertaAmber.this,MensajeEnviadoAlertaAmber.class);
-                            startActivity(i);
-                            finish();
+                            String respCad = resp;
+                            final String valor = "\"false\"";
+                            if(respCad.equals(valor)){
+                                Intent i = new Intent(AlertaAmber.this, MensajeError.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(AlertaAmber.this, MensajeEnviadoAlertaAmber.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            Log.i(TAG, resp);
                         }
                     });
                 }
