@@ -200,18 +200,21 @@ public class VigilanciaVecinal extends AppCompatActivity {
                     VigilanciaVecinal.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String respCad = resp;
+                            final String respCad = resp;
                             final String valor = "\"false\"";
                             if(respCad.equals(valor)){
                                 Intent i = new Intent(VigilanciaVecinal.this, MensajeError.class);
                                 startActivity(i);
                                 finish();
                             }else{
+                                String respuestaFolio = respCad;
+                                respuestaFolio = respuestaFolio.replace('"',' ');
                                 Intent i = new Intent(VigilanciaVecinal.this, MensajeEnviadoVigilanciaVecinal.class);
+                                i.putExtra("FolioCad", respuestaFolio);
                                 startActivity(i);
                                 finish();
                             }
-                            Log.i(TAG, resp);
+                            Log.i(TAG, respCad);
                         }
                     });
                 }

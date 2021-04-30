@@ -166,7 +166,10 @@ public class AltoALaViolencia extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             }else{
+                                String respuestaFolio = respCad;
+                                respuestaFolio = respuestaFolio.replace('"',' ');
                                 Intent i = new Intent(AltoALaViolencia.this, MensajeEnviadoAltoViolencia.class);
+                                i.putExtra("FolioCad", respuestaFolio);
                                 startActivity(i);
                                 finish();
                             }

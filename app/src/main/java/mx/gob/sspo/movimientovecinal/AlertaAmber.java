@@ -427,7 +427,10 @@ public class AlertaAmber extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             }else{
+                                String respuestaFolio = respCad;
+                                respuestaFolio = respuestaFolio.replace('"',' ');
                                 Intent i = new Intent(AlertaAmber.this, MensajeEnviadoAlertaAmber.class);
+                                i.putExtra("FolioCad", respuestaFolio);
                                 startActivity(i);
                                 finish();
                             }

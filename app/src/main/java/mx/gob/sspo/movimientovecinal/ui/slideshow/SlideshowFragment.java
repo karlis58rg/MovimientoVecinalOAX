@@ -32,8 +32,10 @@ import java.io.IOException;
 import me.biubiubiu.justifytext.library.JustifyTextView;
 import mx.gob.sspo.movimientovecinal.AltoALaViolencia;
 import mx.gob.sspo.movimientovecinal.MensajeSalidaAltoViolencia;
+import mx.gob.sspo.movimientovecinal.MensajeSalidaVigilanciaVecinal;
 import mx.gob.sspo.movimientovecinal.MiWidget;
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.ui.vigilancia_vecinal.Vigilancia;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -101,7 +103,7 @@ public class SlideshowFragment extends Fragment {
     public void getUserViolencia() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioRegistrado?telefono="+cargarInfoTelefono)
+                .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/UsuarioRegistrado?violenciaTelefono="+cargarInfoTelefono)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -119,32 +121,24 @@ public class SlideshowFragment extends Fragment {
                     SlideshowFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                JSONObject jObj = null;
-                                String resObj = myResponse;
-                                System.out.println(resObj);
-                                jObj = new JSONObject("" + resObj + "");
-                                respuestaJson = jObj.getString("m_Item1");
-                                m_Item1 = "SIN INFORMACION";
-                                if (respuestaJson.equals(m_Item1)) {
-                                    Intent i = new Intent(getContext(), MensajeSalidaAltoViolencia.class);
-                                    startActivity(i);
-                                    getActivity().onBackPressed();
-                                } else {
-                                    lblTitulo.setVisibility(View.VISIBLE);
-                                    imgCM.setVisibility(View.VISIBLE);
-                                    lblCuerpo.setVisibility(View.VISIBLE);
-                                    btnCrear.setVisibility(View.VISIBLE);
-                                    lblCargando.setVisibility(View.GONE);
-                                    Log.i("HERE", "" + jObj);
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            final String resp = myResponse;
+                            final String valor = "true";
+                            if(resp.equals(valor)){
+                                lblTitulo.setVisibility(View.VISIBLE);
+                                imgCM.setVisibility(View.VISIBLE);
+                                lblCuerpo.setVisibility(View.VISIBLE);
+                                btnCrear.setVisibility(View.VISIBLE);
+                                lblCargando.setVisibility(View.GONE);
+                            }else{
+                                Intent i = new Intent(getContext(), MensajeSalidaAltoViolencia.class);
+                                startActivity(i);
+                                getActivity().onBackPressed();
                             }
+                            Log.i("HERE", resp);
                         }
                     });
                 }
+
             }
         });
     }

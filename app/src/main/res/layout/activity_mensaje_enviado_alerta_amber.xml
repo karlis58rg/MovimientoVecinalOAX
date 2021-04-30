@@ -48,6 +48,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgHomeAlertaAmberMensaje" />
 
+    <TextView
+        android:id="@+id/lblFolioCadAA"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/imgReporte"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorAltoViolencia"
+        android:textSize="25dp"/>
+
     <me.biubiubiu.justifytext.library.JustifyTextView
         android:id="@+id/lblVamosEnTuApoyo911"
         android:layout_width="300dp"
@@ -60,6 +73,6 @@
         android:textColor="@color/colorAltoViolencia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgReporte" />
+        app:layout_constraintTop_toBottomOf="@+id/lblFolioCadAA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

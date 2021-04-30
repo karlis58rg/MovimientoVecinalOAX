@@ -59,15 +59,24 @@
             android:layout_marginTop="50dp"
             android:layout_gravity="center"/>
 
-        <TextView
+        <me.biubiubiu.justifytext.library.JustifyTextView
             android:id="@+id/lblTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tu transporte es seguro, Si cuenta con \nregistro en SEMOVI Oaxaca, asegúrate que\nlos siguientes datos corresponden al\nvehículo."
+            android:text="Tu transporte es seguro, Si cuenta con registro en SEMOVI Oaxaca, asegúrate que los siguientes datos corresponden al vehículo.\n\n"
             android:layout_marginTop="30dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorBold"
-            android:layout_gravity="center"/>
+            android:textColor="@color/colorTS"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <me.biubiubiu.justifytext.library.JustifyTextView
+            android:id="@+id/lblTituloListosExiste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estamos listo para recibir tu alertamiento, oprime el Widget desde tus accesos directos ubicados en tu pantalla principal de tu teléfono móvil o entra de nuevo al botón “Movilidad Segura” si tienes una emergencia.\n\n"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
     </LinearLayout>
 
         <LinearLayout

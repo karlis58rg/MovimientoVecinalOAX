@@ -37,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import mx.gob.sspo.movimientovecinal.ServiceShake.LocationService;
+import mx.gob.sspo.movimientovecinal.Transporte.TransporteExistente;
+import mx.gob.sspo.movimientovecinal.Transporte.TransporteNoExiste;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -78,8 +80,12 @@ public class TransporteSeguro extends AppCompatActivity  {
         Intent iHome = getIntent();
         home = iHome.getIntExtra("home",0);
 
-        if(cargarWidget == 1 && cargarServicio.equals(servar) && cargarDato.equals(datoEncontrado)||cargarDato.equals(datoNoEncontrado)){
-            startLocationService();
+        if(cargarWidget == 1 && cargarServicio.equals(servar)){
+            if(cargarDato.equals(datoEncontrado)){
+                startLocationService();
+            }else if(cargarDato.equals(datoNoEncontrado)){
+                startLocationService();
+            }
         }
 
         if(cargarDato.equals(datoEncontrado)){
@@ -248,7 +254,8 @@ public class TransporteSeguro extends AppCompatActivity  {
             }
         if(resultCode == RESULT_CANCELED){
             Toast.makeText(TransporteSeguro.this, "LA OPCIÓN FUE CANCELADA", Toast.LENGTH_LONG).show();
-
+            txtPlaca.setEnabled(true);
+            imgQR.setEnabled(true);
         }
     }
     /*******************************************************************************************************/
@@ -460,6 +467,7 @@ public class TransporteSeguro extends AppCompatActivity  {
         cargarDato = share.getString("DATO", "SIN INFORMACION");
         cargarWidget = share.getInt("TRANSPORTE",0);
         cargarServicio = share.getString("servicio","sincrear");
+        Log.i("SERVICIO",cargarServicio);
     }
     private void startLocationService() {
         Intent intent = new Intent(this, LocationService.class);

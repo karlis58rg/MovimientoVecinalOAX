@@ -32,6 +32,5 @@
             android:textColor="@color/colorBold"
             android:textAlignment="center"
             android:background="@drawable/btn_redondo"/>
-
     </LinearLayout>
 </LinearLayout>

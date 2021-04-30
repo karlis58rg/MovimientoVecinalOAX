@@ -44,9 +44,21 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_logo_app"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgHomeVigilanciaMensaje" />
+
+    <TextView
+        android:id="@+id/lblFolioCad"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/imgReporte"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorAltoViolencia"
+        android:textSize="25dp"/>
 
     <me.biubiubiu.justifytext.library.JustifyTextView
         android:id="@+id/lblVamosEnTuApoyo911"
@@ -60,7 +72,7 @@
         android:textColor="@color/colorAltoViolencia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgReporte" />
+        app:layout_constraintTop_toBottomOf="@+id/lblFolioCad" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

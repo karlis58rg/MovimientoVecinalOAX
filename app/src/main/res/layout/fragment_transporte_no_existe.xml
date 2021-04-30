@@ -58,16 +58,25 @@
                     android:src="@drawable/ic_semovi_advertencia"
                     android:layout_marginTop="50dp"
                     android:layout_gravity="center"/>
-
-                <TextView
+                <me.biubiubiu.justifytext.library.JustifyTextView
                     android:id="@+id/lblTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tu transporte No es Seguro, No cuenta con \nregistro en SEMOVI Oaxaca."
+                    android:text="Tu transporte No es Seguro, No cuenta con registro en SEMOVI Oaxaca.\n\n"
                     android:layout_marginTop="30dp"
                     android:textAlignment="center"
                     android:textColor="@color/colorTxtPlaca"
-                    android:layout_gravity="center"/>
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:id="@+id/lblTituloListosNoExiste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estamos listo para recibir tu alertamiento, oprime el Widget desde tus accesos directos ubicados en tu pantalla principal de tu teléfono móvil o entra de nuevo al botón “Movilidad Segura” si tienes una emergencia.\n\n"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -195,8 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_below="@id/lyNucNoExitoso"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="70dp">
+                android:gravity="center_horizontal">
                 <LinearLayout
                     android:id="@+id/contentConsultaTNEV"
                     android:layout_width="match_parent"
@@ -238,10 +246,6 @@
                         android:layout_weight="0.05"/>
                 </LinearLayout>
             </LinearLayout>
-
-
-
-
         </RelativeLayout>
     </ScrollView>
 

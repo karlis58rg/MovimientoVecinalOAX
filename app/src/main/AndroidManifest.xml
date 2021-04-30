@@ -25,13 +25,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TransporteSeguroRespuesta"
-            android:launchMode="singleTask">
-        </activity>
+        <activity android:name=".TerminosCondiciones"></activity>
+        <activity
+            android:name=".TransporteSeguroRespuesta"
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".MensajeError"
             android:label="@string/title_activity_mensaje_error"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
 
         <receiver
             android:name=".MiWidgetVV"

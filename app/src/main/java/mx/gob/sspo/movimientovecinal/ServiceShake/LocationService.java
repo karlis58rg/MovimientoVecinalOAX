@@ -44,6 +44,7 @@ import mx.gob.sspo.movimientovecinal.AlertaAmber;
 import mx.gob.sspo.movimientovecinal.MensajeEnviadoAlertaAmber;
 import mx.gob.sspo.movimientovecinal.MensajeError;
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.Transporte.TransporteExistente;
 import mx.gob.sspo.movimientovecinal.Transporte.TransporteNoExiste;
 import mx.gob.sspo.movimientovecinal.receiver.LocationActionsReceiver;
 import okhttp3.Call;
@@ -65,15 +66,16 @@ public class LocationService extends Service {
     String valorRandom,codigoVerifi,randomCodigoVerifi,fecha,hora;
     Double lat, lon;
     int numberRandom,banderaInsert = 0;
-    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoPlaca,serbar = "sincrear";
-    String cargarPlacaJson,cargarPlaca,cargarNucJson,cargarNuc,cargarSitio,cargarMarca,cargarTipo,sinInformacion="SIN INFORMACION",placaCad="";
+    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoPlaca,serbar = "sincrear",datoEncontrado = "ENCONTRADO",datoNoEncontrado="NOENCONTRADO";
+    String cargarPlacaJson,cargarPlaca,cargarNucJson,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarDato,sinInformacion="SIN INFORMACION",placaCad="";
     String tituloNotificacion = "Localizando..";
     String cuerpoNotificacion = "Verificando información.";
     String tituloCancelar = "Detener";
     String enviando = "";
-    String noEnviando = "";
-    boolean folioEncontrado = false;
 
+    boolean folioEncontrado = false;
+    boolean alertaLanzada = false;
+    String mensaje = "Cuando concluyas tu emergencia para detener tu alertamiento es necesario: 1.Entrar al App “Oaxaca Seguro / Movilidad Segura” y oprimir “Finalizar Viaje” 2.Ir a las notificaciones “Enviando tu ubicación” y oprimir “Detener”";
     /************GUARDAR PREFERENCIAS DEL SISTEMA***************/
     SharedPreferences shared;
     SharedPreferences.Editor editor;
@@ -113,8 +115,8 @@ public class LocationService extends Service {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                .setInterval(5000)
-                .setFastestInterval(5000);
+                .setInterval(60000)
+                .setFastestInterval(60000);
 
         locationCallback = new LocationCallback() {
             @Override
@@ -140,15 +142,42 @@ public class LocationService extends Service {
                         Log.i(TAG, "dir" + direccion + "mun" + municipio + "est" + estado);
                     }
                     if(banderaInsert == 1 && folioEncontrado == true){
-                        cuerpoNotificacion = "Enviando ubicación..";
-                        enviando = cuerpoNotificacion;
-                        pushCad();
-                        getDatosMapaRobos();
+                        if(alertaLanzada == false){
+                            cuerpoNotificacion = "Enviando ubicación..";
+                            enviando = cuerpoNotificacion;
+                            pushCad();
+                            getDatosMapaRobos();
+                            if(cargarDato.equals(datoNoEncontrado)){
+                                TransporteNoExiste.lblTituloListos.setText(mensaje);
+                            }else if(cargarDato.equals(datoEncontrado)){
+                                TransporteExistente.lblTituloListos.setText(mensaje);
+                            }
+                        }else {
+                            getDatosMapaRobos();
+                            if(cargarDato.equals(datoNoEncontrado)){
+                                TransporteNoExiste.lblTituloListos.setText(mensaje);
+                            }else if(cargarDato.equals(datoEncontrado)){
+                                TransporteExistente.lblTituloListos.setText(mensaje);
+                            }
+                        }
                     }else if(banderaInsert == 1 && folioEncontrado == false){
-                        tituloNotificacion = "¡Alerta!";
-                        cuerpoNotificacion = "Su emergencia no pudo ser enviada";
-                        TransporteNoExiste.lblTituloNoExiste.setText("Tu emergencia no se logró enviar por este medio, comunícate al 9-1-1 vía telefónica.");
-                        pushCad();
+                        if(alertaLanzada == false){
+                            tituloNotificacion = "¡Alerta!";
+                            cuerpoNotificacion = "Su emergencia no pudo ser enviada";
+                            pushCad();
+                            if(cargarDato.equals(datoNoEncontrado)){
+                                TransporteNoExiste.lblTituloListos.setText(mensaje);
+                            }else if(cargarDato.equals(datoEncontrado)){
+                                TransporteExistente.lblTituloListos.setText(mensaje);
+                            }
+                        }else{
+                            if(cargarDato.equals(datoNoEncontrado)){
+                                TransporteNoExiste.lblTituloListos.setText(mensaje);
+                            }else if(cargarDato.equals(datoEncontrado)){
+                                TransporteExistente.lblTituloListos.setText(mensaje);
+                            }
+                        }
+
                     } else if(banderaInsert != 1){
                         insertBdEventoTransportePublicoIOS();
                     }
@@ -167,8 +196,6 @@ public class LocationService extends Service {
                         PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         }
-
-
         return START_NOT_STICKY;
     }
 
@@ -349,6 +376,7 @@ public class LocationService extends Service {
         cargarSitio = shared.getString("sitioJson", "SIN INFORMACION");
         cargarMarca = shared.getString("marcaJson", "SIN INFORMACION");
         cargarTipo = shared.getString("tipoJson", "SIN INFORMACION");
+        cargarDato = shared.getString("DATO", "SIN INFORMACION");
     }
     private void guardarServicio() {
         shared = getSharedPreferences("main", MODE_PRIVATE);
@@ -366,6 +394,7 @@ public class LocationService extends Service {
     }
 
     public void pushCad (){
+        alertaLanzada = true;
         NotificationManager notificationManager = (NotificationManager)
                 getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
         Intent receiverIntent1 = new Intent(getApplication(),

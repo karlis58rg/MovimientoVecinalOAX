@@ -20,6 +20,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class FormAddTelefono extends AppCompatActivity {
     SharedPreferences share;
     SharedPreferences.Editor editor;
     AlertDialog alert = null;
+    CheckBox chkTerminosCondiciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class FormAddTelefono extends AppCompatActivity {
         txtNumeroUsuario = findViewById(R.id.txtTelefono);
         btnEnviar = findViewById(R.id.btnEnviar);
         btnAvisoPrivacidad = findViewById(R.id.btnAvisoPrivacidad);
+        chkTerminosCondiciones = findViewById(R.id.checkTerminosCondiciones);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +63,8 @@ public class FormAddTelefono extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"SU NÚMERO TELEFÓNICO ES NECESARIO PARA PROCESAR LA SOLICITUD",Toast.LENGTH_SHORT).show();
                     }else if(txtNumeroUsuario.getText().length() < 10){
                         Toast.makeText(getApplicationContext(),"LO SENTIMOS SU NÚMERO TELEFÓNICO NO PUEDE SER MENOR A 10 DIGITOS",Toast.LENGTH_SHORT).show();
+                    }if(chkTerminosCondiciones.isChecked() == false){
+                        Toast.makeText(getApplicationContext(), "LO SENTIMOS, ES INDISPENSABLE ACEPTAR LOS TERMINOS Y CONDICIONES PARA PODER CONTINUAR", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                         getUser();
@@ -70,6 +75,17 @@ public class FormAddTelefono extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 }
+            }
+        });
+
+        chkTerminosCondiciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(chkTerminosCondiciones.isChecked()){
+                    Intent i = new Intent(FormAddTelefono.this,TerminosCondiciones.class);
+                    startActivity(i);
+                }
+
             }
         });
 

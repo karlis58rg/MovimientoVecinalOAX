@@ -770,7 +770,10 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                                     startActivity(i);
                                     getActivity().onBackPressed();
                                 }else{
+                                    String respuestaFolio = respCad;
+                                    respuestaFolio = respuestaFolio.replace('"',' ');
                                     Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
+                                    i.putExtra("FolioCad", respuestaFolio);
                                     startActivity(i);
                                     getActivity().onBackPressed();
                                 }

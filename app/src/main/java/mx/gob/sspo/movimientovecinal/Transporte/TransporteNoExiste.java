@@ -21,7 +21,7 @@ import mx.gob.sspo.movimientovecinal.R;
  * create an instance of this fragment.
  */
 public class TransporteNoExiste extends Fragment {
-    public static TextView lblTituloNoExiste;
+    public static TextView lblTituloListos;
     TextView txtPlacaNoExitoso,txtNucNoExitoso;
     Button btnFinalizarViaje;
     String cargarPlaca,cargarNuc,sinInformacion = "SIN INFORMACION",cargarServicio,serbar="creado";
@@ -60,7 +60,7 @@ public class TransporteNoExiste extends Fragment {
         btnFinalizarViaje = root.findViewById(R.id.btnFinalizarViajeNoExit);
         lyPlacaExitoso = root.findViewById(R.id.lyPlacaExitoso);
         lyNucNoExitoso = root.findViewById(R.id.lyNucNoExitoso);
-        lblTituloNoExiste = root.findViewById(R.id.lblTitulo);
+        lblTituloListos = root.findViewById(R.id.lblTituloListosNoExiste);
 
         txtPlacaNoExitoso.setText(cargarPlaca);
         txtNucNoExitoso.setText(cargarNuc);
@@ -77,7 +77,6 @@ public class TransporteNoExiste extends Fragment {
             public void onClick(View view) {
                 if(cargarServicio.equals(serbar)){
                     eliminarDatosTransporte();
-                    showPopUp(view);
                 }else{
                     eliminarDatosTransporte();
                     getActivity().onBackPressed();

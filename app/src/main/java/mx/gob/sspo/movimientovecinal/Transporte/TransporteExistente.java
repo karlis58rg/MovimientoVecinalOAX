@@ -27,6 +27,7 @@ import mx.gob.sspo.movimientovecinal.TransporteSeguroRespuesta;
  * create an instance of this fragment.
  */
 public class TransporteExistente extends Fragment {
+    public static TextView lblTituloListos;
     TextView txtPlacaExitoso,txtNucExitoso,txtSitio,txtMarca,txtTipo;
     Button btnFinalizarViaje;
     String cargarPlaca,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarServicio,serbar="creado";
@@ -63,6 +64,7 @@ public class TransporteExistente extends Fragment {
         txtMarca = root.findViewById(R.id.txtMarca);
         txtTipo = root.findViewById(R.id.txtTipo);
         btnFinalizarViaje = root.findViewById(R.id.btnFinalizarViaje);
+        lblTituloListos = root.findViewById(R.id.lblTituloListosExiste);
 
         txtPlacaExitoso.setText(cargarPlaca);
         txtNucExitoso.setText(cargarNuc);
@@ -75,7 +77,6 @@ public class TransporteExistente extends Fragment {
             public void onClick(View view) {
                 if(cargarServicio.equals(serbar)){
                     eliminarDatosTransporte();
-                    showPopUp(view);
                 }else{
                     eliminarDatosTransporte();
                     getActivity().onBackPressed();
