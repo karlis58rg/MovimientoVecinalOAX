@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.CamcorderProfile;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -301,6 +302,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         playAu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bandera = 4;
                 reproducir();
             }
         });
@@ -309,55 +311,58 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 try {
-                    Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                     if (txtDescEmergencia.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
                     } else if (tv_add.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
                     } else if (bandera == 1) {
                         if(cadena.isEmpty()){
-                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
-                            insertBdEventoIOS();
-                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            getActivity().onBackPressed();
+                            //insertBdEventoIOS();
+                            //Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
+                            //getActivity().onBackPressed();
                             //(i.putExtra("valorRandom", randomCodigoVerifi);
                         }else{
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             insertImagen();
-                            insertBdEventoIOS();
-                            getActivity().onBackPressed();
+                            //insertBdEventoIOS();
+                            //getActivity().onBackPressed();
                             //(i.putExtra("valorRandom", randomCodigoVerifi);
                         }
 
                     } else if (bandera == 2) {
                         if(cadenaVideo.isEmpty()){
-                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
-                            insertBdEventoIOS();
+                            //insertBdEventoIOS();
                             Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            getActivity().onBackPressed();
+                            //getActivity().onBackPressed();
                             //i.putExtra("valorRandom", randomCodigoVerifi);
                         }else{
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                            insertBdEventoIOS();
+                            //insertBdEventoIOS();
                             insertVideo();
-                            getActivity().onBackPressed();
+                            //getActivity().onBackPressed();
                             //i.putExtra("valorRandom", randomCodigoVerifi);
                         }
 
                     } else if (bandera == 3) {
                         if(cadenaAudio.isEmpty()){
-                            Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
                             recordAu.setVisibility(view.GONE);
                             detenerAudio.setVisibility(view.GONE);
                             playAu.setVisibility(view.GONE);
                             tiempo.setVisibility(View.GONE);
                             resetChronometro();
-                            insertBdEventoIOS();
+                            //insertBdEventoIOS();
                             Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            getActivity().onBackPressed();
+                            //getActivity().onBackPressed();
                             // i.putExtra("valorRandom", randomCodigoVerifi);
                         }else{
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
@@ -365,15 +370,14 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             detenerAudio.setVisibility(view.GONE);
                             playAu.setVisibility(view.GONE);
                             tiempo.setVisibility(View.GONE);
-                            insertBdEventoIOS();
+                            //insertBdEventoIOS();
                             insertAudio();
                             resetChronometro();
                             // i.putExtra("valorRandom", randomCodigoVerifi);
                         }
-
                     } else {
                         Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                        insertBdEventoIOS();
+                        //insertBdEventoIOS();
                         //Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
                         //i.putExtra("valorRandom", randomCodigoVerifi);
                         //startActivity(i);
@@ -551,7 +555,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
     private  void llamarItemVideo(){
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,7);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,20);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
         if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent,REQUEST_VIDEO_CAPTURE);
         }
@@ -605,13 +610,17 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 {
                     Uri videoUri = data.getData();
                     videoViewImage.setVideoURI(videoUri);
+                    videoViewImage.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    int DataNew = videoViewImage.getBufferPercentage();
                     Log.i("HERE", "PRIMER PARTE DONDE TRAE LA URI");
+                    System.out.println("video"+videoUri);
 
                     // SELECCIÓN DEL VIDEO ********************
 
                     Uri selectedVideo = data.getData();
                     String[] filePathColum = {MediaStore.Video.Media.DATA};
                     Cursor cursor = getActivity().getContentResolver().query(selectedVideo,filePathColum,null,null,null);
+                    //Cursor cursor = getActivity().getContentResolver().query(videoUri,filePathColum,null,null,null);
                     assert cursor != null;
                     cursor.moveToFirst();
                     Log.i("HERE", "GRABANDO");
@@ -622,6 +631,9 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     mediaPath = cursor.getString(columIndex);
                     //txtResVideo.setText(mediaPath);
                     cursor.close();
+                    Log.i("HERE", "MEDIA PATH");
+                    System.out.println("media path"+ mediaPath);
+
 
                     // VISTA PREVIA DEL VIDEO DESDE UNA RUTA FISICA ************************
 
@@ -630,7 +642,41 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     videoViewImage.setMediaController(mediaController);
                     mediaController.setAnchorView(videoViewImage);
                     Log.i("HERE", "VISTA PREVIA");
-                    videoBase64();
+                    InputStream inputStream = null;
+                    String encodedString = null;
+
+                    try
+                    {
+                        inputStream = new FileInputStream(mediaPath);
+                        System.out.println("IMPUT STREAM"+inputStream.toString());
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    byte[] bytes;
+                    byte[] buffer = new byte[209715200];
+                    int bytesRead;
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+                    try
+                    {
+                        while ((bytesRead = inputStream.read(buffer)) != -1)
+                        {
+                            output.write(buffer,0,bytesRead);
+                        }
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    bytes = output.toByteArray();
+                    encodedString = Base64.encodeToString(bytes,Base64.NO_WRAP);
+                    cadenaVideo = encodedString;
+                    System.out.println(cadenaVideo);
+                    Log.i("CADENA VIDEO",cadenaVideo);
+                    //rest.setText(encodedString);
 
                 }else
                 {
@@ -654,12 +700,14 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         byte[] imgBytes = baos.toByteArray();
         String imgString = android.util.Base64.encodeToString(imgBytes, android.util.Base64.NO_WRAP);
         cadena = imgString;
+        System.out.println(cadena);
         Log.i("BASE64",cadena);
 
         imgBytes = android.util.Base64.decode(imgString, android.util.Base64.NO_WRAP);
         Bitmap decoded= BitmapFactory.decodeByteArray(imgBytes,0,imgBytes.length);
         imgImagen.setImageBitmap(decoded);
         System.out.print("IMAGEN" + imgImagen);
+
     }
     private void videoBase64(){
         //CONVERTIR  VIDEO A BASE64 **************************
@@ -682,7 +730,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             while ((bytesRead = inputStream.read(buffer)) != -1)
             {
                 output.write(buffer,0,bytesRead);
-
             }
 
         }catch (Exception e)
@@ -690,8 +737,9 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
         bytes = output.toByteArray();
-        encodedString = Base64.encodeToString(bytes,Base64.DEFAULT);
+        encodedString = android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP);
         cadenaVideo = encodedString;
+        Log.i("CADENA VIDEO",cadenaVideo);
         //rest.setText(encodedString);
     }
 
@@ -709,16 +757,20 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         hora = timeFormat.format(time);
 
         //************************************* RUTA MULTIMEDIA *************************//
-        if (bandera == 1) {
+        if (bandera == 1 && cadena != null) {
             rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/" + randomCodigoVerifi + ".jpg";
-
-        } else if (bandera == 2) {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
-
-        } else if (bandera == 3) {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
         } else {
             rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/sinarchivo.jpg";
+        }
+        if (bandera == 2 && cadenaVideo != null) {
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
+        } else{
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/sinarchivo.jpg";
+        }
+        if (bandera == 3 && cadenaAudio != null) {
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
+        } else {
+            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/sinarchivo.jpg";
         }
         descEmergencia = txtDescEmergencia.getText().toString().toUpperCase();
 
@@ -791,7 +843,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                 .add("Description",randomCodigoVerifi +".jpg" )
                 .add("ImageData", cadena)
                 .build();
-
         Request request = new Request.Builder()
                 .url("https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/api/MultimediaImageUser/")
                 .post(body)
@@ -807,14 +858,21 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
-
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     ReporteEmergencias.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //Toast.makeText(getActivity(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-
+                            String respImagen = resp;
+                            final String valor = "true";
+                            if(respImagen.equals(valor)){
+                                System.out.println("EL DATO DE LA IMAGEN SE ENVIO CORRECTAMENTE");
+                                Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i("HERE", resp);
                         }
                     });
                 }
@@ -824,6 +882,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
     //********************************** INSERTA VIDEO AL SERVIDOR ***********************************//
     public void insertVideo() {
+        cadenaVideo = cadenaVideo.replaceAll("\n","");
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("DescriptionVideo", randomCodigoVerifi+".mp4" )
@@ -840,15 +899,30 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getContext(), "ERROR AL ENVIAR SU REGISTRO", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO MULTIMEDIA, FAVOR DE MARCAR AL 911", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
-
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
+                    ReporteEmergencias.this.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String respImagen = resp;
+                            final String valor = "true";
+                            if(respImagen.equals(valor)){
+                                System.out.println("EL DATO DEL VIDEO SE ENVIO CORRECTAMENTE");
+                                Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                                //insertImagen();
+                            }else{
+                                Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i("HERE", resp);
+                        }
+                    });
                 }
             }
         });
@@ -856,7 +930,6 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
     //********************************** INSERTA AUDIO AL SERVIDOR ***********************************//
     public void insertAudio() {
-
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("DescriptionAudio", randomCodigoVerifi+".mp4" )
@@ -879,14 +952,22 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().toString();  /********** ME REGRESA LA RESPUESTA DEL WS ****************/
-
+                if (response.isSuccessful()){
+                    final String myResponse = response.body().string();
+                    final String resp = myResponse;
                     ReporteEmergencias.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //Toast.makeText(getActivity(), "REGISTRO ENVIADO CON EXITO", Toast.LENGTH_SHORT).show();
-
+                            String respImagen = resp;
+                            final String valor = "true";
+                            if(respImagen.equals(valor)){
+                                System.out.println("EL DATO DEL AUDIO SE ENVIO CORRECTAMENTE");
+                                Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                                //insertImagen();
+                            }else{
+                                Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i("HERE", resp);
                         }
                     });
                 }
@@ -1012,6 +1093,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         bytes = output.toByteArray();
         audioEncodeString = Base64.encodeToString(bytes,Base64.DEFAULT);
         cadenaAudio = audioEncodeString;
+        Log.i("CADENA AUDIO",cadenaAudio);
     }
 
     //*********************************************************************//
