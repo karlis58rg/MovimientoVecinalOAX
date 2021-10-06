@@ -9,8 +9,8 @@ android {
         applicationId "mx.gob.sspo.movimientovecinal"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 7
-        versionName "0.0.7"
+        versionCode 9 //SE ACTUALIZA RUTA DE IMAGEN,VIDEO,AUDIO Y FUNCIONAMIENTO DEL MISMO 17/09/2021
+        versionName "0.0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -238,17 +238,29 @@
                     android:visibility="gone"/>
 
                 <EditText
-                    android:id="@+id/txtDescripcionHechos"
+                    android:id="@+id/txtObservaciones"
                     android:layout_width="250dp"
-                    android:layout_height="80dp"
+                    android:layout_height="150dp"
                     android:gravity="start|top"
+                    android:background="@drawable/edit_text_border"
                     android:inputType="textMultiLine|textCapCharacters"
-                    android:hint="Descripción de los hechos:"
-                    android:layout_below="@id/txtLugarHechos"
+                    android:hint="Observaciones"
+                    android:layout_below="@id/txtEdad"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="40dp"
-                    android:imeOptions="actionNext"
-                    android:visibility="gone"/>
+                    android:paddingLeft="8dp"
+                    android:paddingTop="5dp"/>
+
+
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:id="@+id/lblObservaciones"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtObservaciones"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="Vestimenta, color de zapatos, señas particulares (Cicatricez, lunares, color y largo de cabello)."
+                    android:textSize="12dp" />
 
                 <Button
                     android:id="@+id/btnEnviarAlertaAmber"
@@ -258,7 +270,7 @@
                     android:layout_marginTop="50dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/btn_redondo"
-                    android:layout_below="@id/txtDescripcionHechos" />
+                    android:layout_below="@id/lblObservaciones" />
 
                 <me.biubiubiu.justifytext.library.JustifyTextView
                     android:id="@+id/lblVamosEnTuApoyo911"

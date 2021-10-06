@@ -55,14 +55,15 @@ import okhttp3.Response;
 
 public class AlertaAmber extends AppCompatActivity {
 
-    EditText txtNombreAlerta,txtApaternoAlerta,txtAmaternoAlerta,txtEdad,txtNacionalidad,txtColorOjos,txtEstatura,txtComplexion,txtFechaNacimiento,txtFechaHechos,txtLugarHechos,txtDescripcionHechos;
+    EditText txtNombreAlerta,txtApaternoAlerta,txtAmaternoAlerta,txtEdad,txtObservaciones,txtNacionalidad,
+            txtColorOjos,txtEstatura,txtComplexion,txtFechaNacimiento,txtFechaHechos,txtLugarHechos,txtDescripcionHechos;
     RadioGroup rgSexo;
     Button btnEnviarAlertaAmber;
     AlertDialog alert = null;
     ImageView home,pickFotoAvatar;
     CircleImageView avatar2;
     int banderaFoto = 0;
-    String nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,fechaReporte,cadena;
+    String nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,observaciones,fechaReporte,cadena;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private int dia,mes,año,dia1,mes1,año1;
     int numberRandom;
@@ -89,6 +90,7 @@ public class AlertaAmber extends AppCompatActivity {
         txtApaternoAlerta = findViewById(R.id.txtApaternoAlerta);
         txtAmaternoAlerta = findViewById(R.id.txtAmaternoAlerta);
         txtEdad = findViewById(R.id.txtEdad);
+        txtObservaciones = findViewById(R.id.txtObservaciones);
         txtNacionalidad = findViewById(R.id.txtNacionalidad);
         txtColorOjos = findViewById(R.id.txtColorOjos);
         txtEstatura = findViewById(R.id.txtEstatura);
@@ -96,7 +98,7 @@ public class AlertaAmber extends AppCompatActivity {
         txtFechaNacimiento = findViewById(R.id.txtFechaNacimiento);
         txtFechaHechos = findViewById(R.id.txtFechaHechos);
         txtLugarHechos = findViewById(R.id.txtLugarHechos);
-        txtDescripcionHechos = findViewById(R.id.txtDescripcionHechos);
+        txtDescripcionHechos = findViewById(R.id.txtObservaciones);
         pickFotoAvatar = findViewById(R.id.pickFoto_Amber);
         avatar2 = findViewById(R.id.profile_image_Amber);
 
@@ -355,7 +357,7 @@ public class AlertaAmber extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
             @Override
@@ -382,6 +384,7 @@ public class AlertaAmber extends AppCompatActivity {
         aPaternoAlerta = txtApaternoAlerta.getText().toString();
         aMaternoAlerta = txtAmaternoAlerta.getText().toString();
         edad = txtEdad.getText().toString();
+        observaciones = txtObservaciones.getText().toString();
         fechaReporte = dateFormat.format(date);
 
         OkHttpClient client = new OkHttpClient();
@@ -397,6 +400,7 @@ public class AlertaAmber extends AppCompatActivity {
                 .add("FechaReporte",fechaReporte)
                 .add("UrlaFoto","https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/FotoDesaparecidos/"+randomCodigoVerifi+".jpg")
                 .add("StatusDesaparicion","1")
+                .add("AnexoUno",observaciones)
                 .build();
 
         Request request = new Request.Builder()
@@ -408,7 +412,7 @@ public class AlertaAmber extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
 

@@ -195,7 +195,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
 
@@ -249,7 +249,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
 
@@ -336,7 +336,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
             @Override

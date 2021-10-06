@@ -106,6 +106,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
     Switch switchDisc;
     int bandera = 0;
     int status = 0;
+    boolean statusMultimediaImagen,statusMultimediaVideo,statusMultimediaAudio;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_GALERY_CAPTURE = 2;
     static final int REQUEST_VIDEO_CAPTURE = 1;
@@ -227,6 +228,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     resetChronometro();
                 }*/
                 bandera = 2;
+                System.out.println(bandera);
                 photo.setVisibility(view.GONE);
                 audio.setVisibility(view.GONE);
                 videoViewImage.setVisibility(view.VISIBLE);
@@ -249,6 +251,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     videoViewImage.clearAnimation();
                 }*/
                 bandera = 3;
+                System.out.println(bandera);
                 photo.setVisibility(view.GONE);
                 video.setVisibility(view.GONE);
                 cancelarAudio.setVisibility(View.VISIBLE);
@@ -302,7 +305,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         playAu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bandera = 4;
+                //bandera = 4;
                 reproducir();
             }
         });
@@ -311,77 +314,60 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 try {
-                    //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                     if (txtDescEmergencia.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), "EL CAMPO **DESCRIPCIÓN DE EMERGENCIA** ES OBLIGATORIO", Toast.LENGTH_SHORT).show();
                     } else if (tv_add.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), "LO SENTIMOS, SU UBICACIÓN ES NECESARIA PARA EL FUNCIONAMIENTO DE ESTE APARTADO", Toast.LENGTH_SHORT).show();
                     } else if (bandera == 1) {
+                        System.out.println("btnEnviar 1 "+bandera);
                         if(cadena.isEmpty()){
-                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
-                            //insertBdEventoIOS();
-                            //Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            //getActivity().onBackPressed();
-                            //(i.putExtra("valorRandom", randomCodigoVerifi);
+                            Toast.makeText(getContext(), "SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO EXITOSAMENTE, SIN EMBARGO SU EMERGENCIA FUE RECIBIDA", Toast.LENGTH_SHORT).show();
+                            statusMultimediaImagen = false;
+                            insertBdEventoIOS();
                         }else{
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             insertImagen();
-                            //insertBdEventoIOS();
-                            //getActivity().onBackPressed();
-                            //(i.putExtra("valorRandom", randomCodigoVerifi);
+                            insertBdEventoIOS();
                         }
-
                     } else if (bandera == 2) {
+                        System.out.println("btnEnviar 2"+bandera);
                         if(cadenaVideo.isEmpty()){
-                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
-                            //insertBdEventoIOS();
-                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            //getActivity().onBackPressed();
-                            //i.putExtra("valorRandom", randomCodigoVerifi);
-                        }else{
+                            Toast.makeText(getContext(), "SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO EXITOSAMENTE, SIN EMBARGO SU EMERGENCIA FUE RECIBIDA", Toast.LENGTH_SHORT).show();
+                            statusMultimediaVideo = false;
+                            insertBdEventoIOS();
+                        }else {
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                            //insertBdEventoIOS();
                             insertVideo();
-                            //getActivity().onBackPressed();
-                            //i.putExtra("valorRandom", randomCodigoVerifi);
+                            insertBdEventoIOS();
                         }
-
                     } else if (bandera == 3) {
+                        System.out.println("btnEnviar 3"+bandera);
                         if(cadenaAudio.isEmpty()){
-                            Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             bandera = 0;
+                            Toast.makeText(getContext(), "SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO EXITOSAMENTE, SIN EMBARGO SU EMERGENCIA FUE RECIBIDA", Toast.LENGTH_SHORT).show();
+                            statusMultimediaAudio = false;
                             recordAu.setVisibility(view.GONE);
                             detenerAudio.setVisibility(view.GONE);
                             playAu.setVisibility(view.GONE);
                             tiempo.setVisibility(View.GONE);
                             resetChronometro();
-                            //insertBdEventoIOS();
-                            Toast.makeText(getActivity(), "LO SENTIMOS, SU ARCHIVO MULTIMEDIA NO PUDO SER ENVIADO.", Toast.LENGTH_SHORT).show();
-                            //getActivity().onBackPressed();
-                            // i.putExtra("valorRandom", randomCodigoVerifi);
+                            insertBdEventoIOS();
                         }else{
                             Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
                             recordAu.setVisibility(view.GONE);
                             detenerAudio.setVisibility(view.GONE);
                             playAu.setVisibility(view.GONE);
                             tiempo.setVisibility(View.GONE);
-                            //insertBdEventoIOS();
-                            insertAudio();
                             resetChronometro();
-                            // i.putExtra("valorRandom", randomCodigoVerifi);
+                            insertAudio();
+                            insertBdEventoIOS();
                         }
                     } else {
                         Toast.makeText(getActivity(), "UN MOMENTO POR FAVOR, ESTAMOS PROCESANDO SU SOLICITUD, ESTO PUEDE TARDAR UNOS MINUTOS", Toast.LENGTH_SHORT).show();
-                        //insertBdEventoIOS();
-                        //Intent i = new Intent(getActivity(), MensajeEnviadoReporte911.class);
-                        //i.putExtra("valorRandom", randomCodigoVerifi);
-                        //startActivity(i);
-                        //getActivity().onBackPressed();
+                        insertBdEventoIOS();
                     }
 
                 }catch (Exception e){
@@ -605,6 +591,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                     videoViewImage.clearAnimation();
                     photo.setVisibility(View.VISIBLE);
                     audio.setVisibility(View.VISIBLE);
+                    imgSalirVideos.setVisibility(View.GONE);
                 }
                 else if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK )
                 {
@@ -756,23 +743,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         hora = timeFormat.format(time);
 
-        //************************************* RUTA MULTIMEDIA *************************//
-        if (bandera == 1 && cadena != null) {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/" + randomCodigoVerifi + ".jpg";
-        } else {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/sinarchivo.jpg";
-        }
-        if (bandera == 2 && cadenaVideo != null) {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
-        } else{
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/sinarchivo.jpg";
-        }
-        if (bandera == 3 && cadenaAudio != null) {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
-        } else {
-            rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/sinarchivo.jpg";
-        }
         descEmergencia = txtDescEmergencia.getText().toString().toUpperCase();
+
 
         OkHttpClient client = new OkHttpClient();
 
@@ -802,7 +774,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
                 // Toast.makeText(getActivity(), "ERROR AL ENVIAR SU REGISTRO", Toast.LENGTH_SHORT).show();
             }
@@ -853,7 +825,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Looper.prepare(); // to be able to make toast
-                Toast.makeText(getContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXCIÓN A INTERNET", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "ERROR AL ENVIAR SU REGISTRO, FAVOR DE VERIFICAR SU CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
             @Override
@@ -867,10 +839,16 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             String respImagen = resp;
                             final String valor = "true";
                             if(respImagen.equals(valor)){
+                                statusMultimediaImagen = true;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/" + randomCodigoVerifi + ".jpg";
+                                System.out.println("IMG"+statusMultimediaImagen);
                                 System.out.println("EL DATO DE LA IMAGEN SE ENVIO CORRECTAMENTE");
                                 Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                                statusMultimediaImagen = false;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Images/sinarchivo.jpg";
+                                System.out.println("IMG"+statusMultimediaImagen);
                             }
                             Log.i("HERE", resp);
                         }
@@ -914,11 +892,16 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             String respImagen = resp;
                             final String valor = "true";
                             if(respImagen.equals(valor)){
+                                statusMultimediaVideo = true;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/" + randomCodigoVerifi + ".mp4";
+                                System.out.println("Video"+rutaMultimedia+statusMultimediaVideo);
                                 System.out.println("EL DATO DEL VIDEO SE ENVIO CORRECTAMENTE");
                                 Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
-                                //insertImagen();
                             }else{
                                 Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                                statusMultimediaVideo = false;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Video/sinarchivo.jpg";
+                                System.out.println("Video"+rutaMultimedia+statusMultimediaVideo);
                             }
                             Log.i("HERE", resp);
                         }
@@ -961,11 +944,16 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
                             String respImagen = resp;
                             final String valor = "true";
                             if(respImagen.equals(valor)){
+                                statusMultimediaAudio = true;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/" + randomCodigoVerifi + ".mp4";
+                                System.out.println("Audio"+statusMultimediaAudio);
                                 System.out.println("EL DATO DEL AUDIO SE ENVIO CORRECTAMENTE");
                                 Toast.makeText(getContext(), "EL ARCHIVO MULTIMEDIA SE ENVIO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
-                                //insertImagen();
                             }else{
                                 Toast.makeText(getContext(), "ERROR AL ENVIAR SU ARCHIVO, FAVOR DE LLAMAR AL 911", Toast.LENGTH_SHORT).show();
+                                statusMultimediaAudio = false;
+                                rutaMultimedia = "https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/Audio/sinarchivo.jpg";
+                                System.out.println("Audio"+statusMultimediaAudio);
                             }
                             Log.i("HERE", resp);
                         }
@@ -1040,6 +1028,8 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             //Toast.makeText(getActivity().getApplicationContext(), "El audio fue grabado con éxito", Toast.LENGTH_LONG).show();
         }
         playAu.setEnabled(true);
+        reproducir();
+        //audioBase64();
     }
     public void reproducir() {
         if(correr == true){
@@ -1091,7 +1081,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
         }
 
         bytes = output.toByteArray();
-        audioEncodeString = Base64.encodeToString(bytes,Base64.DEFAULT);
+        audioEncodeString = Base64.encodeToString(bytes,Base64.NO_WRAP);
         cadenaAudio = audioEncodeString;
         Log.i("CADENA AUDIO",cadenaAudio);
     }
@@ -1212,6 +1202,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 bandera = 1;
+                System.out.println("btnCamara 1 "+bandera);
                 video.setVisibility(View.GONE);
                 audio.setVisibility(View.GONE);
                 imgImagen.setVisibility(View.VISIBLE);
@@ -1231,6 +1222,7 @@ public class ReporteEmergencias extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     bandera = 1;
+                    System.out.println("btnGaleria 1 "+bandera);
                     video.setVisibility(View.GONE);
                     audio.setVisibility(View.GONE);
                     imgImagen.setVisibility(View.VISIBLE);
