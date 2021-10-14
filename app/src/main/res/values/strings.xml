@@ -17,7 +17,7 @@
     <string name="menu_slideshow">Conf. Código Mujer</string>
     <string name="menu_vigilancia_vecinal">Conf. Alerta Vecinal</string>
     <string name="menu_transporte">Conf. Movilidad Segura</string>
-    <string name="menu_nino_perdido">Menores Ausentes</string>
+    <string name="menu_nino_perdido">ALERTAS VIGENTES</string>
     <string name="menu_tools">Aviso de Privacidad</string>
     <string name="menu_share">Terminos y Condiciones</string>
     <string name="menu_send">Salir</string>

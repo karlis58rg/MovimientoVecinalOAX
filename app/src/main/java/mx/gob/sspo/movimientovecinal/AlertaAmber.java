@@ -56,14 +56,14 @@ import okhttp3.Response;
 public class AlertaAmber extends AppCompatActivity {
 
     EditText txtNombreAlerta,txtApaternoAlerta,txtAmaternoAlerta,txtEdad,txtObservaciones,txtNacionalidad,
-            txtColorOjos,txtEstatura,txtComplexion,txtFechaNacimiento,txtFechaHechos,txtLugarHechos,txtDescripcionHechos;
+            txtColorOjos,txtEstatura,txtComplexion,txtFechaNacimiento,txtFechaHechos,txtLugarHechos,txtDescripcionHechos,txtVisto;
     RadioGroup rgSexo;
     Button btnEnviarAlertaAmber;
     AlertDialog alert = null;
-    ImageView home,pickFotoAvatar;
+    ImageView home,pickFotoAvatar,imgAlertaVigente;
     CircleImageView avatar2;
     int banderaFoto = 0;
-    String nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,observaciones,fechaReporte,cadena;
+    String nombreAlerta,aPaternoAlerta,aMaternoAlerta,varSexo,edad,observaciones,lugarVisto,fechaReporte,cadena;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private int dia,mes,año,dia1,mes1,año1;
     int numberRandom;
@@ -99,8 +99,10 @@ public class AlertaAmber extends AppCompatActivity {
         txtFechaHechos = findViewById(R.id.txtFechaHechos);
         txtLugarHechos = findViewById(R.id.txtLugarHechos);
         txtDescripcionHechos = findViewById(R.id.txtObservaciones);
+        txtVisto = findViewById(R.id.txtVisto);
         pickFotoAvatar = findViewById(R.id.pickFoto_Amber);
         avatar2 = findViewById(R.id.profile_image_Amber);
+        imgAlertaVigente = findViewById(R.id.imgAlertaVigente);
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,6 +297,15 @@ public class AlertaAmber extends AppCompatActivity {
                 }
             }
         });
+
+        imgAlertaVigente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AlertaAmber.this, AlertasVigentes.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     //********************************** SE CONVIERTE LA IMAGEN A BASE64 Y SE ENVIA AL SERVIDOR ***********************************//
@@ -385,6 +396,7 @@ public class AlertaAmber extends AppCompatActivity {
         aMaternoAlerta = txtAmaternoAlerta.getText().toString();
         edad = txtEdad.getText().toString();
         observaciones = txtObservaciones.getText().toString();
+        lugarVisto = txtVisto.getText().toString();
         fechaReporte = dateFormat.format(date);
 
         OkHttpClient client = new OkHttpClient();
@@ -401,6 +413,7 @@ public class AlertaAmber extends AppCompatActivity {
                 .add("UrlaFoto","https://oaxacaseguro.sspo.gob.mx/AppMovimientoVecinal/FotoDesaparecidos/"+randomCodigoVerifi+".jpg")
                 .add("StatusDesaparicion","1")
                 .add("AnexoUno",observaciones)
+                .add("LugarDesaparicion",lugarVisto)
                 .build();
 
         Request request = new Request.Builder()

@@ -63,7 +63,9 @@
                         android:id="@+id/lblTitulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ingresa la PLACA o NUC o QR de la unidad"
+                        android:textAlignment="center"
+                        android:text="Ingresa la PLACA o NUC o QR de la unidad\n
+                        \n para verificar que tu transporte es seguro."
                         android:layout_marginTop="30dp"
                         android:layout_gravity="center"/>
                 </LinearLayout>

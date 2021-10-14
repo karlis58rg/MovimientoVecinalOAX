@@ -80,14 +80,6 @@ public class TransporteSeguro extends AppCompatActivity  {
         Intent iHome = getIntent();
         home = iHome.getIntExtra("home",0);
 
-        if(cargarWidget == 1 && cargarServicio.equals(servar)){
-            if(cargarDato.equals(datoEncontrado)){
-                startLocationService();
-            }else if(cargarDato.equals(datoNoEncontrado)){
-                startLocationService();
-            }
-        }
-
         if(cargarDato.equals(datoEncontrado)){
             Intent i = new Intent(TransporteSeguro.this,TransporteSeguroRespuesta.class);
             startActivity(i);
@@ -99,37 +91,6 @@ public class TransporteSeguro extends AppCompatActivity  {
             finish();
         }
 
-        if(cargarWidget == 1){
-        }else {
-            txtPlaca.setEnabled(false);
-            txtNuc.setEnabled(false);
-            imgQR.setEnabled(false);
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("LO SENTIMOS, ES NECESARIO TENER UN ACCESO DIRECTO CONFIGURADO")
-                    .setCancelable(false)
-                    .setPositiveButton("CONFIGURAR ACCESO DIRECTO", new DialogInterface.OnClickListener() {
-                        @SuppressLint("NewApi")
-                        @RequiresApi(api = Build.VERSION_CODES.M)
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            AppWidgetManager mAppWidgetManager = getSystemService(AppWidgetManager.class);
-                            ComponentName myProvider = new ComponentName(getApplication(), MiWidgetT.class);
-                            if(mAppWidgetManager.isRequestPinAppWidgetSupported()){
-                                mAppWidgetManager.requestPinAppWidget(myProvider,null,null);
-                            }
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                            finish();
-                        }
-                    });
-            alert = builder.create();
-            alert.show();
-        }
 
         imgQR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,13 +276,14 @@ public class TransporteSeguro extends AppCompatActivity  {
                                             JSONObject object = vehiculos_activos.getJSONObject(i);
                                             marcaJson = object.getString("marca");
                                             tipoJson = object.getString("tipo");
+                                            placaJson = object.getString("placa");
                                         }
-                                        JSONArray conductores = informacion.getJSONArray("conductores");
-                                        for(int i = 0; i < conductores .length(); i++)
+                                        /*JSONArray conductores = informacion.getJSONArray("conductores");
+                                        for(int i = 0; i < conductores.length(); i++)
                                         {
                                             JSONObject object = conductores.getJSONObject(i);
                                             placaJson = object.getString("placa");
-                                        }
+                                        }*/
                                         guardarDatosVehiculo();
                                         Intent i = new Intent(TransporteSeguro.this,TransporteSeguroRespuesta.class);
                                         startActivity(i);
@@ -408,13 +370,14 @@ public class TransporteSeguro extends AppCompatActivity  {
                                             JSONObject object = vehiculos_activos.getJSONObject(i);
                                             marcaJson = object.getString("marca");
                                             tipoJson = object.getString("tipo");
+                                            placaJson = object.getString("placa");
                                         }
-                                        JSONArray conductores = informacion.getJSONArray("conductores");
+                                        /*JSONArray conductores = informacion.getJSONArray("conductores");
                                         for(int i = 0; i < conductores .length(); i++)
                                         {
                                             JSONObject object = conductores.getJSONObject(i);
                                             placaJson = object.getString("placa");
-                                        }
+                                        }*/
                                         guardarDatosVehiculo();
                                         Intent i = new Intent(TransporteSeguro.this,TransporteSeguroRespuesta.class);
                                         startActivity(i);
@@ -469,9 +432,6 @@ public class TransporteSeguro extends AppCompatActivity  {
         cargarServicio = share.getString("servicio","sincrear");
         Log.i("SERVICIO",cargarServicio);
     }
-    private void startLocationService() {
-        Intent intent = new Intent(this, LocationService.class);
-        this.startService(intent);
-    }
+
 
 }

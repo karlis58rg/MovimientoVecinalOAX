@@ -49,7 +49,7 @@ public class NinoPerdido extends Fragment {
         wvNino = root.findViewById(R.id.webNinoPerdido);
 
         wvNino.setWebViewClient(new WebViewClient());
-        wvNino.loadUrl("http://187.174.102.142/oaxacaseguro/BusquedaMenorAusente.aspx");
+        wvNino.loadUrl("https://oaxacaseguro.sspo.gob.mx/Login/busquedaMenorAusente.aspx");
 
         WebSettings webSettings = wvNino.getSettings();
         webSettings.setJavaScriptEnabled(true);

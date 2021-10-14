@@ -1,6 +1,7 @@
 package mx.gob.sspo.movimientovecinal.Transporte;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,8 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.ServiceShake.LocationService;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,8 +28,8 @@ import mx.gob.sspo.movimientovecinal.R;
 public class TransporteNoExiste extends Fragment {
     public static TextView lblTituloListos;
     TextView txtPlacaNoExitoso,txtNucNoExitoso;
-    Button btnFinalizarViaje;
-    String cargarPlaca,cargarNuc,sinInformacion = "SIN INFORMACION",cargarServicio,serbar="creado";
+    Button btnSegumientoNoExitoso,btnAlertamientoNoExitoso,btnFinalizarViaje;
+    String cargarPlaca,cargarNuc,sinInformacion = "SIN INFORMACION",cargarServicio = "creado",serbar="creado",varAlertamiento = "sinAlerta";
     SharedPreferences share;
     SharedPreferences.Editor editor;
     LinearLayout lyPlacaExitoso,lyNucNoExitoso;
@@ -57,10 +62,11 @@ public class TransporteNoExiste extends Fragment {
         myDialog = new Dialog(getContext());
         txtPlacaNoExitoso = root.findViewById(R.id.txtPlacaNoExitoso);
         txtNucNoExitoso = root.findViewById(R.id.txtNucNoExitoso);
+        btnSegumientoNoExitoso = root.findViewById(R.id.btnSegumientoNoExitoso);
+        btnAlertamientoNoExitoso = root.findViewById(R.id.btnAlertamientoNoExitoso);
         btnFinalizarViaje = root.findViewById(R.id.btnFinalizarViajeNoExit);
         lyPlacaExitoso = root.findViewById(R.id.lyPlacaExitoso);
         lyNucNoExitoso = root.findViewById(R.id.lyNucNoExitoso);
-        lblTituloListos = root.findViewById(R.id.lblTituloListosNoExiste);
 
         txtPlacaNoExitoso.setText(cargarPlaca);
         txtNucNoExitoso.setText(cargarNuc);
@@ -72,15 +78,38 @@ public class TransporteNoExiste extends Fragment {
             lyNucNoExitoso.setVisibility(View.GONE);
         }
 
+        btnSegumientoNoExitoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "SE ESTÁ ENVIANDO SU UBICACIÓN", Toast.LENGTH_LONG).show();
+                startLocationService();
+            }
+        });
+
+        btnAlertamientoNoExitoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cargarDatosTransporte();
+                Toast.makeText(getActivity(), "SU REPORTE AL C4 HA SIDO ENVIADO", Toast.LENGTH_LONG).show();
+                System.out.println("CARGANDO SERVICIOOOOOOO" + cargarServicio);
+                if(cargarServicio.equals(serbar)){
+                    varAlertamiento = "alertando";
+                    guardarAlerta();
+                    System.out.println(varAlertamiento);
+                }else{
+                    varAlertamiento = "alertando";
+                    guardarAlerta();
+                    startLocationService();
+                }
+            }
+        });
+
         btnFinalizarViaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cargarServicio.equals(serbar)){
-                    eliminarDatosTransporte();
-                }else{
-                    eliminarDatosTransporte();
-                    getActivity().onBackPressed();
-                }
+                Toast.makeText(getActivity(), "VIAJE CONCLUIDO", Toast.LENGTH_LONG).show();
+                eliminarDatosTransporte();
+                getActivity().onBackPressed(); //REGRESAS AL MENU PRINCIPAL
             }
         });
         /************************************************************************************/
@@ -100,6 +129,7 @@ public class TransporteNoExiste extends Fragment {
         editor.remove("NUC").commit();
         editor.remove("servicio").commit();
         editor.remove("DATO").commit();
+        editor.remove("alertamientoApp").commit();
     }
     public void showPopUp(View v){
         myDialog.setContentView(R.layout.costumpopup);
@@ -112,5 +142,16 @@ public class TransporteNoExiste extends Fragment {
             }
         });
         myDialog.show();
+    }
+
+    private void startLocationService() {
+        Intent intent = new Intent(getContext(), LocationService.class);
+        getActivity().startService(intent);
+    }
+    private void guardarAlerta() {
+        share = getActivity().getSharedPreferences("main", MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("alertamientoApp", varAlertamiento);
+        editor.apply();
     }
 }

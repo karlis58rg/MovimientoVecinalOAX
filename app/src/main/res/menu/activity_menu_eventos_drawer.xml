@@ -28,13 +28,8 @@
 
         <item
             android:id="@+id/ninoPerdido"
-            android:icon="@drawable/ic_info_black_24dp"
+            android:icon="@drawable/ic_alertas_vigentes"
             android:title="@string/menu_nino_perdido" />
-
-        <item
-            android:id="@+id/transporte"
-            android:icon="@drawable/ic_info_black_24dp"
-            android:title="@string/menu_transporte" />
 
         <item
             android:id="@+id/nav_tools"

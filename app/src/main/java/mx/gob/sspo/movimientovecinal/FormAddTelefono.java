@@ -258,7 +258,6 @@ public class FormAddTelefono extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(FormAddTelefono.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(FormAddTelefono.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
                 &&  ActivityCompat.checkSelfPermission(FormAddTelefono.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(FormAddTelefono.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(FormAddTelefono.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(FormAddTelefono.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO,Manifest.permission.CALL_PHONE}, 1000);
-
         }
     }
 }

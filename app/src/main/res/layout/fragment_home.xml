@@ -113,15 +113,28 @@
                     android:layout_marginLeft="30dp"
                     android:scaleX="0.9"
                     android:background="@drawable/ic_alerta_amber"/>
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBold"
-                    android:text="Menor Ausente"/>
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
+                        android:text="Menor Ausente"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/codigoMujer"
+                        android:text="Alertas Vigentes"/>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/lyDestinoSeguro"

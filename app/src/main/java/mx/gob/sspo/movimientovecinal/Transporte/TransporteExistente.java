@@ -18,8 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mx.gob.sspo.movimientovecinal.R;
+import mx.gob.sspo.movimientovecinal.ServiceShake.LocationService;
 import mx.gob.sspo.movimientovecinal.TransporteSeguro;
 import mx.gob.sspo.movimientovecinal.TransporteSeguroRespuesta;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +32,8 @@ import mx.gob.sspo.movimientovecinal.TransporteSeguroRespuesta;
 public class TransporteExistente extends Fragment {
     public static TextView lblTituloListos;
     TextView txtPlacaExitoso,txtNucExitoso,txtSitio,txtMarca,txtTipo;
-    Button btnFinalizarViaje;
-    String cargarPlaca,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarServicio,serbar="creado";
+    Button btnSegumientoExitoso,btnAlertamientoExitoso,btnFinalizarViaje;
+    String cargarPlaca,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarServicio,serbar="creado",varAlertamiento = "sinAlerta";
     SharedPreferences share;
     SharedPreferences.Editor editor;
     Dialog myDialog;
@@ -64,7 +67,8 @@ public class TransporteExistente extends Fragment {
         txtMarca = root.findViewById(R.id.txtMarca);
         txtTipo = root.findViewById(R.id.txtTipo);
         btnFinalizarViaje = root.findViewById(R.id.btnFinalizarViaje);
-        lblTituloListos = root.findViewById(R.id.lblTituloListosExiste);
+        btnSegumientoExitoso = root.findViewById(R.id.btnSegumientoExitoso);
+        btnAlertamientoExitoso = root.findViewById(R.id.btnAlertamientoExitoso);
 
         txtPlacaExitoso.setText(cargarPlaca);
         txtNucExitoso.setText(cargarNuc);
@@ -72,15 +76,38 @@ public class TransporteExistente extends Fragment {
         txtMarca.setText(cargarMarca);
         txtTipo.setText(cargarTipo);
 
+        btnSegumientoExitoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "SE ESTÁ ENVIANDO SU UBICACIÓN", Toast.LENGTH_LONG).show();
+                startLocationService();
+            }
+        });
+
+        btnAlertamientoExitoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cargarDatosTransporte();
+                Toast.makeText(getActivity(), "SU REPORTE AL C4 HA SIDO ENVIADO", Toast.LENGTH_LONG).show();
+                System.out.println("CARGANDO SERVICIOOOOOOO" + cargarServicio);
+                if(cargarServicio.equals(serbar)){
+                    varAlertamiento = "alertando";
+                    guardarAlerta();
+                    System.out.println(varAlertamiento);
+                }else{
+                    varAlertamiento = "alertando";
+                    guardarAlerta();
+                    startLocationService();
+                }
+            }
+        });
+
         btnFinalizarViaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cargarServicio.equals(serbar)){
-                    eliminarDatosTransporte();
-                }else{
-                    eliminarDatosTransporte();
-                    getActivity().onBackPressed();
-                }
+                Toast.makeText(getActivity(), "VIAJE CONCLUIDO", Toast.LENGTH_LONG).show();
+                eliminarDatosTransporte();
+                getActivity().onBackPressed();
             }
         });
         /************************************************************************************/
@@ -106,6 +133,7 @@ public class TransporteExistente extends Fragment {
         editor.remove("tipoJson").commit();
         editor.remove("servicio").commit();
         editor.remove("DATO").commit();
+        editor.remove("alertamientoApp").commit();
     }
 
     public void showPopUp(View v){
@@ -119,5 +147,18 @@ public class TransporteExistente extends Fragment {
             }
         });
         myDialog.show();
+    }
+
+
+    private void startLocationService() {
+        Intent intent = new Intent(getContext(), LocationService.class);
+        getActivity().startService(intent);
+    }
+
+    private void guardarAlerta() {
+        share = getActivity().getSharedPreferences("main", MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("alertamientoApp", varAlertamiento);
+        editor.apply();
     }
 }

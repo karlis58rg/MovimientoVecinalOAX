@@ -53,28 +53,19 @@
         android:orientation="vertical">
         <ImageView
             android:id="@+id/imgExiste"
-            android:layout_width="250dp"
-            android:layout_height="130dp"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
             android:src="@drawable/ic_enviado"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"/>
 
         <me.biubiubiu.justifytext.library.JustifyTextView
             android:id="@+id/lblTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tu transporte es seguro, Si cuenta con registro en SEMOVI Oaxaca, asegúrate que los siguientes datos corresponden al vehículo.\n\n"
-            android:layout_marginTop="30dp"
+            android:text="Tu transporte es seguro, Si cuenta con registro en SEMOVI Oaxaca, asegúrate que los siguientes datos corresponden al vehículo.\n"
+            android:layout_marginTop="10dp"
             android:textColor="@color/colorTS"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-
-        <me.biubiubiu.justifytext.library.JustifyTextView
-            android:id="@+id/lblTituloListosExiste"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Estamos listo para recibir tu alertamiento, oprime el Widget desde tus accesos directos ubicados en tu pantalla principal de tu teléfono móvil o entra de nuevo al botón “Movilidad Segura” si tienes una emergencia.\n\n"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"/>
     </LinearLayout>
@@ -83,7 +74,6 @@
             android:id="@+id/lyPlacaExitoso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@id/lyTransporte"
             android:gravity="center_horizontal">
             <LinearLayout
@@ -104,6 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
                         android:text="Placa" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -142,7 +134,6 @@
             android:id="@+id/lyNucExitoso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@id/lyPlacaExitoso"
             android:gravity="center_horizontal">
             <LinearLayout
@@ -163,6 +154,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
                         android:text="Nuc" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -201,7 +194,6 @@
             android:id="@+id/lySitio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@id/lyNucExitoso"
             android:gravity="center_horizontal">
             <LinearLayout
@@ -222,6 +214,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
                         android:text="Sitio" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -260,7 +254,6 @@
             android:id="@+id/lyMarca"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@id/lySitio"
             android:gravity="center_horizontal">
             <LinearLayout
@@ -281,6 +274,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
                         android:text="Marca" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -319,7 +314,6 @@
             android:id="@+id/lyTipo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@id/lyMarca"
             android:gravity="center_horizontal">
             <LinearLayout
@@ -340,6 +334,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBold"
                         android:text="Tipo" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -376,57 +372,111 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lyFinalizarViaje"
+            android:id="@+id/lySeguimientoExitoso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_below="@id/lyTipo"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="70dp">
+            android:background="@drawable/drawable_pressed">
             <LinearLayout
-                android:id="@+id/contentConsultaTEV"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="horizontal">
-                <!--DATOS DENTRO DEL CUADRO -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center|right"
-                    android:weightSum="1"
-                    android:layout_weight="0.08"/>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center|top"
+                android:weightSum="1"
+                android:layout_weight="0.12">
+                <Button
+                    android:id="@+id/btnSegumientoExitoso"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/btn_seguimiento_efect"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_weight="0.15">
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textSize="12sp"
+                    android:paddingLeft="20dp"
+                    android:text="Da click en este botón para que se registre tu trayectoria sin enviar alerta.\n"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyAlertamientoExitoso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/drawable_pressed"
+            android:layout_below="@id/lySeguimientoExitoso"
+            android:gravity="center_horizontal">
                 <!--TITULO IMAGEN1 TITLE-->
                 <LinearLayout
-                    android:id="@+id/lblConsultaTEFV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center|top"
                     android:weightSum="1"
-                    android:background="@drawable/drawable_pressed"
-                    android:layout_weight="0.15">
+                    android:layout_weight="0.12">
                     <Button
-                        android:id="@+id/btnFinalizarViaje"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/btn_redondo"
-                        android:text="Finalizar Viaje"/>
+                        android:id="@+id/btnAlertamientoExitoso"
+                        android:layout_width="150dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/btn_alertamiento_efect" />
                 </LinearLayout>
-                <!--IMAGEN3 TITLE-->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:weightSum="1"
-                    android:background="@drawable/drawable_pressed"
-                    android:layout_weight="0.05"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:layout_weight="0.15">
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textSize="12sp"
+                    android:paddingLeft="20dp"
+                    android:text="Da click en este botón para enviar una ALERTA al 911.\n"/>
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/lyFinalizarViajeExitoso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/lyAlertamientoExitoso"
+            android:background="@drawable/drawable_pressed"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="70dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center|top"
+                android:weightSum="1"
+                android:layout_weight="0.12">
+                <Button
+                    android:id="@+id/btnFinalizarViaje"
+                    android:layout_width="250dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/btn_finalizar_efect"/>
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    android:text="Si oprimiste alguno de los botones (Seguimiento/Alertamiento), realiza lo siguiente:\n
+                        \na) Ir a notificaciones dar click en “DETENER”\n
+                        \n b) Dar click en este botón para finalizar tu viaje.\n"/>
 
-
+            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
     </ScrollView>

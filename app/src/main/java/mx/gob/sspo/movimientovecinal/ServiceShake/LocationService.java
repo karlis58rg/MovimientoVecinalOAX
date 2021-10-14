@@ -65,13 +65,14 @@ public class LocationService extends Service {
     String direccion, municipio, estado;
     String valorRandom,codigoVerifi,randomCodigoVerifi,fecha,hora;
     Double lat, lon;
-    int numberRandom,banderaInsert = 0;
+    int numberRandom,banderaInsert = 1;
     String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoPlaca,serbar = "sincrear",datoEncontrado = "ENCONTRADO",datoNoEncontrado="NOENCONTRADO";
-    String cargarPlacaJson,cargarPlaca,cargarNucJson,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarDato,sinInformacion="SIN INFORMACION",placaCad="";
+    String cargarPlacaJson,cargarPlaca,cargarNucJson,cargarNuc,cargarSitio,cargarMarca,cargarTipo,cargarDato = "",sinInformacion="SIN INFORMACION",placaCad="";
     String tituloNotificacion = "Localizando..";
     String cuerpoNotificacion = "Verificando información.";
     String tituloCancelar = "Detener";
     String enviando = "";
+    String cargarAlertamiento = "";
 
     boolean folioEncontrado = false;
     boolean alertaLanzada = false;
@@ -90,12 +91,14 @@ public class LocationService extends Service {
     public void onCreate() {
         super.onCreate();
         Random();
+        cargar();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        banderaInsert = 1;
         super.onStartCommand(intent, flags, startId);
-
+        System.out.println("ENTRANDO AL SERV DE LOCACLIZACIÓN");
         Intent receiverIntent = new Intent(this,
                 LocationActionsReceiver.class)
                 .setAction(LocationActionsReceiver.ACTION_CANCEL);
@@ -106,7 +109,7 @@ public class LocationService extends Service {
         final Notification notification = new NotificationCompat.Builder(this, GENERAL_CHANNEL_ID)
                 .setContentTitle(tituloNotificacion)
                 .setContentText(cuerpoNotificacion)
-                .setSmallIcon(R.drawable.ic_logo_app)
+                .setSmallIcon(R.drawable.ic_logo_app_mini)
                 .addAction(R.drawable.ic_baseline_cancel_24, tituloCancelar, pendingIntent)
                 .build();
 
@@ -122,6 +125,7 @@ public class LocationService extends Service {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
+                cargar();
                 serbar = "creado";
                 guardarServicio();
                 lat = locationResult.getLastLocation().getLatitude();
@@ -141,45 +145,25 @@ public class LocationService extends Service {
                         }
                         Log.i(TAG, "dir" + direccion + "mun" + municipio + "est" + estado);
                     }
-                    if(banderaInsert == 1 && folioEncontrado == true){
-                        if(alertaLanzada == false){
-                            cuerpoNotificacion = "Enviando ubicación..";
-                            enviando = cuerpoNotificacion;
-                            pushCad();
-                            getDatosMapaRobos();
-                            if(cargarDato.equals(datoNoEncontrado)){
-                                TransporteNoExiste.lblTituloListos.setText(mensaje);
-                            }else if(cargarDato.equals(datoEncontrado)){
-                                TransporteExistente.lblTituloListos.setText(mensaje);
-                            }
-                        }else {
-                            getDatosMapaRobos();
-                            if(cargarDato.equals(datoNoEncontrado)){
-                                TransporteNoExiste.lblTituloListos.setText(mensaje);
-                            }else if(cargarDato.equals(datoEncontrado)){
-                                TransporteExistente.lblTituloListos.setText(mensaje);
-                            }
-                        }
-                    }else if(banderaInsert == 1 && folioEncontrado == false){
-                        if(alertaLanzada == false){
-                            tituloNotificacion = "¡Alerta!";
-                            cuerpoNotificacion = "Su emergencia no pudo ser enviada";
-                            pushCad();
-                            if(cargarDato.equals(datoNoEncontrado)){
-                                TransporteNoExiste.lblTituloListos.setText(mensaje);
-                            }else if(cargarDato.equals(datoEncontrado)){
-                                TransporteExistente.lblTituloListos.setText(mensaje);
-                            }
-                        }else{
-                            if(cargarDato.equals(datoNoEncontrado)){
-                                TransporteNoExiste.lblTituloListos.setText(mensaje);
-                            }else if(cargarDato.equals(datoEncontrado)){
-                                TransporteExistente.lblTituloListos.setText(mensaje);
-                            }
-                        }
 
-                    } else if(banderaInsert != 1){
+                   if(!alertaLanzada){
+                       System.out.println("ENVIANDO POR PRIMERA VEZ");
+                        cuerpoNotificacion = "Enviando ubicación..";
+                        enviando = cuerpoNotificacion;
+                        pushCad();
+                        getDatosMapaRobos();
+                    }else {
+                       System.out.println("YA EJECUTANDO");
+                        getDatosMapaRobos();
+                    }
+
+                    System.out.println("BANDERA INSERT_"+banderaInsert);
+                    System.out.println("CARGANDO ALERTAMIENTO_"+cargarAlertamiento);
+
+                    if(banderaInsert == 1 && cargarAlertamiento.equals("alertando")){
+                        System.out.println("BANDERA INSERT_"+banderaInsert);
                         insertBdEventoTransportePublicoIOS();
+                        banderaInsert = 2;
                     }
 
                 } catch (IOException e) {
@@ -206,7 +190,7 @@ public class LocationService extends Service {
     }
     /******************************************************************************************************************/
     //*********************** METODO QUE INSERTA A LA BASE DE DATOS DESPUES DE INSERTAR AL CAD ***********************//
-    public void insertBdEventoTransportePublicoIOS(){
+    public void insertBdEventoTransportePublicoIOS(){ //INSERTA AL CAD,
         cargar();
         if(cargarPlaca != sinInformacion){
             placaCad = cargarPlaca;
@@ -222,7 +206,6 @@ public class LocationService extends Service {
         String marca = cargarMarca != "SIN INFORMACION" ? cargarMarca : "SIN INFORMACION" ;
         String modelo = cargarTipo != "SIN INFORMACION" ? cargarTipo : "SIN INFORMACION" ;
 
-        banderaInsert = 1;
         valorRandom = "OAX2021"+ randomCodigoVerifi;
         //*************** FECHA **********************//
         Date date = new Date();
@@ -286,8 +269,19 @@ public class LocationService extends Service {
         });
     }
     //**************** INSERTA A LA TABLA DE ROBOS CON LAS COORDENADAS EN TIEMPO REAL *****************//
-    public void insertBdEventoTransportePublicoRobosIOS() {
+    public void insertBdEventoTransportePublicoRobosIOS() { // INSERTA A LA TABLA DE ROBOS, ES EL TRACKING
+        cargar();
         valorRandom = "OAX2021"+ randomCodigoVerifi;
+
+        if(cargarPlaca != sinInformacion){
+            placaCad = cargarPlaca;
+        }else if(cargarPlacaJson != sinInformacion){
+            placaCad = cargarPlacaJson;
+        }else if(cargarNuc != sinInformacion){
+            placaCad = cargarNuc;
+        }else if (cargarNucJson != sinInformacion){
+            placaCad = cargarNucJson;
+        }
         //*************** FECHA **********************//
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -307,7 +301,7 @@ public class LocationService extends Service {
                 .add("Status", "1")
                 .add("Fecha", fecha)
                 .add("Hora", hora)
-                .add("Placa", cargarInfoPlaca)
+                .add("Placa", placaCad)
                 .add( "Direccion",direccion)
                 .add( "Revisado", "1")
                 .build();
@@ -377,6 +371,7 @@ public class LocationService extends Service {
         cargarMarca = shared.getString("marcaJson", "SIN INFORMACION");
         cargarTipo = shared.getString("tipoJson", "SIN INFORMACION");
         cargarDato = shared.getString("DATO", "SIN INFORMACION");
+        cargarAlertamiento = shared.getString("alertamientoApp", "SIN INFORMACION");
     }
     private void guardarServicio() {
         shared = getSharedPreferences("main", MODE_PRIVATE);
@@ -406,7 +401,7 @@ public class LocationService extends Service {
         Notification notification = new NotificationCompat.Builder(getApplication(), GENERAL_CHANNEL_ID)
                 .setContentTitle(tituloNotificacion)
                 .setContentText(cuerpoNotificacion)
-                .setSmallIcon(R.drawable.ic_logo_app)
+                .setSmallIcon(R.drawable.ic_logo_app_mini)
                 .addAction(R.drawable.ic_baseline_cancel_24, tituloCancelar, pendingIntent1)
                 .build();
         notificationManager.notify(1, notification);
