@@ -15,6 +15,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -48,7 +50,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     EditText txtNombre,txtApaterno,txtAmaterno,txtDireccion,txtNoConfianza,txtCodigoVerificacion;
     String nombre,aPaterno,aMaterno,direccionUsuario,noConfianza,codVerificacion,cadena;
-    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoDireccion,cargarInfoNuc,cargarInfoIdVictima;
+    String cargarInfoTelefono,cargarInfoNombre,cargarInfoApaterno,cargarInfoAmaterno,cargarInfoDireccion,cargarInfoNuc,cargarInfoIdVictima,guardarInfoDispositivo,cargarInfoDispositivo,varDospositivo="motorola";
     int bandera = 0;
     int banderaUserRegistrado = 0;
     int banderaFoto = 0;
@@ -60,6 +62,8 @@ public class FormRegistroUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_registro_usuario);
+        obtenerNombreDeDispositivo();
+        guardarDispositivo();
         txtNombre = findViewById(R.id.txtNombre);
         txtApaterno = findViewById(R.id.txtApaterno);
         txtAmaterno = findViewById(R.id.txtAmaterno);
@@ -69,7 +73,6 @@ public class FormRegistroUsuario extends AppCompatActivity {
         btnRegistrar = findViewById(R.id.btnRegistrar);
         pickFotoAvatar = findViewById(R.id.pickFoto);
         avatar2 = findViewById(R.id.profile_image);
-
         cargarDatos();
         if(cargarInfoNuc.equals("SIN INFORMACION")){
             bandera = 1;
@@ -287,14 +290,25 @@ public class FormRegistroUsuario extends AppCompatActivity {
     }
     //********************************** SE CONVIERTE LA IMAGEN A BASE64 ***********************************//
     private void llamarItemAvatar() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        if(cargarInfoDispositivo.equals(varDospositivo)){
+            Intent takePictureIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            takePictureIntent.setType("image/");
+            startActivityForResult(takePictureIntent.createChooser(takePictureIntent,"Selecciona la aplicación"),REQUEST_IMAGE_CAPTURE);
+        }else{
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        if(cargarInfoDispositivo.equals(varDospositivo) && requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK ){
+            Uri path = data.getData();
+            avatar2.setImageURI(path);
+            imagen2();
+            pickFotoAvatar.setVisibility(View.GONE);
+        }else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             avatar2.setImageBitmap(imageBitmap);
@@ -363,6 +377,7 @@ public class FormRegistroUsuario extends AppCompatActivity {
         cargarInfoDireccion = share.getString("DIRECCION", "SIN INFORMACION");
         cargarInfoNuc = share.getString("NUC", "SIN INFORMACION");
         cargarInfoIdVictima = share.getString("IDVICTIMA", "SIN INFORMACION");
+        cargarInfoDispositivo = share.getString("DISPOSITIVO", "SIN INFORMACION");
     }
     //***************************** SE OPTIENEN TODOS LOS PERMISOS AL INICIAR LA APLICACIÓN *********************************//
     public void solicitarPermisosCamera() {
@@ -390,11 +405,45 @@ public class FormRegistroUsuario extends AppCompatActivity {
         editor.putString("TELCONFIANZA",noConfianza);
         editor.commit();
     }
+    private void guardarDispositivo(){
+        share = getSharedPreferences("main",MODE_PRIVATE);
+        editor = share.edit();
+        editor.putString("DISPOSITIVO",guardarInfoDispositivo);
+        editor.commit();
+    }
 
     private void guardarDatoRegistrado(){
         share = getSharedPreferences("main",MODE_PRIVATE);
         editor = share.edit();
         editor.putInt("BANDERAUSERREGISTRADO",banderaUserRegistrado);
         editor.commit();
+    }
+
+    /********************** OBTIENE EL NOMBRE Y MARCA DEL DISPOSITIVO ******************************************/
+    public String obtenerNombreDeDispositivo() {
+        String fabricante = Build.MANUFACTURER;
+        String modelo = Build.MODEL;
+        if (modelo.startsWith(fabricante)) {
+            System.out.println("MODELO" +modelo);
+            System.out.println("fabricante" +fabricante);
+            guardarInfoDispositivo = fabricante;
+            return primeraLetraMayuscula(modelo);
+        } else {
+            System.out.println("MODELO" +modelo);
+            System.out.println("fabricante" +fabricante);
+            guardarInfoDispositivo = fabricante;
+            return primeraLetraMayuscula(fabricante) + " " + modelo;
+        }
+    }
+    private String primeraLetraMayuscula(String cadena) {
+        if (cadena == null || cadena.length() == 0) {
+            return "";
+        }
+        char primeraLetra = cadena.charAt(0);
+        if (Character.isUpperCase(primeraLetra)) {
+            return cadena;
+        } else {
+            return Character.toUpperCase(primeraLetra) + cadena.substring(1);
+        }
     }
 }

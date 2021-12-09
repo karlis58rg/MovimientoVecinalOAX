@@ -9,8 +9,8 @@ android {
         applicationId "mx.gob.sspo.movimientovecinal"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 12 //SE ACTUALIZA MENOR AUSENTE Y SE CAMBIA COMPLETAMENTE LA VISTA DEL TRANSPORTE SEGURO
-        versionName "0.0.12"
+        versionCode 13 //SE CAMBIA COMPLETAMENTE LA VISTA DEL TRANSPORTE SEGURO
+        versionName "0.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

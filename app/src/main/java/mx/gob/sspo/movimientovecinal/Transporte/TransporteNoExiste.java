@@ -32,7 +32,7 @@ public class TransporteNoExiste extends Fragment {
     String cargarPlaca,cargarNuc,sinInformacion = "SIN INFORMACION",cargarServicio = "creado",serbar="creado",varAlertamiento = "sinAlerta";
     SharedPreferences share;
     SharedPreferences.Editor editor;
-    LinearLayout lyPlacaExitoso,lyNucNoExitoso;
+    LinearLayout lyPlacaNoExitoso,lyNucNoExitoso;
     Dialog myDialog;
     TextView txtCerrarNotificacion;
 
@@ -65,14 +65,14 @@ public class TransporteNoExiste extends Fragment {
         btnSegumientoNoExitoso = root.findViewById(R.id.btnSegumientoNoExitoso);
         btnAlertamientoNoExitoso = root.findViewById(R.id.btnAlertamientoNoExitoso);
         btnFinalizarViaje = root.findViewById(R.id.btnFinalizarViajeNoExit);
-        lyPlacaExitoso = root.findViewById(R.id.lyPlacaExitoso);
+        lyPlacaNoExitoso = root.findViewById(R.id.lyPlacaNoExitoso);
         lyNucNoExitoso = root.findViewById(R.id.lyNucNoExitoso);
 
         txtPlacaNoExitoso.setText(cargarPlaca);
         txtNucNoExitoso.setText(cargarNuc);
 
         if(cargarPlaca.equals(sinInformacion)){
-            lyPlacaExitoso.setVisibility(View.GONE);
+            lyPlacaNoExitoso.setVisibility(View.GONE);
         }
         if(cargarNuc.equals(sinInformacion)){
             lyNucNoExitoso.setVisibility(View.GONE);

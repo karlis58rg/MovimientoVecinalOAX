@@ -25,15 +25,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AlertasVigentes"></activity>
-        <activity android:name=".TerminosCondiciones" />
+
+        <activity android:name=".AlertasVigentes"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".TerminosCondiciones"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".TransporteSeguroRespuesta"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MensajeError"
             android:label="@string/title_activity_mensaje_error"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".MiWidgetVV"

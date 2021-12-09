@@ -46,56 +46,100 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/lyTransporte"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/imgExiste"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_enviado"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"/>
-
-        <me.biubiubiu.justifytext.library.JustifyTextView
-            android:id="@+id/lblTitulo"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/lyTransporte"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tu transporte es seguro, Si cuenta con registro en SEMOVI Oaxaca, asegúrate que los siguientes datos corresponden al vehículo.\n"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorTS"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-    </LinearLayout>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/drawable_pressed">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="1"
+                android:layout_weight="0.07">
+                <ImageView
+                    android:id="@+id/imgExiste"
+                    android:layout_width="100dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_enviado"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_weight="0.15">
+                <me.biubiubiu.justifytext.library.JustifyTextView
+                    android:id="@+id/lblTitulo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu transporte es seguro, Si cuenta con registro en SEMOVI Oaxaca, asegúrate que los siguientes datos corresponden al vehículo.\n"
+                    android:textColor="@color/colorTS"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyImgVehiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/lyTransporte"
+            android:background="@drawable/drawable_pressed"
+            android:gravity="center_horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center|top"
+                android:weightSum="1"
+                android:layout_weight="0.12">
+                <ImageView
+                    android:layout_width="320dp"
+                    android:layout_height="125dp"
+                    android:background="@drawable/ic_vehiculo"/>
+
+                </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lyPlacaExitoso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lyTransporte"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/lyImgVehiculo">
             <LinearLayout
                 android:id="@+id/contentConsultaITE"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
                 <!--DATOS DENTRO DEL CUADRO -->
                 <LinearLayout
                     android:id="@+id/lblPlacaExitoso"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center|right"
                     android:weightSum="1"
                     android:layout_weight="0.08">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="10dp"
                         android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBackgroun"
+                        android:text="A"
+                        android:background="@drawable/btn_redondo_letras"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:textStyle="bold"
                         android:textColor="@color/colorBold"
+                        android:paddingRight="3dp"
                         android:text="Placa" />
                 </LinearLayout>
                 <!--TITULO IMAGEN1 TITLE-->
@@ -108,15 +152,10 @@
                     android:weightSum="1"
                     android:background="@drawable/drawable_pressed"
                     android:layout_weight="0.15">
-                    <EditText
+                    <TextView
                         android:id="@+id/txtPlacaExitoso"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:enabled="false"
-                        android:maxLength="25"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <!--IMAGEN3 TITLE-->
                 <LinearLayout
@@ -139,22 +178,32 @@
             <LinearLayout
                 android:id="@+id/contentConsultaTE"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
                 <!--DATOS DENTRO DEL CUADRO -->
                 <LinearLayout
                     android:id="@+id/lblNucExitoso"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center|right"
                     android:weightSum="1"
                     android:layout_weight="0.08">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="10dp"
                         android:textStyle="bold"
+                        android:textColor="@color/colorBackgroun"
+                        android:textAlignment="center"
+                        android:text="B"
+                        android:background="@drawable/btn_redondo_letras"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:textStyle="bold"
+                        android:paddingRight="11dp"
                         android:textColor="@color/colorBold"
                         android:text="Nuc" />
                 </LinearLayout>
@@ -168,15 +217,10 @@
                     android:weightSum="1"
                     android:background="@drawable/drawable_pressed"
                     android:layout_weight="0.15">
-                    <EditText
+                    <TextView
                         android:id="@+id/txtNucExitoso"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:enabled="false"
-                        android:maxLength="25"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <!--IMAGEN3 TITLE-->
                 <LinearLayout
@@ -199,21 +243,31 @@
             <LinearLayout
                 android:id="@+id/contentConsultaTES"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
                 <!--DATOS DENTRO DEL CUADRO -->
                 <LinearLayout
                     android:id="@+id/lblSitio"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center|right"
                     android:weightSum="1"
                     android:layout_weight="0.08">
                     <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBackgroun"
+                        android:textAlignment="center"
+                        android:text="C"
+                        android:background="@drawable/btn_redondo_letras"/>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:paddingRight="10dp"
                         android:textStyle="bold"
                         android:textColor="@color/colorBold"
                         android:text="Sitio" />
@@ -228,15 +282,10 @@
                     android:weightSum="1"
                     android:background="@drawable/drawable_pressed"
                     android:layout_weight="0.15">
-                    <EditText
+                    <TextView
                         android:id="@+id/txtSitio"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:enabled="false"
-                        android:maxLength="25"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <!--IMAGEN3 TITLE-->
                 <LinearLayout
@@ -259,17 +308,26 @@
             <LinearLayout
                 android:id="@+id/contentConsultaTEM"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
                 <!--DATOS DENTRO DEL CUADRO -->
                 <LinearLayout
                     android:id="@+id/lblMarca"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center|right"
                     android:weightSum="1"
                     android:layout_weight="0.08">
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBackgroun"
+                        android:textAlignment="center"
+                        android:text="D"
+                        android:background="@drawable/btn_redondo_letras"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -288,15 +346,10 @@
                     android:weightSum="1"
                     android:background="@drawable/drawable_pressed"
                     android:layout_weight="0.15">
-                    <EditText
+                    <TextView
                         android:id="@+id/txtMarca"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:enabled="false"
-                        android:maxLength="25"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <!--IMAGEN3 TITLE-->
                 <LinearLayout
@@ -319,21 +372,31 @@
             <LinearLayout
                 android:id="@+id/contentConsultaTET"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal">
                 <!--DATOS DENTRO DEL CUADRO -->
                 <LinearLayout
                     android:id="@+id/lblTET"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center|right"
                     android:weightSum="1"
                     android:layout_weight="0.08">
                     <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBackgroun"
+                        android:textAlignment="center"
+                        android:text="E"
+                        android:background="@drawable/btn_redondo_letras"/>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:paddingRight="10dp"
                         android:textStyle="bold"
                         android:textColor="@color/colorBold"
                         android:text="Tipo" />
@@ -348,15 +411,10 @@
                     android:weightSum="1"
                     android:background="@drawable/drawable_pressed"
                     android:layout_weight="0.15">
-                    <EditText
+                    <TextView
                         android:id="@+id/txtTipo"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:enabled="false"
-                        android:maxLength="25"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
                 <!--IMAGEN3 TITLE-->
                 <LinearLayout
@@ -371,6 +429,9 @@
             </LinearLayout>
         </LinearLayout>
 
+
+
+
         <LinearLayout
             android:id="@+id/lySeguimientoExitoso"
             android:layout_width="match_parent"
@@ -381,31 +442,27 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center|top"
                 android:weightSum="1"
                 android:layout_weight="0.12">
                 <Button
                     android:id="@+id/btnSegumientoExitoso"
-                    android:layout_width="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="45dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@drawable/btn_seguimiento_efect"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_weight="0.15">
-                <me.biubiubiu.justifytext.library.JustifyTextView
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:textSize="12sp"
-                    android:paddingLeft="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="11sp"
+                    android:textAlignment="center"
                     android:text="Da click en este botón para que se registre tu trayectoria sin enviar alerta.\n"/>
             </LinearLayout>
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/lyAlertamientoExitoso"
             android:layout_width="match_parent"
@@ -424,25 +481,22 @@
                     android:layout_weight="0.12">
                     <Button
                         android:id="@+id/btnAlertamientoExitoso"
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="45dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@drawable/btn_alertamiento_efect" />
-                </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="1"
-                android:layout_weight="0.15">
-                <me.biubiubiu.justifytext.library.JustifyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:textSize="12sp"
-                    android:paddingLeft="20dp"
-                    android:text="Da click en este botón para enviar una ALERTA al 911.\n"/>
-            </LinearLayout>
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:textAlignment="center"
+                        android:text="Da click en este botón para enviar una ALERTA al 911.\n"/>
 
+                </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/lyFinalizarViajeExitoso"
             android:layout_width="match_parent"
@@ -461,20 +515,20 @@
                 android:layout_weight="0.12">
                 <Button
                     android:id="@+id/btnFinalizarViaje"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="45dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="@drawable/btn_finalizar_efect"/>
                 <me.biubiubiu.justifytext.library.JustifyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12sp"
                     android:text="Si oprimiste alguno de los botones (Seguimiento/Alertamiento), realiza lo siguiente:\n
                         \na) Ir a notificaciones dar click en “DETENER”\n
                         \n b) Dar click en este botón para finalizar tu viaje.\n"/>
-
             </LinearLayout>
         </LinearLayout>
 
